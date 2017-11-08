@@ -1,5 +1,5 @@
-require('./apps/app.js');
-require('./apps/orbital.js');
+// require('./apps/app.js');
+// require('./apps/orbital.js');
 
 let p5 = require('./libs/p5.0.5.14')
 
