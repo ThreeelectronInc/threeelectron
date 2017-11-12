@@ -22,8 +22,18 @@ function createWindow () {
     slashes: true
   }))
 
-  // Open the DevTools.
-  win.webContents.openDevTools()
+  let dev_mode = true
+
+  if (dev_mode){
+    // Open the DevTools.
+    win.webContents.openDevTools()
+
+  }
+  else{
+    win.setMenu(null)
+  }
+
+
 
   // Emitted when the window is closed.
   win.on('closed', () => {

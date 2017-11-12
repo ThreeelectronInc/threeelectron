@@ -7,7 +7,7 @@
 // }
 
 // import a static p5 version
-let p5 = require('./../libs/p5.0.5.14')
+let p5 = require('./../libs/p5/0.5.14/p5')
 
 let $ = require('./../libs/jquery-3.2.1')
 
