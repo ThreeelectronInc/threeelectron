@@ -32,8 +32,10 @@ function draw(){
 
   let y = sin(frameCount * 0.01) * 100
   //move the camera away from the plane by a sin wave
+  // TODO: look at
+  // rotateX(0,radians(75))
+  // camera(0, y, 100)//, 0, 0, 0, 0, 1, 0);
   camera(0, y, 100, 0, 0, 0, 0, 1, 0);
-  
   console.log('camera y: ', y)
 
 
@@ -47,10 +49,7 @@ function draw(){
 
 // push()
 // identity()
-texture(texMarker)
 
-translate(0,20,0)
-plane()
 
 // fill(0,0,0,0) //hack to allow for transparent textures
 
@@ -67,9 +66,10 @@ vertex(100, 0, -100);
 endShape();
 // pop()
 
+texture(texMarker)
+rotateZ(radians(180))
+translate(0,0,0)
+plane()
+
 }
-
-
-
-
 
