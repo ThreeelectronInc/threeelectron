@@ -13,7 +13,7 @@ var scene = new THREE.Scene();
 
 // Create a basic perspective camera
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
-camera.position.z = 10;
+camera.position.z = 50;
 
 // Create a renderer with Antialiasing
 var renderer = new THREE.WebGLRenderer({antialias:true});
