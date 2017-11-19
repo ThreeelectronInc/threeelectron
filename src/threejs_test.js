@@ -5,7 +5,7 @@
 
 
 let THREE = require('./libs/three/three')
-
+let TerrainGenerator = require('./terrain_generator')
 // import THREEx from "./extensions/threex.fullscreen"
 
 // Create an empty scene
@@ -13,7 +13,7 @@ var scene = new THREE.Scene();
 
 // Create a basic perspective camera
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
-camera.position.z = 4;
+camera.position.z = 10;
 
 // Create a renderer with Antialiasing
 var renderer = new THREE.WebGLRenderer({antialias:true});
@@ -38,7 +38,9 @@ var material = new THREE.MeshBasicMaterial( { color: "#433F81" } );
 var cube = new THREE.Mesh( geometry, material );
 
 // Add cube to Scene
-scene.add( cube );
+//scene.add( cube );
+
+TerrainGenerator.generateTerrain(scene);
 
 // Render Loop
 var render = function () {
