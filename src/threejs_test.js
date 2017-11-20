@@ -66,7 +66,7 @@ var render = function () {
   cube.rotation.y += 0.01;
 
 
-  camera.position.set(30,Math.sin(camY) * 20 + 40,60);
+  camera.position.set(80 * Math.cos(camY),Math.sin(camY) * 20 + 40, 80 * Math.sin(camY));
   camera.up = new THREE.Vector3(0,1,0);
   camera.lookAt(new THREE.Vector3(0,0,0));
 

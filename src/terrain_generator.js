@@ -13,7 +13,7 @@ function generateTerrain(scene) {
     let fieldSize = 60
     let halfField = fieldSize / 2
 
-    let sampleSpread = 20
+    let sampleSpread = 15
 
     let matGrass = new THREE.SpriteMaterial({ map: grassTex, color: 0xffffff });
     spriteGrass = new THREE.Sprite(matGrass);
@@ -43,7 +43,7 @@ function generateTerrain(scene) {
                 sprite = spriteDirt.clone()                
             }
             
-            sprite.position.set(x, height * 5, z);
+            sprite.position.set(x * 3, height * 9, z * 3);
             sprite.scale.set(1, 1, 1.0);
 
             scene.add(sprite);
