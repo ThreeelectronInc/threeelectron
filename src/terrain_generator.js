@@ -10,16 +10,23 @@ function generateTerrain(scene) {
     let SimplexNoise = require('simplex-noise')
     let noise = new SimplexNoise();
 
+    let field_size = 60
+    let half_field = field_size / 2
 
-    for (let x = -100; x < 100; x++) {
-        for (let y = -100; y < 100; y++) {
+    let sampleSpread = 10
+
+    for (let x = -half_field; x < half_field; x++) {
+        for (let y = -half_field; y < half_field; y++) {
             let sprite;
-            let scale = 0.005;
-            let height = noise.noise2D(x / 30, y / 30) * scale
+            let scale = 1//0.005;
+            let height = noise.noise2D(x / sampleSpread, y / sampleSpread) * scale
 
-            let color = (1 + height / scale) * 0.5 * 0xffffff
+            let color_val = (1 + height / scale) * 0.5// * 0xffffff
             console.log(height)
 
+            let color =  new THREE.Color(color_val, color_val, color_val)
+
+            
             if (height > 0) {
                 var terrainMaterial = new THREE.SpriteMaterial({ map: grassTex, useScreenCoordinates: false, color: color });
                 sprite = new THREE.Sprite(terrainMaterial);
