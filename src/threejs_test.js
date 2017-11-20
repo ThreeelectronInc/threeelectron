@@ -14,7 +14,7 @@ let clock = new THREE.Clock()
 var scene = new THREE.Scene();
 
 // Create a basic perspective camera
-var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 10000 );
 // camera.position.z = 60;
 
 // Place camera on x axis
@@ -66,7 +66,7 @@ var render = function () {
   cube.rotation.y += 0.01;
 
 
-  camera.position.set(80 * Math.cos(pos_offset),Math.sin(pos_offset) * 20 + 40, 80 * Math.sin(pos_offset));
+  camera.position.set(5000 * Math.cos(pos_offset),Math.sin(pos_offset) * 500 + 1500, 5000 * Math.sin(pos_offset));
   camera.up = new THREE.Vector3(0,1,0);
   camera.lookAt(new THREE.Vector3(0,0,0));
 
