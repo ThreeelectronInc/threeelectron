@@ -2,14 +2,14 @@ let THREE = require('./libs/three/three')
 
 let noise = require('./improved_noise')
 
-let blockScale = 15
+let blockScale = 3
 
 var mesh;
 
 let worldWidth = 256, worldDepth = 256
 let worldHalfWidth = worldWidth / 2, worldHalfDepth = worldDepth / 2
 
-let quality = 4
+let quality = 2
 
 let terrain = generateHeight(worldWidth, worldDepth)
 
@@ -130,7 +130,8 @@ function generateTerrain(scene) {
     //
 
     // BufferGeometry cannot be merged yet.
-    var tmpGeometry = new THREE.Geometry();
+    var tmpLandGeometry = new THREE.Geometry();
+    var tmpUnderwaterGeometry = new THREE.Geometry();
     var pxTmpGeometry = new THREE.Geometry().fromBufferGeometry(pxGeometry);
     var nxTmpGeometry = new THREE.Geometry().fromBufferGeometry(nxGeometry);
     var pyTmpGeometry = new THREE.Geometry().fromBufferGeometry(pyGeometry);
@@ -153,6 +154,14 @@ function generateTerrain(scene) {
             var nx = getY(x - 1, z);
             var pz = getY(x, z + 1);
             var nz = getY(x, z - 1);
+
+            let tmpGeometry = tmpLandGeometry
+
+            if (h < 0){     
+                // console.log("HERE")           
+                tmpGeometry = tmpUnderwaterGeometry
+            }
+
 
             tmpGeometry.merge(pyTmpGeometry, matrix);
 
@@ -184,20 +193,33 @@ function generateTerrain(scene) {
 
     }
 
-    var geometry = new THREE.BufferGeometry().fromGeometry(tmpGeometry);
-    geometry.computeBoundingSphere();
+    var geometryLand = new THREE.BufferGeometry().fromGeometry(tmpLandGeometry);
+    geometryLand.computeBoundingSphere();
 
-    var texture = new THREE.TextureLoader().load('assets/atlas.png');
-    texture.magFilter = THREE.NearestFilter;
-    texture.minFilter = THREE.LinearMipMapLinearFilter;
+    var textureLand = new THREE.TextureLoader().load('assets/atlas.png');
+    textureLand.magFilter = THREE.NearestFilter;
+    textureLand.minFilter = THREE.LinearMipMapLinearFilter;
 
-    var mesh = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({ map: texture }));
-    scene.add(mesh);
+    var meshLand = new THREE.Mesh(geometryLand, new THREE.MeshLambertMaterial({ map: textureLand }));
+    scene.add(meshLand);
+
+
+
+    var geometryDirt = new THREE.BufferGeometry().fromGeometry(tmpUnderwaterGeometry);
+    geometryDirt.computeBoundingSphere();
+
+    var textureDirt = new THREE.TextureLoader().load('assets/images/Dirt.png');
+    textureDirt.magFilter = THREE.NearestFilter;
+    textureDirt.minFilter = THREE.LinearMipMapLinearFilter;
+
+    var meshDirt = new THREE.Mesh(geometryDirt, new THREE.MeshLambertMaterial({ map: textureDirt }));
+    scene.add(meshDirt);
+
+
+    // Lights
 
     var ambientLight = new THREE.AmbientLight(0xcccccc);
     scene.add(ambientLight);
-
-
 
     var directionalLight = new THREE.DirectionalLight(0xffffff, 2);
     directionalLight.position.set(1, 1, 0.5).normalize();
