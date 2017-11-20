@@ -2,18 +2,19 @@ let THREE = require('./libs/three/three')
 
 let noise = require('./improved_noise')
 
-let blockScale = 10
+let blockScale = 2
 
 var mesh;
 
-let worldWidth = 128, worldDepth = 128
+let worldWidth = 512, worldDepth = 512
 let worldHalfWidth = worldWidth / 2, worldHalfDepth = worldDepth / 2
 
 let quality = 2
 
-let terrain = generateHeight(worldWidth, worldDepth)
+let terrain = generateHeight(worldWidth, worldDepth, 0, 0)
+let terrain2 = generateHeight(worldWidth, worldDepth, 0, worldDepth)
 
-function generateHeight(width, height) {
+function generateHeight(width, height, xStart, yStart) {
 
     let data = [], perlin = new noise.ImprovedNoise(),
         size = width * height, z = Math.random() * blockScale;
@@ -25,9 +26,7 @@ function generateHeight(width, height) {
         for (var i = 0; i < size; i++) {
 
             var x = i % width, y = (i / width) | 0;
-            data[i] += perlin.noise(x / quality, y / quality, z) * quality;
-
-            // console.log(data[i])
+            data[i] += perlin.noise((xStart + x) / quality, (yStart + y) / quality, z) * quality;
         }
 
         quality *= 4;
@@ -43,58 +42,6 @@ function getY(x, z) {
 
 }
 function generateTerrain(scene) {
-/*
-    let grassTex = THREE.ImageUtils.loadTexture('assets/images/Grass.png');
-    let dirtTex = THREE.ImageUtils.loadTexture('assets/images/Dirt.png');
-
-    let SimplexNoise = require('simplex-noise')
-    let noise = new SimplexNoise();
-
-    let fieldSize = 100
-    let halfField = fieldSize / 2
-
-    let sampleSpread = 15
-
-    let matGrass = new THREE.SpriteMaterial({ map: grassTex, color: 0xffffff });
-    spriteGrass = new THREE.Sprite(matGrass);
-
-    let matDirt = new THREE.SpriteMaterial({ map: dirtTex, color: 0xffffff });
-    spriteDirt = new THREE.Sprite(matDirt);
-
-    for (let x = -halfField; x < halfField; x++) {
-        for (let z = -halfField; z < halfField; z++) {
-            let sprite;
-            let scale = 1//0.005;
-            let height = noise.noise2D(x / sampleSpread, z / sampleSpread) * scale
-
-            // let color_val = (1 + height / scale) * 0.5// * 0xffffff            
-            // let color =  new THREE.Color(color_val, color_val, color_val)
-
-            // let matGrass = new THREE.SpriteMaterial({ map: grassTex, color: color });
-            // spriteGrass = new THREE.Sprite(matGrass);
-
-            // let matDirt = new THREE.SpriteMaterial({ map: dirtTex, color: color });
-            // spriteDirt = new THREE.Sprite(matDirt);
-
-            if (height > 0) {
-                sprite = spriteGrass.clone()
-            }
-            else {
-                sprite = spriteDirt.clone()
-            }
-
-            sprite.position.set(x * 3, 20 + height * 9, z * 3);
-            sprite.scale.set(1, 1, 1.0);
-
-            scene.add(sprite);
-
-        }
-    }
-
-
-*/
-
-
 
     var matrix = new THREE.Matrix4();
     var matrixWater = new THREE.Matrix4();
@@ -247,8 +194,6 @@ function generateTerrain(scene) {
     var directionalLight = new THREE.DirectionalLight(0xffffff, 2);
     directionalLight.position.set(1, 1, 0.5).normalize();
     scene.add(directionalLight);
-
-
 
 }
 
