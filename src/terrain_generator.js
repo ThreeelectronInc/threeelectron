@@ -2,17 +2,25 @@ let THREE = require('./libs/three/three')
 
 let noise = require('./improved_noise')
 
-let blockScale = 2
+let blockScale = 5
 
 var mesh;
 
-let worldWidth = 512, worldDepth = 512
-let worldHalfWidth = worldWidth / 2, worldHalfDepth = worldDepth / 2
+let chunkWidth = 256, chunkDepth = 256
+let chunkHalfWidth = chunkWidth / 2, chunkHalfDepth = chunkDepth / 2
 
 let quality = 2
 
-let terrain = generateHeight(worldWidth, worldDepth, 0, 0)
-let terrain2 = generateHeight(worldWidth, worldDepth, 0, worldDepth)
+let chunkMultiplier = 1;
+
+// let terrain = [
+//     generateHeight(chunkWidth, chunkDepth, 0, 0),
+//     generateHeight(chunkWidth, chunkDepth, chunkWidth, chunkDepth),
+//     generateHeight(chunkWidth, chunkDepth, 0, chunkDepth),
+//     generateHeight(chunkWidth, chunkDepth, chunkWidth, 0),
+    
+// ]
+let terrain = generateHeight(chunkWidth, chunkDepth, 0, 0)
 
 function generateHeight(width, height, xStart, yStart) {
 
@@ -38,8 +46,13 @@ function generateHeight(width, height, xStart, yStart) {
 
 function getY(x, z) {
 
-    return (terrain[x + z * worldWidth] * 0.2) | 0;
-
+    let localX = x % chunkWidth;
+    let localZ = z % chunkDepth;
+    // console.log(2 - x % chunkWidth + 2 - z % chunkDepth)
+    // console.log(terrain)
+    // return (terrain[(2 - x % chunkWidth + 2 - z % chunkDepth) - 4 ][localX + localZ * chunkWidth] * 0.2) | 0;
+    return (terrain[x + z * chunkWidth] * 0.2) | 0;
+    
 }
 function generateTerrain(scene) {
 
@@ -88,16 +101,17 @@ function generateTerrain(scene) {
     var pzTmpGeometry = new THREE.Geometry().fromBufferGeometry(pzGeometry);
     var nzTmpGeometry = new THREE.Geometry().fromBufferGeometry(nzGeometry);
 
-    for (var z = 0; z < worldDepth; z++) {
 
-        for (var x = 0; x < worldWidth; x++) {
+    for (var z = 0; z < chunkDepth * chunkMultiplier; z++) {
+
+        for (var x = 0; x < chunkWidth * chunkMultiplier; x++) {
 
             var h = getY(x, z);
 
             matrix.makeTranslation(
-                x * blockScale - worldHalfWidth * blockScale,
+                x * blockScale - chunkHalfWidth * blockScale,
                 h * blockScale,
-                z * blockScale - worldHalfDepth * blockScale
+                z * blockScale - chunkHalfDepth * blockScale
             );
 
             var px = getY(x + 1, z);
@@ -114,9 +128,9 @@ function generateTerrain(scene) {
                 
                 
                 matrixWater.makeTranslation(
-                    x * blockScale - worldHalfWidth * blockScale,
+                    x * blockScale - chunkHalfWidth * blockScale,
                     0,
-                    z * blockScale - worldHalfDepth * blockScale
+                    z * blockScale - chunkHalfDepth * blockScale
                 );
                 tmpWaterGeometry.merge(pyTmpGeometry, matrixWater)
             }
@@ -130,13 +144,13 @@ function generateTerrain(scene) {
 
             }
 
-            if ((nx !== h && nx !== h + 1) || x === worldWidth - 1) {
+            if ((nx !== h && nx !== h + 1) || x === chunkWidth - 1) {
 
                 tmpGeometry.merge(nxTmpGeometry, matrix);
 
             }
 
-            if ((pz !== h && pz !== h + 1) || z === worldDepth - 1) {
+            if ((pz !== h && pz !== h + 1) || z === chunkDepth - 1) {
 
                 tmpGeometry.merge(pzTmpGeometry, matrix);
 

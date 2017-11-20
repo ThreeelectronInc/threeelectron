@@ -61,7 +61,7 @@ var render = function () {
 
   let delta = clock.getDelta()
 
-  pos_offset = pos_offset + delta
+  pos_offset = pos_offset + delta *  0.1
 
   let currentSecond = Math.round(clock.getElapsedTime())
   framesThisSecond++
