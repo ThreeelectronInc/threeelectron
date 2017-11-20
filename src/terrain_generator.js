@@ -10,33 +10,40 @@ function generateTerrain(scene) {
     let SimplexNoise = require('simplex-noise')
     let noise = new SimplexNoise();
 
-    let field_size = 60
-    let half_field = field_size / 2
+    let fieldSize = 120
+    let halfField = fieldSize / 2
 
-    let sampleSpread = 10
+    let sampleSpread = 20
 
-    for (let x = -half_field; x < half_field; x++) {
-        for (let y = -half_field; y < half_field; y++) {
+    let matGrass = new THREE.SpriteMaterial({ map: grassTex, color: 0xffffff });
+    spriteGrass = new THREE.Sprite(matGrass);
+
+    let matDirt = new THREE.SpriteMaterial({ map: dirtTex, color: 0xffffff });
+    spriteDirt = new THREE.Sprite(matDirt);
+
+    for (let x = -halfField; x < halfField; x++) {
+        for (let z = -halfField; z < halfField; z++) {
             let sprite;
             let scale = 1//0.005;
-            let height = noise.noise2D(x / sampleSpread, y / sampleSpread) * scale
+            let height = noise.noise2D(x / sampleSpread, z / sampleSpread) * scale
 
-            let color_val = (1 + height / scale) * 0.5// * 0xffffff
-            console.log(height)
+            // let color_val = (1 + height / scale) * 0.5// * 0xffffff            
+            // let color =  new THREE.Color(color_val, color_val, color_val)
 
-            let color =  new THREE.Color(color_val, color_val, color_val)
-
+            // let matGrass = new THREE.SpriteMaterial({ map: grassTex, color: color });
+            // spriteGrass = new THREE.Sprite(matGrass);
+        
+            // let matDirt = new THREE.SpriteMaterial({ map: dirtTex, color: color });
+            // spriteDirt = new THREE.Sprite(matDirt);
             
             if (height > 0) {
-                var terrainMaterial = new THREE.SpriteMaterial({ map: grassTex, useScreenCoordinates: false, color: color });
-                sprite = new THREE.Sprite(terrainMaterial);
+                sprite = spriteGrass.clone()
             }
             else {
-                var dirtMat = new THREE.SpriteMaterial({ map: dirtTex, useScreenCoordinates: false, color: color });
-                sprite = new THREE.Sprite(dirtMat);
+                sprite = spriteDirt.clone()                
             }
             
-            sprite.position.set(x, y, 0);
+            sprite.position.set(x, height * 5, z);
             sprite.scale.set(1, 1, 1.0);
 
             scene.add(sprite);

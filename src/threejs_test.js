@@ -8,12 +8,19 @@ let THREE = require('./libs/three/three')
 let TerrainGenerator = require('./terrain_generator')
 // import THREEx from "./extensions/threex.fullscreen"
 
+let clock = new THREE.Clock()
+
 // Create an empty scene
 var scene = new THREE.Scene();
 
 // Create a basic perspective camera
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
-camera.position.z = 50;
+// camera.position.z = 60;
+
+// Place camera on x axis
+camera.position.set(30,40,60);
+camera.up = new THREE.Vector3(0,1,0);
+camera.lookAt(new THREE.Vector3(0,0,0));
 
 // Create a renderer with Antialiasing
 var renderer = new THREE.WebGLRenderer({antialias:true});
@@ -42,12 +49,27 @@ var cube = new THREE.Mesh( geometry, material );
 
 TerrainGenerator.generateTerrain(scene);
 
+let camY = 0
+
 // Render Loop
 var render = function () {
+
   requestAnimationFrame( render );
+
+  let delta = clock.getDelta()
+
+  camY = camY + delta
+
+  // console.log(delta)
 
   cube.rotation.x += 0.01;
   cube.rotation.y += 0.01;
+
+
+  camera.position.set(30,Math.sin(camY) * 20 + 40,60);
+  camera.up = new THREE.Vector3(0,1,0);
+  camera.lookAt(new THREE.Vector3(0,0,0));
+
 
   // Render the scene
   renderer.render(scene, camera);
