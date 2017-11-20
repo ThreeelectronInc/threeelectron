@@ -2,15 +2,13 @@ let THREE = require('./libs/three/three')
 
 
 function generateTerrain(scene) {
-    var grassTex = THREE.ImageUtils.loadTexture('assets/images/Grass.png');
-    var dirtTex = THREE.ImageUtils.loadTexture('assets/images/Dirt.png');
-    
-    
+    let grassTex = THREE.ImageUtils.loadTexture('assets/images/Grass.png');
+    let dirtTex = THREE.ImageUtils.loadTexture('assets/images/Dirt.png');    
 
     let SimplexNoise = require('simplex-noise')
     let noise = new SimplexNoise();
 
-    let fieldSize = 60
+    let fieldSize = 100
     let halfField = fieldSize / 2
 
     let sampleSpread = 15
@@ -49,8 +47,6 @@ function generateTerrain(scene) {
             scene.add(sprite);
         }
     }
-
-
 }
 
 module.exports = {
