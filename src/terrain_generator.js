@@ -2,11 +2,11 @@ let THREE = require('./libs/three/three')
 
 let noise = require('./improved_noise')
 
-let blockScale = 3
+let blockScale = 10
 
 var mesh;
 
-let worldWidth = 256, worldDepth = 256
+let worldWidth = 128, worldDepth = 128
 let worldHalfWidth = worldWidth / 2, worldHalfDepth = worldDepth / 2
 
 let quality = 2
@@ -97,6 +97,7 @@ function generateTerrain(scene) {
 
 
     var matrix = new THREE.Matrix4();
+    var matrixWater = new THREE.Matrix4();
 
     var pxGeometry = new THREE.PlaneBufferGeometry(blockScale, blockScale);
     pxGeometry.attributes.uv.array[1] = 0.5;
@@ -132,6 +133,8 @@ function generateTerrain(scene) {
     // BufferGeometry cannot be merged yet.
     var tmpLandGeometry = new THREE.Geometry();
     var tmpUnderwaterGeometry = new THREE.Geometry();
+    var tmpWaterGeometry = new THREE.Geometry();
+
     var pxTmpGeometry = new THREE.Geometry().fromBufferGeometry(pxGeometry);
     var nxTmpGeometry = new THREE.Geometry().fromBufferGeometry(nxGeometry);
     var pyTmpGeometry = new THREE.Geometry().fromBufferGeometry(pyGeometry);
@@ -160,6 +163,15 @@ function generateTerrain(scene) {
             if (h < 0){     
                 // console.log("HERE")           
                 tmpGeometry = tmpUnderwaterGeometry
+
+                
+                
+                matrixWater.makeTranslation(
+                    x * blockScale - worldHalfWidth * blockScale,
+                    0,
+                    z * blockScale - worldHalfDepth * blockScale
+                );
+                tmpWaterGeometry.merge(pyTmpGeometry, matrixWater)
             }
 
 
@@ -215,6 +227,17 @@ function generateTerrain(scene) {
     var meshDirt = new THREE.Mesh(geometryDirt, new THREE.MeshLambertMaterial({ map: textureDirt }));
     scene.add(meshDirt);
 
+
+
+    var geometryWater = new THREE.BufferGeometry().fromGeometry(tmpWaterGeometry);
+    geometryWater.computeBoundingSphere();
+
+    var textureWater = new THREE.TextureLoader().load('assets/images/Water.png');
+    textureWater.magFilter = THREE.NearestFilter;
+    textureWater.minFilter = THREE.LinearMipMapLinearFilter;
+
+    var meshWater = new THREE.Mesh(geometryWater, new THREE.MeshLambertMaterial({ map: textureWater, transparent: true }));
+    scene.add(meshWater);
 
     // Lights
 
