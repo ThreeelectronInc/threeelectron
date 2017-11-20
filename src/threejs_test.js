@@ -49,7 +49,7 @@ var cube = new THREE.Mesh( geometry, material );
 
 TerrainGenerator.generateTerrain(scene);
 
-let camY = 0
+let pos_offset = 0
 
 // Render Loop
 var render = function () {
@@ -58,7 +58,7 @@ var render = function () {
 
   let delta = clock.getDelta()
 
-  camY = camY + delta
+  pos_offset = pos_offset + delta
 
   // console.log(delta)
 
@@ -66,7 +66,7 @@ var render = function () {
   cube.rotation.y += 0.01;
 
 
-  camera.position.set(80 * Math.cos(camY),Math.sin(camY) * 20 + 40, 80 * Math.sin(camY));
+  camera.position.set(80 * Math.cos(pos_offset),Math.sin(pos_offset) * 20 + 40, 80 * Math.sin(pos_offset));
   camera.up = new THREE.Vector3(0,1,0);
   camera.lookAt(new THREE.Vector3(0,0,0));
 
