@@ -2,6 +2,7 @@ let THREE = require('./libs/three/three')
 
 let noise = require('./improved_noise')
 
+let blockScale = 5
 
 var mesh;
 
@@ -12,7 +13,7 @@ var worldWidth = 128, worldDepth = 128,
 function generateHeight(width, height) {
 
     data = [], perlin = new noise.ImprovedNoise(),
-        size = width * height, quality = 2, z = Math.random() * 100;
+        size = width * height, quality = 2, z = Math.random() * blockScale;
 
     for (var j = 0; j < 4; j++) {
 
@@ -39,88 +40,89 @@ function getY(x, z) {
 
 }
 function generateTerrain(scene) {
+/*
+    let grassTex = THREE.ImageUtils.loadTexture('assets/images/Grass.png');
+    let dirtTex = THREE.ImageUtils.loadTexture('assets/images/Dirt.png');
 
-    // let grassTex = THREE.ImageUtils.loadTexture('assets/images/Grass.png');
-    // let dirtTex = THREE.ImageUtils.loadTexture('assets/images/Dirt.png');
+    let SimplexNoise = require('simplex-noise')
+    let noise = new SimplexNoise();
 
-    // let SimplexNoise = require('simplex-noise')
-    // let noise = new SimplexNoise();
+    let fieldSize = 100
+    let halfField = fieldSize / 2
 
-    // let fieldSize = 100
-    // let halfField = fieldSize / 2
+    let sampleSpread = 15
 
-    // let sampleSpread = 15
+    let matGrass = new THREE.SpriteMaterial({ map: grassTex, color: 0xffffff });
+    spriteGrass = new THREE.Sprite(matGrass);
 
-    // let matGrass = new THREE.SpriteMaterial({ map: grassTex, color: 0xffffff });
-    // spriteGrass = new THREE.Sprite(matGrass);
+    let matDirt = new THREE.SpriteMaterial({ map: dirtTex, color: 0xffffff });
+    spriteDirt = new THREE.Sprite(matDirt);
 
-    // let matDirt = new THREE.SpriteMaterial({ map: dirtTex, color: 0xffffff });
-    // spriteDirt = new THREE.Sprite(matDirt);
+    for (let x = -halfField; x < halfField; x++) {
+        for (let z = -halfField; z < halfField; z++) {
+            let sprite;
+            let scale = 1//0.005;
+            let height = noise.noise2D(x / sampleSpread, z / sampleSpread) * scale
 
-    // for (let x = -halfField; x < halfField; x++) {
-    //     for (let z = -halfField; z < halfField; z++) {
-    //         let sprite;
-    //         let scale = 1//0.005;
-    //         let height = noise.noise2D(x / sampleSpread, z / sampleSpread) * scale
+            // let color_val = (1 + height / scale) * 0.5// * 0xffffff            
+            // let color =  new THREE.Color(color_val, color_val, color_val)
 
-    //         // let color_val = (1 + height / scale) * 0.5// * 0xffffff            
-    //         // let color =  new THREE.Color(color_val, color_val, color_val)
+            // let matGrass = new THREE.SpriteMaterial({ map: grassTex, color: color });
+            // spriteGrass = new THREE.Sprite(matGrass);
 
-    //         // let matGrass = new THREE.SpriteMaterial({ map: grassTex, color: color });
-    //         // spriteGrass = new THREE.Sprite(matGrass);
+            // let matDirt = new THREE.SpriteMaterial({ map: dirtTex, color: color });
+            // spriteDirt = new THREE.Sprite(matDirt);
 
-    //         // let matDirt = new THREE.SpriteMaterial({ map: dirtTex, color: color });
-    //         // spriteDirt = new THREE.Sprite(matDirt);
+            if (height > 0) {
+                sprite = spriteGrass.clone()
+            }
+            else {
+                sprite = spriteDirt.clone()
+            }
 
-    //         if (height > 0) {
-    //             sprite = spriteGrass.clone()
-    //         }
-    //         else {
-    //             sprite = spriteDirt.clone()
-    //         }
+            sprite.position.set(x * 3, 20 + height * 9, z * 3);
+            sprite.scale.set(1, 1, 1.0);
 
-    //         sprite.position.set(x * 3, height * 9, z * 3);
-    //         sprite.scale.set(1, 1, 1.0);
+            scene.add(sprite);
 
-    //         scene.add(sprite);
-
-    //     }
-    // }
+        }
+    }
 
 
+*/
 
 
 
     var matrix = new THREE.Matrix4();
 
-    var pxGeometry = new THREE.PlaneBufferGeometry(100, 100);
+    var pxGeometry = new THREE.PlaneBufferGeometry(blockScale, blockScale);
     pxGeometry.attributes.uv.array[1] = 0.5;
     pxGeometry.attributes.uv.array[3] = 0.5;
     pxGeometry.rotateY(Math.PI / 2);
-    pxGeometry.translate(50, 0, 0);
+    pxGeometry.translate(blockScale / 2, 0, 0);
 
-    var nxGeometry = new THREE.PlaneBufferGeometry(100, 100);
+    var nxGeometry = new THREE.PlaneBufferGeometry(blockScale, blockScale);
     nxGeometry.attributes.uv.array[1] = 0.5;
     nxGeometry.attributes.uv.array[3] = 0.5;
     nxGeometry.rotateY(- Math.PI / 2);
-    nxGeometry.translate(- 50, 0, 0);
+    nxGeometry.translate(- blockScale / 2, 0, 0);
 
-    var pyGeometry = new THREE.PlaneBufferGeometry(100, 100);
+    var pyGeometry = new THREE.PlaneBufferGeometry(blockScale, blockScale);
     pyGeometry.attributes.uv.array[5] = 0.5;
     pyGeometry.attributes.uv.array[7] = 0.5;
     pyGeometry.rotateX(- Math.PI / 2);
-    pyGeometry.translate(0, 50, 0);
+    pyGeometry.translate(0, blockScale / 2, 0);
 
-    var pzGeometry = new THREE.PlaneBufferGeometry(100, 100);
+    var pzGeometry = new THREE.PlaneBufferGeometry(blockScale, blockScale);
     pzGeometry.attributes.uv.array[1] = 0.5;
     pzGeometry.attributes.uv.array[3] = 0.5;
-    pzGeometry.translate(0, 0, 50);
+    pzGeometry.translate(0, 0, blockScale / 2);
 
-    var nzGeometry = new THREE.PlaneBufferGeometry(100, 100);
+    var nzGeometry = new THREE.PlaneBufferGeometry(blockScale, blockScale);
     nzGeometry.attributes.uv.array[1] = 0.5;
     nzGeometry.attributes.uv.array[3] = 0.5;
     nzGeometry.rotateY(Math.PI);
-    nzGeometry.translate(0, 0, -50);
+    nzGeometry.translate(0, 0, -blockScale / 2);
 
     //
 
@@ -139,9 +141,9 @@ function generateTerrain(scene) {
             var h = getY(x, z);
 
             matrix.makeTranslation(
-                x * 100 - worldHalfWidth * 100,
-                h * 100,
-                z * 100 - worldHalfDepth * 100
+                x * blockScale - worldHalfWidth * blockScale,
+                h * blockScale,
+                z * blockScale - worldHalfDepth * blockScale
             );
 
             var px = getY(x + 1, z);
