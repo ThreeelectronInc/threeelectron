@@ -2,18 +2,21 @@ let THREE = require('./libs/three/three')
 
 let noise = require('./improved_noise')
 
-let blockScale = 5
+let blockScale = 3
 
 var mesh;
 
-var worldWidth = 128, worldDepth = 128,
-    worldHalfWidth = worldWidth / 2, worldHalfDepth = worldDepth / 2,
-    data = generateHeight(worldWidth, worldDepth);
+let worldWidth = 256, worldDepth = 256
+let worldHalfWidth = worldWidth / 2, worldHalfDepth = worldDepth / 2
+
+let quality = 4
+
+let terrain = generateHeight(worldWidth, worldDepth)
 
 function generateHeight(width, height) {
 
-    data = [], perlin = new noise.ImprovedNoise(),
-        size = width * height, quality = 2, z = Math.random() * blockScale;
+    let data = [], perlin = new noise.ImprovedNoise(),
+        size = width * height, z = Math.random() * blockScale;
 
     for (var j = 0; j < 4; j++) {
 
@@ -24,7 +27,7 @@ function generateHeight(width, height) {
             var x = i % width, y = (i / width) | 0;
             data[i] += perlin.noise(x / quality, y / quality, z) * quality;
 
-
+            // console.log(data[i])
         }
 
         quality *= 4;
@@ -36,7 +39,7 @@ function generateHeight(width, height) {
 
 function getY(x, z) {
 
-    return (data[x + z * worldWidth] * 0.2) | 0;
+    return (terrain[x + z * worldWidth] * 0.2) | 0;
 
 }
 function generateTerrain(scene) {
