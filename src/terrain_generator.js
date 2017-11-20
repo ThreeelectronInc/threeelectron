@@ -10,7 +10,7 @@ function generateTerrain(scene) {
     let SimplexNoise = require('simplex-noise')
     let noise = new SimplexNoise();
 
-    let fieldSize = 120
+    let fieldSize = 60
     let halfField = fieldSize / 2
 
     let sampleSpread = 20
