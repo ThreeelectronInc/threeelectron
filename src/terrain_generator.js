@@ -2,7 +2,7 @@ let THREE = require('./libs/three/three')
 
 let noise = require('./improved_noise')
 
-let blockScale = 3
+let blockScale = 15
 
 var mesh;
 
@@ -187,7 +187,7 @@ function generateTerrain(scene) {
     var geometry = new THREE.BufferGeometry().fromGeometry(tmpGeometry);
     geometry.computeBoundingSphere();
 
-    var texture = new THREE.TextureLoader().load('assets/images/Grass.png');
+    var texture = new THREE.TextureLoader().load('assets/atlas.png');
     texture.magFilter = THREE.NearestFilter;
     texture.minFilter = THREE.LinearMipMapLinearFilter;
 
