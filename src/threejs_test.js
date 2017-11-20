@@ -51,6 +51,9 @@ TerrainGenerator.generateTerrain(scene);
 
 let pos_offset = 0
 
+let prevSecond = 0
+let framesThisSecond = 0
+
 // Render Loop
 var render = function () {
 
@@ -59,6 +62,15 @@ var render = function () {
   let delta = clock.getDelta()
 
   pos_offset = pos_offset + delta
+
+  let currentSecond = Math.round(clock.getElapsedTime())
+  framesThisSecond++
+  // console.log(time)
+  if (currentSecond !== prevSecond){
+    prevSecond = currentSecond
+    console.log(`Second: ${currentSecond} FPS: ${framesThisSecond}`)
+    framesThisSecond = 0
+  }
 
   // console.log(delta)
 
