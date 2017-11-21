@@ -89,6 +89,8 @@ let cam_speed = 500
 let prevSecond = 0
 let framesThisSecond = 0
 
+//setInterval(() => requestAnimationFrame(render), 1000/60)
+
 // Render Loop
 var render = function () {
 
