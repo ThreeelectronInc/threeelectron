@@ -186,7 +186,7 @@ function generateTerrain(scene) {
     textureWater.magFilter = THREE.NearestFilter;
     textureWater.minFilter = THREE.LinearMipMapLinearFilter;
 
-    var meshWater = new THREE.Mesh(geometryWater, new THREE.MeshLambertMaterial({ map: textureWater, transparent: true }));
+    var meshWater = new THREE.Mesh(geometryWater, new THREE.MeshLambertMaterial({ map: textureWater, transparent: true, side: THREE.DoubleSide }));
     scene.add(meshWater);
 
     // Lights
