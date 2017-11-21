@@ -2,7 +2,7 @@ let THREE = require('./libs/three/three')
 
 let noise = require('./improved_noise')
 
-let blockScale = 5
+let blockScale = 7.5
 
 var mesh;
 
