@@ -99,13 +99,13 @@ function generateTerrain(scene) {
     var pyGeometry = new THREE.PlaneBufferGeometry(blockScale, blockScale);
     pyGeometry.attributes.uv.array[5] = 0.5;
     pyGeometry.attributes.uv.array[7] = 0.5;
-    pyGeometry.rotateX(Math.PI / 2);
+    pyGeometry.rotateX(-Math.PI / 2);
     pyGeometry.translate(0, blockScale / 2, 0);
 
     var nyGeometry = new THREE.PlaneBufferGeometry(blockScale, blockScale);
     nyGeometry.attributes.uv.array[5] = 0.5;
     nyGeometry.attributes.uv.array[7] = 0.5;
-    nyGeometry.rotateX(-Math.PI / 2);
+    nyGeometry.rotateX(Math.PI / 2);
     nyGeometry.translate(0, -blockScale / 2, 0);
 
     var pzGeometry = new THREE.PlaneBufferGeometry(blockScale, blockScale);
@@ -161,26 +161,28 @@ function generateTerrain(scene) {
 
                 let tmpGeometry = tmpLandGeometry
 
-               // if (!py) {
+                if (!py) {
                     tmpGeometry.merge(pyTmpGeometry, matrix);
-               // }
+                }
 
-               // if (!ny) {
-                    tmpGeometry.merge(nyTmpGeometry, matrix);
-               // }
+                if (!ny) {
+                   // tmpGeometry.merge(nyTmpGeometry, matrix);
+                }
 
-               // if (!px) {
+                if (!px) {
                     tmpGeometry.merge(pxTmpGeometry, matrix);
-               // }
-               // if (!nx) {
+                }
+
+                if (!nx) {
                     tmpGeometry.merge(nxTmpGeometry, matrix);
-               // }
-              //  if (!pz) {
+                }
+
+                if (!pz) {
                     tmpGeometry.merge(pzTmpGeometry, matrix);
-              //  }
-              //  if (!nz) {
+                }
+                if (!nz) {
                     tmpGeometry.merge(nzTmpGeometry, matrix);
-            //    }
+                }
             }
 
             var h = getY(x, z);
@@ -192,7 +194,7 @@ function generateTerrain(scene) {
             );
 
             // If height less than 0, create water and underwater geometry
-          /*  if (h <= 0){     
+            if (h <= 0){     
                 // console.log("HERE")           
                 tmpGeometry = tmpUnderwaterGeometry
 
@@ -204,7 +206,7 @@ function generateTerrain(scene) {
                     z * blockScale - chunkHalfDepth * blockScale
                 );
                 tmpWaterGeometry.merge(pyTmpGeometry, matrixWater)
-            }*/
+            }
         }
 
     }
