@@ -121,6 +121,7 @@ function generateTerrain(scene) {
 
             let tmpGeometry = tmpLandGeometry
 
+            // If height less than 0, create water and underwater geometry
             if (h < 0){     
                 // console.log("HERE")           
                 tmpGeometry = tmpUnderwaterGeometry
@@ -135,31 +136,19 @@ function generateTerrain(scene) {
                 tmpWaterGeometry.merge(pyTmpGeometry, matrixWater)
             }
 
-
             tmpGeometry.merge(pyTmpGeometry, matrix);
 
             if ((px !== h && px !== h + 1) || x === 0) {
-
                 tmpGeometry.merge(pxTmpGeometry, matrix);
-
             }
-
             if ((nx !== h && nx !== h + 1) || x === chunkWidth - 1) {
-
                 tmpGeometry.merge(nxTmpGeometry, matrix);
-
             }
-
             if ((pz !== h && pz !== h + 1) || z === chunkDepth - 1) {
-
                 tmpGeometry.merge(pzTmpGeometry, matrix);
-
             }
-
             if ((nz !== h && nz !== h + 1) || z === 0) {
-
                 tmpGeometry.merge(nzTmpGeometry, matrix);
-
             }
 
         }
