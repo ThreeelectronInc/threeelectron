@@ -39,6 +39,37 @@ document.body.appendChild( renderer.domElement );
 // FUN STARTS HERE
 // ------------------------------------------------
 
+
+window.addEventListener( 'resize', onWindowResize, false );
+
+function onWindowResize(){
+
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+
+    renderer.setSize( window.innerWidth, window.innerHeight );
+
+}
+
+let keysDown = {}
+
+addEventListener("keydown", onDocumentKeyDown, false);
+
+function onDocumentKeyDown(event) {
+    keysDown[event.which] = true;  
+    // console.log( event.which)
+}
+
+
+addEventListener("keyup", onDocumentKeyUp, false);
+
+function onDocumentKeyUp(event) {
+    keysDown[event.which] = false;  
+}
+
+
+
+
 // Create a Cube Mesh with basic material
 var geometry = new THREE.BoxGeometry( 1, 1, 1 );
 var material = new THREE.MeshBasicMaterial( { color: "#433F81" } );
@@ -50,6 +81,10 @@ var cube = new THREE.Mesh( geometry, material );
 TerrainGenerator.generateTerrain(scene);
 
 let pos_offset = 0
+let camera_offset = 500
+let height_offset = 500
+
+let cam_speed = 500
 
 let prevSecond = 0
 let framesThisSecond = 0
@@ -72,15 +107,34 @@ var render = function () {
     framesThisSecond = 0
   }
 
-  // console.log(delta)
+  
 
-  cube.rotation.x += 0.01;
-  cube.rotation.y += 0.01;
+  if (keysDown[87]) {
+    camera_offset -= cam_speed * delta
+  }
+  if (keysDown[83]) {
+    camera_offset += cam_speed * delta
+  }
+  if (keysDown[65]) {
+    pos_offset += cam_speed * 0.01 * delta
+  }
+  if (keysDown[68]) {
+    pos_offset -= cam_speed * 0.01 * delta
+  }
+
+  if (keysDown[69]) {
+    height_offset += cam_speed * delta
+  }
+  if (keysDown[81]) {
+    height_offset -= cam_speed * delta
+  }
 
 
-  camera.position.set(500 * Math.cos(pos_offset),Math.sin(pos_offset) * 50 + 150, 500 * Math.sin(pos_offset));
+  camera.position.set(camera_offset * Math.cos(pos_offset), Math.sin(pos_offset) * 50 + height_offset, camera_offset * Math.sin(pos_offset));
   camera.up = new THREE.Vector3(0,1,0);
   camera.lookAt(new THREE.Vector3(0,0,0));
+
+
 
 
   // Render the scene
@@ -88,14 +142,3 @@ var render = function () {
 };
 
 render();
-
-window.addEventListener( 'resize', onWindowResize, false );
-
-function onWindowResize(){
-
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-
-    renderer.setSize( window.innerWidth, window.innerHeight );
-
-}
