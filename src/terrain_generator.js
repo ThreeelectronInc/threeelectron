@@ -13,14 +13,8 @@ let quality = 2
 
 let chunkMultiplier = 1;
 
-// let terrain = [
-//     generateHeight(chunkWidth, chunkDepth, 0, 0),
-//     generateHeight(chunkWidth, chunkDepth, chunkWidth, chunkDepth),
-//     generateHeight(chunkWidth, chunkDepth, 0, chunkDepth),
-//     generateHeight(chunkWidth, chunkDepth, chunkWidth, 0),
-    
-// ]
-let terrain = generateHeight(chunkWidth, chunkDepth, 0, 0)
+let perlin = new noise.ImprovedNoise(),
+    randSeed = Math.random() * blockScale;
 
 let blocks = []
 
@@ -36,7 +30,7 @@ BlockType = {
 
 for (var z = 0; z < chunkDepth; z++) {
     for (var x = 0; x < chunkWidth; x++) {
-        let h = getY(x, z)
+        let h = getHeight(x, z)
 
         let y = 0
 
@@ -61,36 +55,18 @@ for (var z = 0; z < chunkDepth; z++) {
     }
 }
 
-function generateHeight(width, height, xStart, yStart) {
+function getHeight(x, z) {
 
-    let data = [], perlin = new noise.ImprovedNoise(),
-        size = width * height, z = Math.random() * blockScale;
+    let h = 0
+    let q = 2
 
     for (var j = 0; j < 4; j++) {
 
-        if (j === 0) for (var i = 0; i < size; i++) data[i] = 0;
-
-        for (var i = 0; i < size; i++) {
-
-            var x = i % width, y = (i / width) | 0;
-            data[i] += (perlin.noise((xStart + x) / quality, (yStart + y) / quality, z) + 0.4) * 1.8 * quality;
-        }
-
-        quality *= 4;
-
+        h += (perlin.noise(x / q, z / q, randSeed) + 0.4) * 1.8 * q;
+        q *= 4;
     }
 
-    return data;
-}
-
-function getY(x, z) {
-
-    let localX = x % chunkWidth;
-    let localZ = z % chunkDepth;
-    // console.log(2 - x % chunkWidth + 2 - z % chunkDepth)
-    // console.log(terrain)
-    // return (terrain[(2 - x % chunkWidth + 2 - z % chunkDepth) - 4 ][localX + localZ * chunkWidth] * 0.2) | 0;
-    return (terrain[x + z * chunkWidth] * 0.2) | 0;  
+    return h * 0.2 | 0;
 }
 
 function getBlock(x, y, z) {
@@ -221,13 +197,6 @@ function generateTerrain(scene) {
                 }
             }
 
-            var h = getY(x, z);
-
-            matrix.makeTranslation(
-                x * blockScale - chunkHalfWidth * blockScale,
-                h * blockScale,
-                z * blockScale - chunkHalfDepth * blockScale
-            );
         }
 
     }
