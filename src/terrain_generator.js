@@ -28,29 +28,33 @@ BlockType = {
     GRASS : 4
 }
 
-for (var z = 0; z < chunkDepth; z++) {
-    for (var x = 0; x < chunkWidth; x++) {
-        let h = getHeight(x, z)
+generateChunk(getHeight)
 
-        let y = 0
+function generateChunk(heightFunc) {
+    for (var z = 0; z < chunkDepth; z++) {
+        for (var x = 0; x < chunkWidth; x++) {
+            let h = heightFunc(x, z)
 
-        for (y = 0; y < h -1; y++) {
-            blocks[x + z * chunkWidth + y * chunkWidth * chunkDepth] = BlockType.DIRT
-        }
+            let y = 0
 
-        if (h < waterLevel) {
-            blocks[x + z * chunkWidth + y * chunkWidth * chunkDepth] = BlockType.SAND
-            for (y = h; y < waterLevel; y++) {
-                blocks[x + z * chunkWidth + y * chunkWidth * chunkDepth] = BlockType.WATER
+            for (y = 0; y < h -1; y++) {
+                blocks[x + z * chunkWidth + y * chunkWidth * chunkDepth] = BlockType.DIRT
             }
-            h = waterLevel
-        }
-        else {
-            blocks[x + z * chunkWidth + y * chunkWidth * chunkDepth] = BlockType.GRASS
-        }
 
-        for (y = h; y < chunkHeight; y++) {
-            blocks[x + z * chunkWidth + y * chunkWidth * chunkDepth] = BlockType.EMPTY
+            if (h < waterLevel) {
+                blocks[x + z * chunkWidth + y * chunkWidth * chunkDepth] = BlockType.SAND
+                for (y = h; y < waterLevel; y++) {
+                    blocks[x + z * chunkWidth + y * chunkWidth * chunkDepth] = BlockType.WATER
+                }
+                h = waterLevel
+            }
+            else {
+                blocks[x + z * chunkWidth + y * chunkWidth * chunkDepth] = BlockType.GRASS
+            }
+
+            for (y = h; y < chunkHeight; y++) {
+                blocks[x + z * chunkWidth + y * chunkWidth * chunkDepth] = BlockType.EMPTY
+            }
         }
     }
 }
