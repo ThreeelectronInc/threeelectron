@@ -26,7 +26,7 @@ camera.lookAt(new THREE.Vector3(0,0,0));
 var renderer = new THREE.WebGLRenderer({antialias:true});
 
 // Configure renderer clear color
-renderer.setClearColor("#000000");
+renderer.setClearColor("#33aadd");
 
 // Configure renderer size
 renderer.setSize( window.innerWidth, window.innerHeight );
