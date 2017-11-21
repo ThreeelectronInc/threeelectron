@@ -166,7 +166,7 @@ function generateTerrain(scene) {
                 }
 
                 if (!ny) {
-                   // tmpGeometry.merge(nyTmpGeometry, matrix);
+                    tmpGeometry.merge(nyTmpGeometry, matrix);
                 }
 
                 if (!px) {
