@@ -5,8 +5,11 @@ let octaves = 4
 
 
 class Chunk {
-    constructor() {
+    constructor(x, y, z) {
        this.blocks = []
+       this.x = x
+       this.y = y
+       this.z = z
     }
 
     generateChunk(heightFunc, waterLevel) {

@@ -19,6 +19,8 @@ let perlin = new noise.ImprovedNoise(),
 
 let waterLevel = 10
 
+let chunks = []
+
 BlockType = {
     EMPTY : 0,
     WATER : 1,
@@ -27,9 +29,6 @@ BlockType = {
     GRASS : 4
 }
 
-var chunk = new chunkClass.Chunk();
-
-chunk.generateChunk(getHeight, waterLevel)
 
 function getHeight(x, z) {
 
@@ -50,11 +49,7 @@ function isTransparent(blockID) {
     return blockID == BlockType.WATER
 }
 
-function generateTerrain(scene) {
-
-    var matrix = new THREE.Matrix4();
-    var matrixWater = new THREE.Matrix4();
-
+function generateChunkMeshes(scene, chunk) {
     var pxGeometry = new THREE.PlaneBufferGeometry(blockScale, blockScale);
     pxGeometry.attributes.uv.array[1] = 0.5;
     pxGeometry.attributes.uv.array[3] = 0.5;
@@ -89,8 +84,6 @@ function generateTerrain(scene) {
     nzGeometry.attributes.uv.array[3] = 0.5;
     nzGeometry.rotateY(Math.PI);
     nzGeometry.translate(0, 0, -blockScale / 2);
-
-    //
 
     // BufferGeometry cannot be merged yet.
     var tmpLandGeometry = new THREE.Geometry();
@@ -201,6 +194,14 @@ function generateTerrain(scene) {
 
     var meshWater = new THREE.Mesh(geometryWater, new THREE.MeshLambertMaterial({ map: textureWater, transparent: true, side: THREE.DoubleSide }));
     scene.add(meshWater);
+}
+
+function generateTerrain(scene) {
+    var chunk = new chunkClass.Chunk(0, 0, 0);
+    chunk.generateChunk(getHeight, waterLevel)
+
+    generateChunkMeshes(scene, chunk)
+    
 
     // Lights
 
