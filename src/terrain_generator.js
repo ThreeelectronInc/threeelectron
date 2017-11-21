@@ -122,7 +122,7 @@ function generateTerrain(scene) {
             let tmpGeometry = tmpLandGeometry
 
             // If height less than 0, create water and underwater geometry
-            if (h < 0){     
+            if (h <= 0){     
                 // console.log("HERE")           
                 tmpGeometry = tmpUnderwaterGeometry
 

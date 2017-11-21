@@ -116,10 +116,10 @@ var render = function () {
     camera_offset += cam_speed * delta
   }
   if (keysDown[65]) {
-    pos_offset += cam_speed * 0.01 * delta
+    pos_offset += cam_speed * 0.005 * delta
   }
   if (keysDown[68]) {
-    pos_offset -= cam_speed * 0.01 * delta
+    pos_offset -= cam_speed * 0.005 * delta
   }
 
   if (keysDown[69]) {
