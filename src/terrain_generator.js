@@ -6,7 +6,7 @@ let blockScale = 7.5
 
 var mesh;
 
-let chunkWidth = 128, chunkDepth = 128, chunkHeight = 128
+let chunkWidth = 256, chunkDepth = 256, chunkHeight = 128
 let chunkHalfWidth = chunkWidth / 2, chunkHalfDepth = chunkDepth / 2, chunkHalfHeight = chunkHeight / 2
 
 let quality = 2
