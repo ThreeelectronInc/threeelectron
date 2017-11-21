@@ -24,15 +24,39 @@ let terrain = generateHeight(chunkWidth, chunkDepth, 0, 0)
 
 let blocks = []
 
+let waterLevel = 10
+
+BlockType = {
+    EMPTY : 0,
+    WATER : 1,
+    SAND : 2,
+    DIRT : 3,
+    GRASS : 4
+}
+
 for (var z = 0; z < chunkDepth; z++) {
     for (var x = 0; x < chunkWidth; x++) {
         let h = getY(x, z)
-        for (var y = 0; y < h; y++) {
-            blocks[x + z * chunkWidth + y * chunkWidth * chunkDepth] = 1
+
+        let y = 0
+
+        for (y = 0; y < h -1; y++) {
+            blocks[x + z * chunkWidth + y * chunkWidth * chunkDepth] = BlockType.DIRT
         }
 
-        for (var y = h; y < chunkHeight; y++) {
-            blocks[x + z * chunkWidth + y * chunkWidth * chunkDepth] = 0
+        if (h < waterLevel) {
+            blocks[x + z * chunkWidth + y * chunkWidth * chunkDepth] = BlockType.SAND
+            for (y = h; y < waterLevel; y++) {
+                blocks[x + z * chunkWidth + y * chunkWidth * chunkDepth] = BlockType.WATER
+            }
+            h = waterLevel
+        }
+        else {
+            blocks[x + z * chunkWidth + y * chunkWidth * chunkDepth] = BlockType.GRASS
+        }
+
+        for (y = h; y < chunkHeight; y++) {
+            blocks[x + z * chunkWidth + y * chunkWidth * chunkDepth] = BlockType.EMPTY
         }
     }
 }
@@ -49,7 +73,7 @@ function generateHeight(width, height, xStart, yStart) {
         for (var i = 0; i < size; i++) {
 
             var x = i % width, y = (i / width) | 0;
-            data[i] += perlin.noise((xStart + x) / quality, (yStart + y) / quality, z) * quality;
+            data[i] += (perlin.noise((xStart + x) / quality, (yStart + y) / quality, z) + 0.4) * 1.8 * quality;
         }
 
         quality *= 4;
@@ -77,6 +101,10 @@ function getBlock(x, y, z) {
     // console.log(terrain)
     // return (terrain[(2 - x % chunkWidth + 2 - z % chunkDepth) - 4 ][localX + localZ * chunkWidth] * 0.2) | 0;
     return (blocks[x + z * chunkWidth + y * chunkWidth * chunkDepth]) | 0;  
+}
+
+function isTransparent(blockID) {
+    return blockID == BlockType.WATER
 }
 
 function generateTerrain(scene) {
@@ -159,28 +187,36 @@ function generateTerrain(scene) {
                 var py = getBlock(x, y + 1, z) | 0;
                 var ny = getBlock(x, y - 1, z) | 0;
 
-                let tmpGeometry = tmpLandGeometry
+                let tmpGeometry = 0
 
-                if (!py) {
+                switch (block) {
+                    case BlockType.WATER: tmpGeometry = tmpWaterGeometry; break;
+                    case BlockType.SAND: tmpGeometry = tmpUnderwaterGeometry; break;
+                    case BlockType.DIRT: tmpGeometry = tmpLandGeometry; break;
+                    case BlockType.GRASS: tmpGeometry = tmpLandGeometry; break;
+                }
+
+                if ((!py || isTransparent(py)) && py != block) {
                     tmpGeometry.merge(pyTmpGeometry, matrix);
                 }
 
-                if (!ny) {
+                if ((!ny || isTransparent(ny)) && ny != block) {
                     tmpGeometry.merge(nyTmpGeometry, matrix);
                 }
 
-                if (!px) {
+                if ((!px || isTransparent(px)) && px != block) {
                     tmpGeometry.merge(pxTmpGeometry, matrix);
                 }
 
-                if (!nx) {
+                if ((!nx || isTransparent(nx)) && nx != block) {
                     tmpGeometry.merge(nxTmpGeometry, matrix);
                 }
 
-                if (!pz) {
+                if ((!pz || isTransparent(pz)) && pz != block) {
                     tmpGeometry.merge(pzTmpGeometry, matrix);
                 }
-                if (!nz) {
+
+                if ((!nz || isTransparent(nz)) && nz != block) {
                     tmpGeometry.merge(nzTmpGeometry, matrix);
                 }
             }
@@ -192,21 +228,6 @@ function generateTerrain(scene) {
                 h * blockScale,
                 z * blockScale - chunkHalfDepth * blockScale
             );
-
-            // If height less than 0, create water and underwater geometry
-            if (h <= 0){     
-                // console.log("HERE")           
-                tmpGeometry = tmpUnderwaterGeometry
-
-                
-                
-                matrixWater.makeTranslation(
-                    x * blockScale - chunkHalfWidth * blockScale,
-                    0,
-                    z * blockScale - chunkHalfDepth * blockScale
-                );
-                tmpWaterGeometry.merge(pyTmpGeometry, matrixWater)
-            }
         }
 
     }
