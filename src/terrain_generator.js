@@ -1,6 +1,7 @@
 let THREE = require('./libs/three/three')
 
 let noise = require('./improved_noise')
+let chunkClass = require('./core/chunk')
 
 let blockScale = 7.5
 
@@ -16,8 +17,6 @@ let chunkMultiplier = 1;
 let perlin = new noise.ImprovedNoise(),
     randSeed = Math.random() * blockScale;
 
-let blocks = []
-
 let waterLevel = 10
 
 BlockType = {
@@ -28,36 +27,9 @@ BlockType = {
     GRASS : 4
 }
 
-generateChunk(getHeight)
+var chunk = new chunkClass.Chunk();
 
-function generateChunk(heightFunc) {
-    for (var z = 0; z < chunkDepth; z++) {
-        for (var x = 0; x < chunkWidth; x++) {
-            let h = heightFunc(x, z)
-
-            let y = 0
-
-            for (y = 0; y < h -1; y++) {
-                blocks[x + z * chunkWidth + y * chunkWidth * chunkDepth] = BlockType.DIRT
-            }
-
-            if (h < waterLevel) {
-                blocks[x + z * chunkWidth + y * chunkWidth * chunkDepth] = BlockType.SAND
-                for (y = h; y < waterLevel; y++) {
-                    blocks[x + z * chunkWidth + y * chunkWidth * chunkDepth] = BlockType.WATER
-                }
-                h = waterLevel
-            }
-            else {
-                blocks[x + z * chunkWidth + y * chunkWidth * chunkDepth] = BlockType.GRASS
-            }
-
-            for (y = h; y < chunkHeight; y++) {
-                blocks[x + z * chunkWidth + y * chunkWidth * chunkDepth] = BlockType.EMPTY
-            }
-        }
-    }
-}
+chunk.generateChunk(getHeight, waterLevel)
 
 function getHeight(x, z) {
 
@@ -73,15 +45,6 @@ function getHeight(x, z) {
     return h * 0.2 | 0;
 }
 
-function getBlock(x, y, z) {
-    let localX = x % chunkWidth;
-    let localZ = z % chunkDepth;
-    let localY = y % chunkHeight;
-    // console.log(2 - x % chunkWidth + 2 - z % chunkDepth)
-    // console.log(terrain)
-    // return (terrain[(2 - x % chunkWidth + 2 - z % chunkDepth) - 4 ][localX + localZ * chunkWidth] * 0.2) | 0;
-    return (blocks[x + z * chunkWidth + y * chunkWidth * chunkDepth]) | 0;  
-}
 
 function isTransparent(blockID) {
     return blockID == BlockType.WATER
@@ -147,7 +110,7 @@ function generateTerrain(scene) {
         for (var x = 0; x < chunkWidth * chunkMultiplier; x++) {
 
             for (var y = 0; y < chunkHeight; y++) {
-                let block = getBlock(x, y, z)
+                let block = chunk.getBlock(x, y, z)
 
                 if (block == 0) {
                     continue;
@@ -160,12 +123,12 @@ function generateTerrain(scene) {
                     z * blockScale - chunkHalfDepth * blockScale
                 );
 
-                var px = getBlock(x + 1, y, z) | 0;
-                var nx = getBlock(x - 1, y, z) | 0;
-                var pz = getBlock(x, y, z + 1) | 0;
-                var nz = getBlock(x, y, z - 1) | 0;
-                var py = getBlock(x, y + 1, z) | 0;
-                var ny = getBlock(x, y - 1, z) | 0;
+                var px = chunk.getBlock(x + 1, y, z) | 0;
+                var nx = chunk.getBlock(x - 1, y, z) | 0;
+                var pz = chunk.getBlock(x, y, z + 1) | 0;
+                var nz = chunk.getBlock(x, y, z - 1) | 0;
+                var py = chunk.getBlock(x, y + 1, z) | 0;
+                var ny = chunk.getBlock(x, y - 1, z) | 0;
 
                 let tmpGeometry = 0
 
