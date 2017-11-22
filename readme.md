@@ -2,7 +2,7 @@
 
 ## Requirements (tested with)
 
-### - Ubuntu 16.04
+### - Ubuntu 16.04 or Windows 10 
 
 ### - Electron 1.7.9
     https://github.com/electron/electron/releases/download/v1.7.9/electron-v1.7.9-linux-x64.zip
