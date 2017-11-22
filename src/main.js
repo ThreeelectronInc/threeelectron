@@ -53,21 +53,20 @@ function onWindowResize(){
 
 let keysDown = {}
 
-addEventListener("keydown", onDocumentKeyDown, false);
 
-function onDocumentKeyDown(event) {
+let onDocumentKeyDown = (event) => {
     keysDown[event.which] = true;  
     // console.log( event.which)
 }
 
-
-addEventListener("keyup", onDocumentKeyUp, false);
-
-function onDocumentKeyUp(event) {
+let onDocumentKeyUp = (event) => {
     keysDown[event.which] = false;  
 }
 
 
+
+addEventListener("keyup", onDocumentKeyUp, false);
+addEventListener("keydown", onDocumentKeyDown, false);
 
 
 // Create a Cube Mesh with basic material
@@ -92,7 +91,7 @@ let framesThisSecond = 0
 //setInterval(() => requestAnimationFrame(render), 1000/60)
 
 // Render Loop
-var render = function () {
+var render = () => {
 
   requestAnimationFrame( render );
 
