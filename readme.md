@@ -1,4 +1,4 @@
-# P5 Game
+# Survival JS
 
 ## Requirements (tested with)
 
@@ -6,6 +6,8 @@
 
 ### - Electron 1.7.9
     https://github.com/electron/electron/releases/download/v1.7.9/electron-v1.7.9-linux-x64.zip
+
+    https://github.com/electron/electron/releases/download/v1.7.9/electron-v1.7.9-win32-x64.zip
 
 
 ## To run
