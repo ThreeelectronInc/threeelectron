@@ -88,12 +88,20 @@ let cam_speed = 500
 let prevSecond = 0
 let framesThisSecond = 0
 
-//setInterval(() => requestAnimationFrame(render), 1000/60)
+let forceFPS = 0 // 60 
+
+if (forceFPS){
+  setInterval(() => requestAnimationFrame(render), 1000/forceFPS)
+}
+
 
 // Render Loop
 var render = () => {
 
-  requestAnimationFrame( render );
+  if (!forceFPS){
+    requestAnimationFrame( render );
+  }
+  
 
   let delta = clock.getDelta()
 
@@ -142,4 +150,7 @@ var render = () => {
   renderer.render(scene, camera);
 };
 
-render();
+
+if (!forceFPS){
+  render();
+}
