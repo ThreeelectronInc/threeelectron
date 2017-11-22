@@ -12,6 +12,10 @@
 
 ## To run
 
+Run electron and drag this directory into it.
+
+### Or
+
 Add Electron to your PATH
 
 CD into this directory
