@@ -77,7 +77,7 @@ var cube = new THREE.Mesh( geometry, material );
 
 // Add cube to Scene
 //scene.add( cube );
-
+console.log("START")
 TerrainGenerator.generateTerrain(scene);
 
 let pos_offset = 0
