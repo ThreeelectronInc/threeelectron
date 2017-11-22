@@ -4,7 +4,6 @@ let octaves = 4
 let blockScale = 7.5
 
 let THREE = require('./../libs/three/three')
-let WORLD = require('./world').Instance
 let BLOCK = require('./block')
 
 
@@ -16,16 +15,16 @@ class Chunk {
        this.z = z
     }
     
-    x() {
-        return x * chunkBlockWidth;
+    xWS() { //world space
+        return this.x * chunkBlockWidth;
     }
 
-    y() {
-        return y * chunkBlockHeight;
+    yWS() {
+        return this.y * chunkBlockHeight;
     }
 
-    z() {
-        return z * chunkBlockDepth;
+    zWS() {
+        return this.z * chunkBlockDepth;
     }
 
 
@@ -59,14 +58,14 @@ class Chunk {
     }
 
     getBlock(x, y, z) {
-        let localX = x % this.chunkBlockWidth;
-        let localZ = z % this.chunkBlockDepth;
-        let localY = y % this.chunkBlockHeight;
+     //   let localX = x % this.chunkBlockWidth;
+      //  let localZ = z % this.chunkBlockDepth;
+     //   let localY = y % this.chunkBlockHeight;
 
         return (this.blocks[x + z * chunkBlockWidth + y * chunkBlockWidth * chunkBlockDepth]) | 0;  
     }
 
-    generateChunkMeshes(scene) {
+    generateMesh(scene, world) {
         var pxGeometry = new THREE.PlaneBufferGeometry(blockScale, blockScale);
         pxGeometry.attributes.uv.array[1] = 0.5;
         pxGeometry.attributes.uv.array[3] = 0.5;
@@ -125,20 +124,25 @@ class Chunk {
                     if (block == 0) {
                         continue;
                     }
+
+                    let worldX = this.xWS() + x
+                    let worldY = this.yWS() + y
+                    let worldZ = this.zWS() + z
+
                     let matrix = new THREE.Matrix4();
 
                     matrix.makeTranslation(
-                        x * blockScale,
-                        y * blockScale,
-                        z * blockScale
+                        worldX * blockScale,
+                        worldY * blockScale,
+                        worldZ * blockScale
                     );
 
-                    var px = this.getBlock(x + 1, y, z) | 0;
-                    var nx = this.getBlock(x - 1, y, z) | 0;
-                    var pz = this.getBlock(x, y, z + 1) | 0;
-                    var nz = this.getBlock(x, y, z - 1) | 0;
-                    var py = this.getBlock(x, y + 1, z) | 0;
-                    var ny = this.getBlock(x, y - 1, z) | 0;
+                    var px = world.getBlock(x + 1, y, z) | 0;
+                    var nx = world.getBlock(x - 1, y, z) | 0;
+                    var pz = world.getBlock(x, y, z + 1) | 0;
+                    var nz = world.getBlock(x, y, z - 1) | 0;
+                    var py = world.getBlock(x, y + 1, z) | 0;
+                    var ny = world.getBlock(x, y - 1, z) | 0;
 
                     let tmpGeometry = 0
 
@@ -149,27 +153,27 @@ class Chunk {
                         case BLOCK.BlockType.GRASS: tmpGeometry = tmpLandGeometry; break;
                     }
 
-                    if ((!py || WORLD.isTransparent(py)) && py != block) {
+                    if ((!py || world.isTransparent(py)) && py != block) {
                         tmpGeometry.merge(pyTmpGeometry, matrix);
                     }
 
-                    if ((!ny || WORLD.isTransparent(ny)) && ny != block) {
+                    if ((!ny || world.isTransparent(ny)) && ny != block) {
                         tmpGeometry.merge(nyTmpGeometry, matrix);
                     }
 
-                    if ((!px || WORLD.isTransparent(px)) && px != block) {
+                    if ((!px || world.isTransparent(px)) && px != block) {
                         tmpGeometry.merge(pxTmpGeometry, matrix);
                     }
 
-                    if ((!nx || WORLD.isTransparent(nx)) && nx != block) {
+                    if ((!nx || world.isTransparent(nx)) && nx != block) {
                         tmpGeometry.merge(nxTmpGeometry, matrix);
                     }
 
-                    if ((!pz || WORLD.isTransparent(pz)) && pz != block) {
+                    if ((!pz || world.isTransparent(pz)) && pz != block) {
                         tmpGeometry.merge(pzTmpGeometry, matrix);
                     }
 
-                    if ((!nz || WORLD.isTransparent(nz)) && nz != block) {
+                    if ((!nz || world.isTransparent(nz)) && nz != block) {
                         tmpGeometry.merge(nzTmpGeometry, matrix);
                     }
                 }
