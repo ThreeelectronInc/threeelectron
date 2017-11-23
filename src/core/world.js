@@ -10,8 +10,8 @@ class World {
         this.chunks = []
 
         for (var x = 0; x < worldChunkWidth; x++) {
-            for (var y = 0; y < worldChunkDepth; y++) {
-                for (var z = 0; z < worldChunkHeight; z++) {
+            for (var y = 0; y < worldChunkHeight; y++) {
+                for (var z = 0; z < worldChunkDepth; z++) {
                     let chunk = new chunkClass.Chunk(x, y, z) 
                     this.chunks[x + z * worldChunkWidth + y * worldChunkWidth * worldChunkDepth] = chunk
                 }
@@ -21,11 +21,11 @@ class World {
     
 
     getChunk(x, y, z) {
-        let indexX = x / chunkClass.ChunkBlockWidth;
-        let indexZ = z / chunkClass.ChunkBlockDepth;
-        let indexY = y / chunkClass.ChunkBlockHeight;
+        let indexX = Math.floor(x / chunkClass.ChunkBlockWidth) | 0;
+        let indexZ = Math.floor(z / chunkClass.ChunkBlockDepth) | 0;
+        let indexY = Math.floor(y / chunkClass.ChunkBlockHeight) | 0;
 
-        return (this.chunks[indexX + indexZ * worldChunkWidth + indexY * worldChunkWidth * worldChunkDepth]) | 0;  
+        return (this.chunks[indexX + indexZ * worldChunkWidth + indexY * worldChunkWidth * worldChunkDepth]);  
     }
 
     getBlock(x, y, z) {

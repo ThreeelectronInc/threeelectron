@@ -1,5 +1,5 @@
   
-let chunkBlockWidth = 32, chunkBlockDepth = 32, chunkBlockHeight = 32
+let chunkBlockWidth = 64, chunkBlockDepth = 64, chunkBlockHeight = 64
 let octaves = 4
 let blockScale = 7.5
 
@@ -137,12 +137,12 @@ class Chunk {
                         worldZ * blockScale
                     );
 
-                    var px = world.getBlock(x + 1, y, z) | 0;
-                    var nx = world.getBlock(x - 1, y, z) | 0;
-                    var pz = world.getBlock(x, y, z + 1) | 0;
-                    var nz = world.getBlock(x, y, z - 1) | 0;
-                    var py = world.getBlock(x, y + 1, z) | 0;
-                    var ny = world.getBlock(x, y - 1, z) | 0;
+                    var px = world.getBlock(worldX + 1, worldY, worldZ);
+                    var nx = world.getBlock(worldX - 1, worldY, worldZ);
+                    var pz = world.getBlock(worldX, worldY, worldZ + 1);
+                    var nz = world.getBlock(worldX, worldY, worldZ - 1);
+                    var py = world.getBlock(worldX, worldY + 1, worldZ);
+                    var ny = world.getBlock(worldX, worldY - 1, worldZ);
 
                     let tmpGeometry = 0
 
