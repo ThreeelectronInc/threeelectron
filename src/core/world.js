@@ -1,7 +1,7 @@
 let BLOCK = require('./block')
 let chunkClass = require('./chunk')
 
-let worldChunkWidth = 3, worldChunkDepth = 3, worldChunkHeight = 3
+let worldChunkWidth = 4, worldChunkDepth = 4, worldChunkHeight = 2
 
 let waterLevel = 10
 
@@ -48,7 +48,7 @@ class World {
 
     generateWorld(heightFunc) {
         console.log("GENERATE WORLD")
-        let size = worldChunkWidth * worldChunkWidth * worldChunkDepth
+        let size = worldChunkWidth * worldChunkHeight * worldChunkDepth
 
         for (var i = 0; i < size; i++) {
             this.chunks[i].generateChunk(heightFunc, waterLevel)
@@ -57,7 +57,7 @@ class World {
 
     generateMeshes(scene) {
         console.log("GENERATE MESHES")
-        let size = worldChunkWidth * worldChunkWidth * worldChunkDepth
+        let size = worldChunkWidth * worldChunkHeight * worldChunkDepth
 
         for (var i = 0; i < size; i++) {
             this.chunks[i].generateMesh(scene, this)
