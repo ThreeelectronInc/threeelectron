@@ -82,6 +82,11 @@ var render = () => {
 
   loop(delta)
 
+
+  for (let i = 0; i < maxKeyVal; i++){
+    keyPress[i] = false
+  }
+
   // Render the scene
   renderer.render(scene, camera);
 }
@@ -103,11 +108,20 @@ function onWindowResize() {
 }
 
 let keysDown = {}
+let keyPress = {}
+const maxKeyVal = 128
 
+for (let i = 0; i < maxKeyVal; i++){
+  keyPress[i] = false
+}
 
 let onDocumentKeyDown = (event) => {
-  keysDown[event.which] = true;
-  console.log(event.which)
+
+  if (!keysDown[event.which]){
+    keyPress[event.which] = true
+  }
+  keysDown[event.which] = true
+  // console.log(event.which)
 }
 
 let onDocumentKeyUp = (event) => {
@@ -150,6 +164,10 @@ let newLook = new THREE.Vector3()
 
 function loop(delta) {
 
+
+  if (keyPress[70]) { //f
+    first_person = !first_person
+  }
 
   if (!first_person) {
     pos_offset = pos_offset + delta * 0.1
@@ -200,6 +218,8 @@ function loop(delta) {
     if (keysDown[81]) { //q
       camera.position.y -= cam_speed * delta
     }
+
+
 
 
     newLook = camera.position.clone()
