@@ -1,5 +1,5 @@
   
-let chunkBlockWidth = 256, chunkBlockDepth = 256, chunkBlockHeight = 128
+let chunkBlockWidth = 32, chunkBlockDepth = 32, chunkBlockHeight = 32
 let octaves = 4
 let blockScale = 7.5
 
@@ -9,7 +9,7 @@ let BLOCK = require('./block')
 
 class Chunk {
     constructor(x, y, z) {
-       this.blocks = []
+       this.blocks = [chunkBlockWidth * chunkBlockDepth * chunkBlockHeight]
        this.x = x
        this.y = y
        this.z = z
@@ -31,7 +31,7 @@ class Chunk {
     generateChunk(heightFunc, waterLevel) {
         for (var z = 0; z < chunkBlockDepth; z++) {
             for (var x = 0; x < chunkBlockWidth; x++) {
-                let h = heightFunc(x, z)
+                let h = heightFunc(x + this.xWS(), z + this.zWS()) - this.yWS()
 
                 let y = 0
 
@@ -39,12 +39,12 @@ class Chunk {
                     this.blocks[x + z * chunkBlockWidth + y * chunkBlockWidth * chunkBlockDepth] = BLOCK.BlockType.DIRT
                 }
 
-                if (h < waterLevel) {
+                if (h < waterLevel - this.yWS()) {
                     this.blocks[x + z * chunkBlockWidth + y * chunkBlockWidth * chunkBlockDepth] = BLOCK.BlockType.SAND
-                    for (y = h; y < waterLevel; y++) {
+                    for (y = h; y < waterLevel - this.yWS(); y++) {
                         this.blocks[x + z * chunkBlockWidth + y * chunkBlockWidth * chunkBlockDepth] = BLOCK.BlockType.WATER
                     }
-                    h = waterLevel
+                    h = waterLevel - this.yWS()
                 }
                 else {
                     this.blocks[x + z * chunkBlockWidth + y * chunkBlockWidth * chunkBlockDepth] = BLOCK.BlockType.GRASS
