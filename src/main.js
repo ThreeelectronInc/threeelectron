@@ -5,7 +5,7 @@
 
 
 let THREE = require('./libs/three/three')
-let TerrainGenerator = require('./terrain_generator')
+let TerrainGenerator = require('./core/terrain_generator')
 // import THREEx from "./extensions/threex.fullscreen"
 
 let clock = new THREE.Clock()
