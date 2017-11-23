@@ -18,9 +18,11 @@ let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHei
 // camera.position.z = 60;
 
 // Place camera on x axis
-camera.position.set(30, 40, 60);
+camera.position.set(100, 100, 100);
 camera.up = new THREE.Vector3(0, 1, 0);
 camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+// console.log(cam)
 
 // Create a renderer with Antialiasing
 let renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -105,7 +107,7 @@ let keysDown = {}
 
 let onDocumentKeyDown = (event) => {
   keysDown[event.which] = true;
-  // console.log( event.which)
+  console.log(event.which)
 }
 
 let onDocumentKeyUp = (event) => {
@@ -121,56 +123,99 @@ addEventListener("keydown", onDocumentKeyDown, false);
 /*
 Game logic
   Real fun should start here
+
+  TODO: Move this into a separate file
 */
 
 
 
 TerrainGenerator.generateTerrain(scene);
 
+
+let cam_speed = 500
+
+
+let first_person = false
+
+
 let pos_offset = 0
 let camera_offset = 500
 let height_offset = 500
 
-let cam_speed = 500
+
+let look = new THREE.Vector3(0, 0, 1);
+let newLook = new THREE.Vector3()
 
 
 
 function loop(delta) {
 
-  pos_offset = pos_offset + delta * 0.1
 
-  if (keysDown[87]) {
-    camera_offset -= cam_speed * delta
+  if (!first_person) {
+    pos_offset = pos_offset + delta * 0.1
+
+    if (keysDown[87]) {
+      camera_offset -= cam_speed * delta
+    }
+    if (keysDown[83]) {
+      camera_offset += cam_speed * delta
+    }
+    if (keysDown[65]) {
+      pos_offset += cam_speed * 0.005 * delta
+    }
+    if (keysDown[68]) {
+      pos_offset -= cam_speed * 0.005 * delta
+    }
+
+    if (keysDown[69]) {
+      height_offset += cam_speed * delta
+    }
+    if (keysDown[81]) {
+      height_offset -= cam_speed * delta
+    }
+
+    camera.position.set(camera_offset * Math.cos(pos_offset), Math.sin(pos_offset) * 50 + height_offset, camera_offset * Math.sin(pos_offset));
+    camera.up = new THREE.Vector3(0, 1, 0);
+    camera.lookAt(new THREE.Vector3(0, 0, 0));
   }
-  if (keysDown[83]) {
-    camera_offset += cam_speed * delta
-  }
-  if (keysDown[65]) {
-    pos_offset += cam_speed * 0.005 * delta
-  }
-  if (keysDown[68]) {
-    pos_offset -= cam_speed * 0.005 * delta
+  else {
+
+    // TODO: Make key codes readable. use an enum or something
+    if (keysDown[87]) { //w
+      camera.position.z += cam_speed * delta
+    }
+    if (keysDown[83]) { //s
+      camera.position.z -= cam_speed * delta
+    }
+    if (keysDown[65]) { //a
+      camera.position.x += cam_speed * delta
+    }
+    if (keysDown[68]) { //d
+      camera.position.x -= cam_speed * delta
+    }
+
+    if (keysDown[69]) { //e
+      camera.position.y += cam_speed * delta
+    }
+    if (keysDown[81]) { //q
+      camera.position.y -= cam_speed * delta
+    }
+
+
+    newLook = camera.position.clone()
+    newLook.add(look)
+
+    // console.log(newLook)
+
+    camera.lookAt(newLook)
   }
 
-  if (keysDown[69]) {
-    height_offset += cam_speed * delta
-  }
-  if (keysDown[81]) {
-    height_offset -= cam_speed * delta
-  }
-
-
-  camera.position.set(camera_offset * Math.cos(pos_offset), Math.sin(pos_offset) * 50 + height_offset, camera_offset * Math.sin(pos_offset));
-  camera.up = new THREE.Vector3(0, 1, 0);
-  camera.lookAt(new THREE.Vector3(0, 0, 0));
-
-
-  // console.log('here', pos_offset)
 }
 
 
 
 // Finally, kick off the render loop
+// Don't change this
 if (!forceFPS) {
   render();
 }
