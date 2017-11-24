@@ -1,7 +1,7 @@
 let BLOCK = require('./block')
 let chunkClass = require('./chunk')
 
-let worldChunkWidth = 4, worldChunkDepth = 4, worldChunkHeight = 2
+let worldChunkWidth = 2, worldChunkDepth = 2, worldChunkHeight = 2
 
 let waterLevel = 10
 
