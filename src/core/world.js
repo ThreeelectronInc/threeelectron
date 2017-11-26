@@ -60,37 +60,27 @@ class World {
         return blockID == BLOCK.BlockType.WATER
     }
 
+
+    // TODO: try to make this more async
+    //      Using setInterval for async seems like a hack.
+    //      Try using HTML5 web workers
     async generate(heightFunc, scene) {
 
+        let size = this.worldChunkWidth * this.worldChunkHeight * this.worldChunkDepth
 
-        // TODO: Get this to generate chunks one at a time asynchronously
+        this.started = true
+
+        let i = 0
 
         setInterval(() => {
 
-            // this.done = false
 
-            if (!this.started && !this.done) {        
-                this.started = true
-                // console.log("GENERATE WORLD")
-                let size = this.worldChunkWidth * this.worldChunkHeight * this.worldChunkDepth
-
-                for (var i = 0; i < size; i++) {
-                    this.chunks[i].generateChunk(heightFunc, waterLevel)
-                    this.chunks[i].generateMesh(scene, this)
-                }
-
-
-                // console.log("GENERATE MESHES")
-                // // let size = this.worldChunkWidth * this.worldChunkHeight * this.worldChunkDepth
-
-                // for (var i = 0; i < size; i++) {
-                    
-                // }
-
-                this.done = true
-                this.started = false
-
+            if (i < size) {
+                this.chunks[i].generateChunk(heightFunc, waterLevel)
+                this.chunks[i].generateMesh(scene, this)
+                i++
             }
+
         }, 1000)
 
 
