@@ -4,7 +4,7 @@ let noise = require('./../libs/improved_noise')
 let WORLD = require('./world').Instance
 
 let perlin = new noise.ImprovedNoise(),
-    randSeed = 1.53//Math.random();
+    randSeed = 0.75//Math.random();
 
 
 
@@ -22,11 +22,12 @@ function getHeight(x, z) {
     return h * 0.2 | 0;
 }
 
-function generateTerrain(scene) {
+async function generateTerrain(scene) {
     console.log("GENERATE TERRAIN")
-    WORLD.generateWorld(getHeight)
-    WORLD.generateMeshes(scene)
+    // WORLD.generateWorld(getHeight)
+    // WORLD.generateMeshes(scene)
 
+    await WORLD.generate(getHeight, scene)
 }
 
 module.exports = {

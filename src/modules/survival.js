@@ -22,8 +22,8 @@ class SurvivalGame extends BaseGame {
         // this.renderer.setClearColor("green")
 
 
-        TerrainGenerator.generateTerrain(this.scene);
-
+        TerrainGenerator.generateTerrain(this.scene).then(()=>console.log('done generating terrain'))
+        console.log('moving on while terrain generates')
 
         // Lights
 

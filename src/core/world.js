@@ -22,25 +22,29 @@ class World {
         for (var x = 0; x < this.worldChunkWidth; x++) {
             for (var y = 0; y < this.worldChunkHeight; y++) {
                 for (var z = 0; z < this.worldChunkDepth; z++) {
-                    let chunk = new chunkClass.Chunk(x, y, z) 
+                    let chunk = new chunkClass.Chunk(x, y, z)
                     this.chunks[x + z * this.worldChunkWidth + y * this.worldChunkWidth * this.worldChunkDepth] = chunk
                 }
             }
         }
+
+        this.started = false
+        this.done = false
+        this.busy = false
     }
-    
+
 
     getChunk(x, y, z) {
         let indexX = Math.floor(x / chunkClass.ChunkBlockWidth) | 0;
         let indexZ = Math.floor(z / chunkClass.ChunkBlockDepth) | 0;
         let indexY = Math.floor(y / chunkClass.ChunkBlockHeight) | 0;
 
-        return (this.chunks[indexX + indexZ * this.worldChunkWidth + indexY * this.worldChunkWidth * this.worldChunkDepth]);  
+        return (this.chunks[indexX + indexZ * this.worldChunkWidth + indexY * this.worldChunkWidth * this.worldChunkDepth]);
     }
 
     getBlock(x, y, z) {
         let chunk = this.getChunk(x, y, z)
-        
+
         if (!chunk) {
             return 0
         }
@@ -49,30 +53,50 @@ class World {
         let localZ = z - chunk.zWS()
         let localY = y - chunk.yWS()
 
-        return (chunk.getBlock(localX, localY, localZ)) | 0;  
+        return (chunk.getBlock(localX, localY, localZ)) | 0;
     }
 
     isTransparent(blockID) {
         return blockID == BLOCK.BlockType.WATER
     }
 
-    generateWorld(heightFunc) {
-        console.log("GENERATE WORLD")
-        let size = this.worldChunkWidth * this.worldChunkHeight * this.worldChunkDepth
+    async generate(heightFunc, scene) {
 
-        for (var i = 0; i < size; i++) {
-            this.chunks[i].generateChunk(heightFunc, waterLevel)
-        }
+
+        // TODO: Get this to generate chunks one at a time asynchronously
+
+        setInterval(() => {
+
+            // this.done = false
+
+            if (!this.started && !this.done) {        
+                this.started = true
+                // console.log("GENERATE WORLD")
+                let size = this.worldChunkWidth * this.worldChunkHeight * this.worldChunkDepth
+
+                for (var i = 0; i < size; i++) {
+                    this.chunks[i].generateChunk(heightFunc, waterLevel)
+                    this.chunks[i].generateMesh(scene, this)
+                }
+
+
+                // console.log("GENERATE MESHES")
+                // // let size = this.worldChunkWidth * this.worldChunkHeight * this.worldChunkDepth
+
+                // for (var i = 0; i < size; i++) {
+                    
+                // }
+
+                this.done = true
+                this.started = false
+
+            }
+        }, 1000)
+
+
+
     }
 
-    generateMeshes(scene) {
-        console.log("GENERATE MESHES")
-        let size = this.worldChunkWidth * this.worldChunkHeight * this.worldChunkDepth
-
-        for (var i = 0; i < size; i++) {
-            this.chunks[i].generateMesh(scene, this)
-        }
-    }
 
 }
 
