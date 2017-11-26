@@ -43,6 +43,10 @@ class World {
         return (this.chunks[indexX + indexZ * this.worldChunkWidth + indexY * this.worldChunkWidth * this.worldChunkDepth]);
     }
 
+    getChunkIndex(indexX, indexY, indexZ) {
+        return (this.chunks[indexX + indexZ * this.worldChunkWidth + indexY * this.worldChunkWidth * this.worldChunkDepth]);
+    }
+
     getBlock(x, y, z) {
         let chunk = this.getChunk(x, y, z)
 
@@ -77,13 +81,12 @@ class World {
 
 
             if (i < size) {
-                this.chunks[i].generateChunk(heightFunc, waterLevel)
-                this.chunks[i].generateMesh(scene, this)
+                this.chunks[i].generateMesh(scene, this, heightFunc, waterLevel)
                 i++
             }
             else{
                 clearInterval(this.intervalGenHandle)
-                console.log('All chunks done')                
+                console.log('All chunks done')  
             }
 
             console.log(`Chunk ${i} done`)

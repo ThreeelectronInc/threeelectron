@@ -65,7 +65,29 @@ class Chunk {
         return (this.blocks[x + z * chunkBlockWidth + y * chunkBlockWidth * chunkBlockDepth]) | 0;  
     }
 
-    generateMesh(scene, world) {
+    generateMesh(scene, world, heightFunc, waterLevel) {
+        this.generateChunk(heightFunc, waterLevel)
+
+        let chunk = world.getChunkIndex(this.x+1, this.y, this.z)
+        if (chunk) {
+           chunk.generateChunk(heightFunc, waterLevel) 
+        }
+
+        chunk = world.getChunkIndex(this.x-1, this.y, this.z)
+        if (chunk) {
+           chunk.generateChunk(heightFunc, waterLevel) 
+        }
+
+        chunk = world.getChunkIndex(this.x, this.y, this.z+1)
+        if (chunk) {
+           chunk.generateChunk(heightFunc, waterLevel) 
+        }
+
+        chunk = world.getChunkIndex(this.x, this.y, this.z-1)
+        if (chunk) {
+           chunk.generateChunk(heightFunc, waterLevel) 
+        }
+
         var textureLand = new THREE.TextureLoader().load('assets/atlas.png');
         textureLand.magFilter = THREE.NearestFilter;
         textureLand.minFilter = THREE.LinearMipMapLinearFilter;
