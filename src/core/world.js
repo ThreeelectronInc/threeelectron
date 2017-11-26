@@ -72,13 +72,16 @@ class World {
 
         let i = 0
 
-        setInterval(() => {
+        this.intervalGenHandle = setInterval(() => {
 
 
             if (i < size) {
                 this.chunks[i].generateChunk(heightFunc, waterLevel)
                 this.chunks[i].generateMesh(scene, this)
                 i++
+            }
+            else{
+                clearInterval(this.intervalGenHandle)
             }
 
         }, 1000)

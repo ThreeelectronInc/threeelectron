@@ -61,15 +61,15 @@ class SurvivalGame extends BaseGame {
 
 
         if (this.isMouseDown[0]) {
-          this.rotYOffset -= this.mouse.xVel  * camVel * 0.001
-          this.heightOffset -= this.mouse.yVel * camVel * 0.25
+          this.rotYOffset -= this.mouse.xVel * 0.01
+          this.heightOffset -= this.mouse.yVel
         }
         else{
             this.rotYOffset = this.rotYOffset + delta * 0.1
         }
 
 
-        this.radiusOffset -= 0.025 * camVel * this.mouse.wheel
+        this.radiusOffset -= 0.25 * this.mouse.wheel
 
         this.radiusOffset = Math.max(this.radiusOffset, 0.01)
 
