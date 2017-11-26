@@ -101,7 +101,7 @@ class Chunk {
         textureLand.magFilter = THREE.NearestFilter;
         textureLand.minFilter = THREE.LinearMipMapLinearFilter;
 
-        var textureDirt = new THREE.TextureLoader().load('assets/images/Dirt.png');
+        var textureDirt = new THREE.TextureLoader().load('assets/images/Sand.png');
         textureDirt.magFilter = THREE.NearestFilter;
         textureDirt.minFilter = THREE.LinearMipMapLinearFilter;
 
