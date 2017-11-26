@@ -37,7 +37,7 @@ class SurvivalGame extends BaseGame {
 
         // Camera
         this.camera.position.set(100,500,100)
-        this.lookPos.set(TerrainGenerator.world.totalWidth * 0.5, 0, TerrainGenerator.world.totalDepth * 0.5)
+        this.lookPos.set(TerrainGenerator.world.totalBlockWidth * 0.5, 0, TerrainGenerator.world.totalBlockDepth * 0.5)
         console.log(this.lookPos)
     }
 

@@ -18,6 +18,11 @@ class World {
         this.totalHeight = this.worldChunkHeight * chunkClass.ChunkBlockHeight
         this.totalDepth = this.worldChunkDepth * chunkClass.ChunkBlockDepth
 
+        this.totalBlockWidth = this.totalWidth * chunkClass.blockScale
+        this.totalBlockHeight = this.totalHeight * chunkClass.blockScale
+        this.totalBlockDepth = this.totalDepth * chunkClass.blockScale
+
+
         this.chunks = []
 
         for (var x = 0; x < this.worldChunkWidth; x++) {
