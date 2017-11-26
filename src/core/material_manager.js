@@ -16,6 +16,10 @@ var textureWater = new THREE.TextureLoader().load('assets/images/Water.png');
 textureWater.magFilter = THREE.NearestFilter;
 textureWater.minFilter = THREE.LinearMipMapLinearFilter;
 
+var textureRock = new THREE.TextureLoader().load('assets/images/Rock.png');
+textureRock.magFilter = THREE.NearestFilter;
+textureRock.minFilter = THREE.LinearMipMapLinearFilter;
+
 let textures = []
 let materials = []
 
@@ -31,6 +35,9 @@ materials[BLOCK.BlockType.DIRT] = new THREE.MeshLambertMaterial({ map: textureDi
 
 textures[BLOCK.BlockType.GRASS] = textureGrass
 materials[BLOCK.BlockType.GRASS] = new THREE.MeshLambertMaterial({ map: textureGrass })
+
+textures[BLOCK.BlockType.ROCK] = textureRock
+materials[BLOCK.BlockType.ROCK] = new THREE.MeshLambertMaterial({ map: textureRock })
 
 function getTexture(blockId) {
     return textures[blockId]

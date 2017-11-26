@@ -55,7 +55,10 @@ class Chunk {
                 }
                 else if (h - 8 < waterLevel - this.yWS()) {
                     this.blocks[x + z * chunkBlockWidth + y * chunkBlockWidth * chunkBlockDepth] = BLOCK.BlockType.SAND
-                } else {
+                } else if (h > 50) {
+                    this.blocks[x + z * chunkBlockWidth + y * chunkBlockWidth * chunkBlockDepth] = BLOCK.BlockType.ROCK
+                }
+                else {
                     this.blocks[x + z * chunkBlockWidth + y * chunkBlockWidth * chunkBlockDepth] = BLOCK.BlockType.GRASS
                 }
 
@@ -136,6 +139,7 @@ class Chunk {
         var tmpLandGeometry = new THREE.Geometry();
         var tmpUnderwaterGeometry = new THREE.Geometry();
         var tmpWaterGeometry = new THREE.Geometry();
+        var tmpRockGeometry = new THREE.Geometry();
 
         var pxTmpGeometry = new THREE.Geometry().fromBufferGeometry(pxGeometry);
         var nxTmpGeometry = new THREE.Geometry().fromBufferGeometry(nxGeometry);
@@ -182,6 +186,7 @@ class Chunk {
                         case BLOCK.BlockType.SAND: tmpGeometry = tmpUnderwaterGeometry; break;
                         case BLOCK.BlockType.DIRT: tmpGeometry = tmpLandGeometry; break;
                         case BLOCK.BlockType.GRASS: tmpGeometry = tmpLandGeometry; break;
+                        case BLOCK.BlockType.ROCK: tmpGeometry = tmpRockGeometry; break;
                     }
 
                     if ((!py || world.isTransparent(py)) && py != block) {
@@ -227,6 +232,7 @@ class Chunk {
         var geometryWater = new THREE.BufferGeometry().fromGeometry(tmpWaterGeometry);
         // geometryWater.computeBoundingSphere();
 
+        var geometryRock = new THREE.BufferGeometry().fromGeometry(tmpRockGeometry);
 
         let materialManager = require('./material_manager')
         var meshLand = new THREE.Mesh(geometryLand, materialManager.getMaterial(BLOCK.BlockType.GRASS));
@@ -234,6 +240,9 @@ class Chunk {
 
         var meshDirt = new THREE.Mesh(geometryDirt, materialManager.getMaterial(BLOCK.BlockType.SAND));
         scene.add(meshDirt);
+
+        var meshRock = new THREE.Mesh(geometryRock, materialManager.getMaterial(BLOCK.BlockType.ROCK));
+        scene.add(meshRock);
 
         var meshWater = new THREE.Mesh(geometryWater, materialManager.getMaterial(BLOCK.BlockType.WATER));
         scene.add(meshWater);
