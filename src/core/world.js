@@ -14,9 +14,9 @@ class World {
 
 
 
-        this.totalWidth = this.worldChunkWidth * chunkClass.ChunkBlockWidth * chunkClass.blockScale
-        this.totalHeight = this.worldChunkHeight * chunkClass.ChunkBlockHeight * chunkClass.blockScale
-        this.totalDepth = this.worldChunkDepth * chunkClass.ChunkBlockDepth * chunkClass.blockScale
+        this.totalWidth = this.worldChunkWidth * chunkClass.ChunkBlockWidth
+        this.totalHeight = this.worldChunkHeight * chunkClass.ChunkBlockHeight
+        this.totalDepth = this.worldChunkDepth * chunkClass.ChunkBlockDepth
 
         this.chunks = []
 
@@ -30,8 +30,8 @@ class World {
         }
 
         this.started = false
-        this.done = false
         this.busy = false
+        this.done = false
     }
 
 
