@@ -55,7 +55,10 @@ class Chunk {
                 }
                 else if (h - 8 < waterLevel - this.yWS()) {
                     this.blocks[x + z * chunkBlockWidth + y * chunkBlockWidth * chunkBlockDepth] = BLOCK.BlockType.SAND
-                } else {
+                } else if (h > 50) {
+                    this.blocks[x + z * chunkBlockWidth + y * chunkBlockWidth * chunkBlockDepth] = BLOCK.BlockType.ROCK
+                }
+                else {
                     this.blocks[x + z * chunkBlockWidth + y * chunkBlockWidth * chunkBlockDepth] = BLOCK.BlockType.GRASS
                 }
 
@@ -97,18 +100,6 @@ class Chunk {
            chunk.generateChunk(heightFunc, waterLevel) 
         }
 
-        var textureLand = new THREE.TextureLoader().load('assets/atlas.png');
-        textureLand.magFilter = THREE.NearestFilter;
-        textureLand.minFilter = THREE.LinearMipMapLinearFilter;
-
-        var textureDirt = new THREE.TextureLoader().load('assets/images/Sand.png');
-        textureDirt.magFilter = THREE.NearestFilter;
-        textureDirt.minFilter = THREE.LinearMipMapLinearFilter;
-
-        var textureWater = new THREE.TextureLoader().load('assets/images/Water.png');
-        textureWater.magFilter = THREE.NearestFilter;
-        textureWater.minFilter = THREE.LinearMipMapLinearFilter;
-
         var pxGeometry = new THREE.PlaneBufferGeometry(blockScale, blockScale);
         pxGeometry.attributes.uv.array[1] = 0.5;
         pxGeometry.attributes.uv.array[3] = 0.5;
@@ -148,11 +139,7 @@ class Chunk {
         var tmpLandGeometry = new THREE.Geometry();
         var tmpUnderwaterGeometry = new THREE.Geometry();
         var tmpWaterGeometry = new THREE.Geometry();
-
-        let matLand = new THREE.MeshLambertMaterial({ map: textureLand })
-        let matDirt = new THREE.MeshLambertMaterial({ map: textureDirt })
-        let matWater = new THREE.MeshLambertMaterial({ map: textureWater, transparent: true, side: THREE.DoubleSide })
-
+        var tmpRockGeometry = new THREE.Geometry();
 
         var pxTmpGeometry = new THREE.Geometry().fromBufferGeometry(pxGeometry);
         var nxTmpGeometry = new THREE.Geometry().fromBufferGeometry(nxGeometry);
@@ -199,6 +186,7 @@ class Chunk {
                         case BLOCK.BlockType.SAND: tmpGeometry = tmpUnderwaterGeometry; break;
                         case BLOCK.BlockType.DIRT: tmpGeometry = tmpLandGeometry; break;
                         case BLOCK.BlockType.GRASS: tmpGeometry = tmpLandGeometry; break;
+                        case BLOCK.BlockType.ROCK: tmpGeometry = tmpRockGeometry; break;
                     }
 
                     if ((!py || world.isTransparent(py)) && py != block) {
@@ -244,14 +232,19 @@ class Chunk {
         var geometryWater = new THREE.BufferGeometry().fromGeometry(tmpWaterGeometry);
         // geometryWater.computeBoundingSphere();
 
+        var geometryRock = new THREE.BufferGeometry().fromGeometry(tmpRockGeometry);
 
-        var meshLand = new THREE.Mesh(geometryLand, matLand);
+        let materialManager = require('./material_manager')
+        var meshLand = new THREE.Mesh(geometryLand, materialManager.getMaterial(BLOCK.BlockType.GRASS));
         scene.add(meshLand);
 
-        var meshDirt = new THREE.Mesh(geometryDirt, matDirt);
+        var meshDirt = new THREE.Mesh(geometryDirt, materialManager.getMaterial(BLOCK.BlockType.SAND));
         scene.add(meshDirt);
 
-        var meshWater = new THREE.Mesh(geometryWater, matWater);
+        var meshRock = new THREE.Mesh(geometryRock, materialManager.getMaterial(BLOCK.BlockType.ROCK));
+        scene.add(meshRock);
+
+        var meshWater = new THREE.Mesh(geometryWater, materialManager.getMaterial(BLOCK.BlockType.WATER));
         scene.add(meshWater);
     }
 }
