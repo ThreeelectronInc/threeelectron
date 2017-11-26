@@ -22,12 +22,10 @@ function getHeight(x, z) {
     return h * 0.2 | 0;
 }
 
-async function generateTerrain(scene) {
+function generateTerrain(scene) {
     console.log("GENERATE TERRAIN")
-    // WORLD.generateWorld(getHeight)
-    // WORLD.generateMeshes(scene)
 
-    await WORLD.generate(getHeight, scene)
+    WORLD.generate(getHeight, scene)
 }
 
 module.exports = {

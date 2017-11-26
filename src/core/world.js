@@ -64,7 +64,7 @@ class World {
     // TODO: try to make this more async
     //      Using setInterval for async seems like a hack.
     //      Try using HTML5 web workers
-    async generate(heightFunc, scene) {
+    generate(heightFunc, scene) {
 
         let size = this.worldChunkWidth * this.worldChunkHeight * this.worldChunkDepth
 
