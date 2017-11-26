@@ -3,7 +3,7 @@ let chunkClass = require('./chunk')
 
 
 
-let waterLevel = 10
+let waterLevel = 12
 
 class World {
     constructor() {

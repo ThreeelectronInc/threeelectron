@@ -20,7 +20,7 @@ function getHeight(x, z) {
 
     for (var j = 0; j < 4; j++) {
 
-        h += (perlin.noise(randX + x / q, randZ + z / q, randSeed) + 0.4) * 0.3 * q;
+        h += (perlin.noise(randX + x / q, randZ + z / q, randSeed) + 0.4) * 0.5 * q;
         q *= 4;
     }
 

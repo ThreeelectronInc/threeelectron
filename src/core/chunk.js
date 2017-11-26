@@ -53,7 +53,7 @@ class Chunk {
                     }
                     h = waterLevel - this.yWS()
                 }
-                else if (h - 3 < waterLevel - this.yWS()) {
+                else if (h - 8 < waterLevel - this.yWS()) {
                     this.blocks[x + z * chunkBlockWidth + y * chunkBlockWidth * chunkBlockDepth] = BLOCK.BlockType.SAND
                 } else {
                     this.blocks[x + z * chunkBlockWidth + y * chunkBlockWidth * chunkBlockDepth] = BLOCK.BlockType.GRASS
