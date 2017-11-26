@@ -229,5 +229,6 @@ module.exports = {
     Chunk: Chunk,
     ChunkBlockWidth: chunkBlockWidth,
     ChunkBlockDepth: chunkBlockDepth,
-    ChunkBlockHeight: chunkBlockHeight
+    ChunkBlockHeight: chunkBlockHeight,
+    blockScale: blockScale
 }

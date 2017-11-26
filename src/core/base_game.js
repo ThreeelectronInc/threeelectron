@@ -213,6 +213,7 @@ class BaseGame {
 
         this.mouse.xVel = 0
         this.mouse.yVel = 0
+        this.mouse.wheel = 0
     }
 
 

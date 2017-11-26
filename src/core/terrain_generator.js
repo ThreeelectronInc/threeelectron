@@ -26,19 +26,10 @@ function generateTerrain(scene) {
     console.log("GENERATE TERRAIN")
     WORLD.generateWorld(getHeight)
     WORLD.generateMeshes(scene)
-    
-
-    // Lights
-
-    var ambientLight = new THREE.AmbientLight(0xcccccc);
-    scene.add(ambientLight);
-
-    var directionalLight = new THREE.DirectionalLight(0xffffff, 2);
-    directionalLight.position.set(1, 1, 0.5).normalize();
-    scene.add(directionalLight);
 
 }
 
 module.exports = {
     generateTerrain: generateTerrain,
+    world: WORLD,
 }

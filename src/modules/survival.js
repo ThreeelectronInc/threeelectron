@@ -21,9 +21,24 @@ class SurvivalGame extends BaseGame {
 
         // this.renderer.setClearColor("green")
 
-        this.camera.position.set(100,500,100)
 
         TerrainGenerator.generateTerrain(this.scene);
+
+
+        // Lights
+
+        var ambientLight = new THREE.AmbientLight(0xcccccc);
+        this.scene.add(ambientLight);
+
+        var directionalLight = new THREE.DirectionalLight(0xffffff, 2);
+        directionalLight.position.set(1, 1, 0.5).normalize();
+        this.scene.add(directionalLight);
+
+
+        // Camera
+        this.camera.position.set(100,500,100)
+        this.lookPos.set(TerrainGenerator.world.totalWidth * 0.5, 0, TerrainGenerator.world.totalDepth * 0.5)
+        console.log(this.lookPos)
     }
 
     deInit() {
@@ -31,16 +46,10 @@ class SurvivalGame extends BaseGame {
 
     update(delta) {
 
-
-        let { camera, camSpeed, radiusOffset, rotYOffset, heightOffset } = this
-
-
-
-
         // Make short named wrapper since we'll be calling this method a lot here
         const keyD = (key) => this.keyDown(key)
 
-        let camVel = camSpeed * delta
+        let camVel = this.camSpeed * delta
 
         if (keyD("w")) { this.radiusOffset -= camVel }
         if (keyD("s")) { this.radiusOffset += camVel }
@@ -52,23 +61,16 @@ class SurvivalGame extends BaseGame {
 
 
         if (this.isMouseDown[0]) {
-
-        //   const camSpeed = 0.5
-
           this.rotYOffset -= 0.25 * this.mouse.xVel  * camVel * 0.005
-          this.radiusOffset -= 0.25 * this.mouse.yVel * camVel 
-
+          this.radiusOffset += 0.25 * this.mouse.yVel * camVel 
         }
 
-        // let zoomMouseSpeed = 0.25 * this.mouse.wheel
-
-        // this.zoom(zoomMouseSpeed)
-
-
+        this.heightOffset += camVel * 0.025 * this.mouse.wheel
 
         this.rotYOffset = this.rotYOffset + delta * 0.1
-        camera.position.set(radiusOffset * Math.cos(rotYOffset), Math.sin(rotYOffset) * 50 + heightOffset, radiusOffset * Math.sin(rotYOffset));        
-        camera.lookAt(this.lookPos);
+        this.camera.position.set(this.radiusOffset * Math.cos(this.rotYOffset), Math.sin(this.rotYOffset) * 50 + this.heightOffset, this.radiusOffset * Math.sin(this.rotYOffset));        
+        this.camera.position.add(this.lookPos)
+        this.camera.lookAt(this.lookPos);
 
 
     }
