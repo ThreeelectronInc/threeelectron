@@ -1,7 +1,7 @@
 let THREE = require('./../libs/three/three')
 
 class BaseGame {
-    constructor(tagName) {
+    constructor(tagName, fps = 0) {
 
 
         // Assert that required methods have been overridden
@@ -20,10 +20,10 @@ class BaseGame {
         this.prevSecond = 0
         this.framesThisSecond = 0
 
-        this.forceFPS = 0 // 60 
+        this.forceFPS = fps // 0 // 60 
 
         if (this.forceFPS) {
-            setInterval(() => requestAnimationFrame(this._loop), 1000 / this.forceFPS)
+            this.updateFunction = setInterval(() => requestAnimationFrame(this.bound_update), 1000 / this.forceFPS)
         }
 
     }
@@ -90,11 +90,6 @@ class BaseGame {
 
         this.bound_update = () => this._update()
 
-        /* Old render scheduling has issues
-                this.updateFunction = setInterval( () => {
-                    this.nextFrameRequest = requestAnimationFrame( this.bound_update );
-                }, 1000 / 60 );
-        */
         this.init()
     }
     // private clear
@@ -116,10 +111,10 @@ class BaseGame {
         this.renderer = undefined
 
         // for old method of scheduling renders
-        // if (this.updateFunction){
-        //     clearInterval(this.updateFunction)
-        // }
-        // this.updateFunction = undefined
+        if (this.updateFunction){
+            clearInterval(this.updateFunction)
+        }
+        this.updateFunction = undefined
 
         this.camera = undefined
         this.scene = undefined
@@ -161,7 +156,6 @@ class BaseGame {
         this.mouse.xVel += event.movementX
         this.mouse.yVel += event.movementY
 
-        console.log(this.mouse)
         if (this.onMouseMove) {
             this.onMouseMove(event)
         }

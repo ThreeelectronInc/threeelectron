@@ -5,8 +5,8 @@ let TerrainGenerator = require('./../core/terrain_generator')
 
 class SurvivalGame extends BaseGame {
 
-    constructor(tagName) {
-        super(tagName)
+    constructor(tagName, fps = 0) {
+        super(tagName, fps)
 
         this.camSpeed = 500
         this.rotYOffset = 0
@@ -40,22 +40,23 @@ class SurvivalGame extends BaseGame {
         // Make short named wrapper since we'll be calling this method a lot here
         const keyD = (key) => this.keyDown(key)
 
+        let camVel = camSpeed * delta
 
-        if (keyD("w")) { this.radiusOffset -= camSpeed * delta }
-        if (keyD("s")) { this.radiusOffset += camSpeed * delta }
-        if (keyD("a")) { this.rotYOffset += camSpeed * 0.005 * delta }
-        if (keyD("d")) { this.rotYOffset -= camSpeed * 0.005 * delta }
+        if (keyD("w")) { this.radiusOffset -= camVel }
+        if (keyD("s")) { this.radiusOffset += camVel }
+        if (keyD("a")) { this.rotYOffset += camVel * 0.005 }
+        if (keyD("d")) { this.rotYOffset -= camVel * 0.005 }
 
-        if (keyD("e")) { this.heightOffset += camSpeed * delta }
-        if (keyD("q")) { this.heightOffset -= camSpeed * delta }
+        if (keyD("e")) { this.heightOffset += camVel }
+        if (keyD("q")) { this.heightOffset -= camVel }
 
 
         if (this.isMouseDown[0]) {
 
         //   const camSpeed = 0.5
 
-          this.rotYOffset -= this.mouse.xVel * 0.005  * camSpeed * delta
-          this.radiusOffset -= this.mouse.yVel * camSpeed * delta
+          this.rotYOffset -= 0.25 * this.mouse.xVel  * camVel * 0.005
+          this.radiusOffset -= 0.25 * this.mouse.yVel * camVel 
 
         }
 
