@@ -97,18 +97,6 @@ class Chunk {
            chunk.generateChunk(heightFunc, waterLevel) 
         }
 
-        var textureLand = new THREE.TextureLoader().load('assets/atlas.png');
-        textureLand.magFilter = THREE.NearestFilter;
-        textureLand.minFilter = THREE.LinearMipMapLinearFilter;
-
-        var textureDirt = new THREE.TextureLoader().load('assets/images/Sand.png');
-        textureDirt.magFilter = THREE.NearestFilter;
-        textureDirt.minFilter = THREE.LinearMipMapLinearFilter;
-
-        var textureWater = new THREE.TextureLoader().load('assets/images/Water.png');
-        textureWater.magFilter = THREE.NearestFilter;
-        textureWater.minFilter = THREE.LinearMipMapLinearFilter;
-
         var pxGeometry = new THREE.PlaneBufferGeometry(blockScale, blockScale);
         pxGeometry.attributes.uv.array[1] = 0.5;
         pxGeometry.attributes.uv.array[3] = 0.5;
@@ -148,11 +136,6 @@ class Chunk {
         var tmpLandGeometry = new THREE.Geometry();
         var tmpUnderwaterGeometry = new THREE.Geometry();
         var tmpWaterGeometry = new THREE.Geometry();
-
-        let matLand = new THREE.MeshLambertMaterial({ map: textureLand })
-        let matDirt = new THREE.MeshLambertMaterial({ map: textureDirt })
-        let matWater = new THREE.MeshLambertMaterial({ map: textureWater, transparent: true, side: THREE.DoubleSide })
-
 
         var pxTmpGeometry = new THREE.Geometry().fromBufferGeometry(pxGeometry);
         var nxTmpGeometry = new THREE.Geometry().fromBufferGeometry(nxGeometry);
@@ -245,13 +228,14 @@ class Chunk {
         // geometryWater.computeBoundingSphere();
 
 
-        var meshLand = new THREE.Mesh(geometryLand, matLand);
+        let materialManager = require('./material_manager')
+        var meshLand = new THREE.Mesh(geometryLand, materialManager.getMaterial(BLOCK.BlockType.GRASS));
         scene.add(meshLand);
 
-        var meshDirt = new THREE.Mesh(geometryDirt, matDirt);
+        var meshDirt = new THREE.Mesh(geometryDirt, materialManager.getMaterial(BLOCK.BlockType.SAND));
         scene.add(meshDirt);
 
-        var meshWater = new THREE.Mesh(geometryWater, matWater);
+        var meshWater = new THREE.Mesh(geometryWater, materialManager.getMaterial(BLOCK.BlockType.WATER));
         scene.add(meshWater);
     }
 }
