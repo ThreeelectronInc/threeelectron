@@ -4,7 +4,7 @@ let noise = require('./../libs/improved_noise')
 let WORLD = require('./world').Instance
 
 let perlin = new noise.ImprovedNoise(),
-    randSeed = 0.75//Math.random();
+    randSeed = Math.random(), randX = Math.random(), randZ = Math.random()
 
 
 
@@ -15,9 +15,10 @@ function getHeight(x, z) {
 
     for (var j = 0; j < 4; j++) {
 
-        h += (perlin.noise(x / q, z / q, randSeed) + 0.4) * 1.8 * q;
+        h += (perlin.noise(randX + x / q, randZ + z / q, randSeed) + 0.4) * 1.8 * q;
         q *= 4;
     }
+
 
     return h * 0.2 | 0;
 }
