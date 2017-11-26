@@ -64,10 +64,12 @@ class SurvivalGame extends BaseGame {
           this.rotYOffset -= 0.25 * this.mouse.xVel  * camVel * 0.005
           this.radiusOffset += 0.25 * this.mouse.yVel * camVel 
         }
+        else{
+            this.rotYOffset = this.rotYOffset + delta * 0.1
+        }
 
         this.heightOffset += camVel * 0.025 * this.mouse.wheel
 
-        this.rotYOffset = this.rotYOffset + delta * 0.1
         this.camera.position.set(this.radiusOffset * Math.cos(this.rotYOffset), Math.sin(this.rotYOffset) * 50 + this.heightOffset, this.radiusOffset * Math.sin(this.rotYOffset));        
         this.camera.position.add(this.lookPos)
         this.camera.lookAt(this.lookPos);
