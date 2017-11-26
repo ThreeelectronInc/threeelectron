@@ -10,7 +10,7 @@ class SurvivalGame extends BaseGame {
 
         this.camSpeed = 500
         this.rotYOffset = 0
-        this.radiusOffset = 500
+        this.radiusOffset = 1000
         this.heightOffset = 1000
 
         this.lookPos = new THREE.Vector3()
