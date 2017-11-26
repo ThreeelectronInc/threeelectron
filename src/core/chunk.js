@@ -36,6 +36,9 @@ class Chunk {
 
         this.generated = true
 
+        let noise = require('./../libs/improved_noise')
+        let perlin = new noise.ImprovedNoise()
+
         for (var z = 0; z < chunkBlockDepth; z++) {
             for (var x = 0; x < chunkBlockWidth; x++) {
                 let h = heightFunc(x + this.xWS(), z + this.zWS()) - this.yWS()
@@ -55,7 +58,7 @@ class Chunk {
                 }
                 else if (h - 8 < waterLevel - this.yWS()) {
                     this.blocks[x + z * chunkBlockWidth + y * chunkBlockWidth * chunkBlockDepth] = BLOCK.BlockType.SAND
-                } else if (h > 50) {
+                } else if (h > 50 - perlin.noise(x * 0.008, z * 0.008, 0) * 30) {
                     this.blocks[x + z * chunkBlockWidth + y * chunkBlockWidth * chunkBlockDepth] = BLOCK.BlockType.ROCK
                 }
                 else {
