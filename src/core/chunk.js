@@ -1,5 +1,5 @@
   
-let chunkBlockWidth = 64, chunkBlockDepth = 64, chunkBlockHeight = 64
+let chunkBlockWidth = 16, chunkBlockDepth = 16, chunkBlockHeight = 128
 let octaves = 4
 let blockScale = 7.5
 
