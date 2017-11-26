@@ -62,7 +62,7 @@ class SurvivalGame extends BaseGame {
 
         if (this.isMouseDown[0]) {
           this.rotYOffset -= this.mouse.xVel * 0.01
-          this.heightOffset -= this.mouse.yVel
+          this.heightOffset -= this.mouse.yVel * 5
         }
         else{
             this.rotYOffset = this.rotYOffset + delta * 0.1
