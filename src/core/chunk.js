@@ -13,6 +13,7 @@ class Chunk {
        this.x = x
        this.y = y
        this.z = z
+       this.generated = false
     }
     
     xWS() { //world space
@@ -29,6 +30,12 @@ class Chunk {
 
 
     generateChunk(heightFunc, waterLevel) {
+        if (this.generated) {
+            return
+        }
+
+        this.generated = true
+
         for (var z = 0; z < chunkBlockDepth; z++) {
             for (var x = 0; x < chunkBlockWidth; x++) {
                 let h = heightFunc(x + this.xWS(), z + this.zWS()) - this.yWS()
