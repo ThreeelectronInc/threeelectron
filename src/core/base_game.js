@@ -14,22 +14,8 @@ class BaseGame {
 
         this.tagName = tagName
 
-
         // Create an empty scene
         this.scene = new THREE.Scene();
-
-
-
-        // console.log(document)
-
-        // Append Renderer to DOM
-        // document.body.appendChild(this.renderer.domElement);
-
-
-
-
-
-
 
         this.prevSecond = 0
         this.framesThisSecond = 0
@@ -47,11 +33,6 @@ class BaseGame {
 
         this.parentDiv = document.getElementById(this.tagName)
 
-        // console.log(document, this.parentDiv)
-
-
-
-
         this.clock = new THREE.Clock()
 
 
@@ -60,7 +41,7 @@ class BaseGame {
         // camera.position.z = 60;
 
         // Place camera on x axis
-        this.camera.position.set(100, 100, 100);
+        this.camera.position.set(0, 0, 1);
         this.camera.up = new THREE.Vector3(0, 1, 0);
         this.camera.lookAt(new THREE.Vector3(0, 0, 0));
 
@@ -156,15 +137,7 @@ class BaseGame {
         if (event.keyCode == 27) { //Esc
             // event.preventDefault()
         }
-        // if (event.keyCode == 70) { //f
-        //     if (!(this.fullscreen)) {
-        //         THREEx.FullScreen.request(this.thisCanvas);
-        //     }
-        //     else {
-        //         THREEx.FullScreen.cancel();
-        //     }
-        //     this.fullscreen = !(this.fullscreen)
-        // }
+
     }
 
     handleKeyUp(event) {
@@ -183,10 +156,12 @@ class BaseGame {
         this.mouse.x = event.x
         this.mouse.y = event.y
         // Buffer mouse velocity until next update.
+
+
         this.mouse.xVel += event.movementX
         this.mouse.yVel += event.movementY
 
-
+        console.log(this.mouse)
         if (this.onMouseMove) {
             this.onMouseMove(event)
         }
@@ -242,12 +217,8 @@ class BaseGame {
         this.render();
 
 
-        // for (let i = 0; i < maxKeyVal; i++) {
-        //     keyPress[i] = false
-        // }
-
-        // Render the scene
-        // renderer.render(scene, camera);
+        this.mouse.xVel = 0
+        this.mouse.yVel = 0
     }
 
 
