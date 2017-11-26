@@ -196,7 +196,7 @@ class Chunk {
                         tmpGeometry.merge(pyTmpGeometry, matrix);
                     }
 
-                    if ((!ny || world.isTransparent(ny)) && ny != block) {
+                    if ((!ny || world.isTransparent(ny)) && ny != block && worldY > 0) {
                         tmpGeometry.merge(nyTmpGeometry, matrix);
                     }
 
