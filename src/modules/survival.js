@@ -27,10 +27,10 @@ class SurvivalGame extends BaseGame {
 
         // Lights
 
-        var ambientLight = new THREE.AmbientLight(0xcccccc);
+        let ambientLight = new THREE.AmbientLight(0xcccccc);
         this.scene.add(ambientLight);
 
-        var directionalLight = new THREE.DirectionalLight(0xffffff, 2);
+        let directionalLight = new THREE.DirectionalLight(0xffffff, 2);
         directionalLight.position.set(1, 1, 0.5).normalize();
         this.scene.add(directionalLight);
 
@@ -61,14 +61,17 @@ class SurvivalGame extends BaseGame {
 
 
         if (this.isMouseDown[0]) {
-          this.rotYOffset -= 0.25 * this.mouse.xVel  * camVel * 0.005
-          this.radiusOffset += 0.25 * this.mouse.yVel * camVel 
+          this.rotYOffset -= this.mouse.xVel  * camVel * 0.001
+          this.heightOffset -= this.mouse.yVel * camVel * 0.25
         }
         else{
             this.rotYOffset = this.rotYOffset + delta * 0.1
         }
 
-        this.heightOffset += camVel * 0.025 * this.mouse.wheel
+
+        this.radiusOffset -= 0.025 * camVel * this.mouse.wheel
+
+        this.radiusOffset = Math.max(this.radiusOffset, 0)
 
         this.camera.position.set(this.radiusOffset * Math.cos(this.rotYOffset), Math.sin(this.rotYOffset) * 50 + this.heightOffset, this.radiusOffset * Math.sin(this.rotYOffset));        
         this.camera.position.add(this.lookPos)

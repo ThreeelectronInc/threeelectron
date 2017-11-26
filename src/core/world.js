@@ -8,8 +8,8 @@ let waterLevel = 10
 class World {
     constructor() {
 
-        this.worldChunkWidth = 2
-        this.worldChunkDepth = 2
+        this.worldChunkWidth = 3//2
+        this.worldChunkDepth = 3//2
         this.worldChunkHeight = 2
 
 

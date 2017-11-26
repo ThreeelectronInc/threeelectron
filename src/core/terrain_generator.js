@@ -4,7 +4,7 @@ let noise = require('./../libs/improved_noise')
 let WORLD = require('./world').Instance
 
 let perlin = new noise.ImprovedNoise(),
-    randSeed = Math.random();
+    randSeed = 1.53//Math.random();
 
 
 
