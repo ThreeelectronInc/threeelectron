@@ -3,15 +3,14 @@ let chunkClass = require('./chunk')
 
 
 
-let waterLevel = 12
-
 class World {
     constructor() {
 
-        this.worldChunkWidth = 32//8//3//2
-        this.worldChunkDepth = 32//3//2
+        this.worldChunkWidth = 16//32//8//3//2
+        this.worldChunkDepth = 16//32//3//2
         this.worldChunkHeight = 1//2  This doesn't appear to do anything
 
+        this.waterLevel = 12
 
 
         this.totalWidth = this.worldChunkWidth * chunkClass.ChunkBlockWidth
@@ -34,8 +33,6 @@ class World {
             }
         }
 
-        this.started = false
-        this.busy = false
         this.done = false
     }
 
@@ -86,12 +83,14 @@ class World {
 
 
             if (i < size) {
-                this.chunks[i].generateMesh(scene, this, heightFunc, waterLevel)
+                this.chunks[i].generateMesh(scene, this, heightFunc, this.waterLevel)
                 i++
             }
             else{
                 clearInterval(this.intervalGenHandle)
                 console.log('All chunks done')  
+
+                this.done = true
             }
 
             console.log(`Chunk ${i} done`)

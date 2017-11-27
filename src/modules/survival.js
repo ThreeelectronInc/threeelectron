@@ -3,6 +3,8 @@ let THREE = require('./../libs/three/three')
 let { BaseGame } = require('./../core/base_game')
 let TerrainGenerator = require('./../core/terrain_generator')
 
+let chunkClass = require('./../core/chunk')
+
 class SurvivalGame extends BaseGame {
 
     constructor(tagName, fps = 0) {
@@ -14,6 +16,9 @@ class SurvivalGame extends BaseGame {
         this.heightOffset = 1000
 
         this.lookPos = new THREE.Vector3()
+
+        this.chickenCount = 0
+        this.chickensDone = false
     }
 
     // Called when start() is called and the renderer has been initialised
@@ -24,6 +29,20 @@ class SurvivalGame extends BaseGame {
 
         TerrainGenerator.generateTerrain(this.scene)
         console.log('moving on while terrain generates')
+
+
+
+        let chickenScale = chunkClass.blockScale // * 10
+        let mapChicken = new THREE.TextureLoader().load( "assets/chicken.png" );
+        let matChicken = new THREE.SpriteMaterial( { map: mapChicken, color: 0xffffff } );
+        let chicken = new THREE.Sprite( matChicken );
+        chicken.scale.set(chickenScale, chickenScale, 1)
+        chicken.position.set(50 * chunkClass.blockScale,  chickenScale + (TerrainGenerator.world.waterLevel - 1) * chunkClass.blockScale, 50*chunkClass.blockScale)
+        this.scene.add( chicken );
+        // console.log(chicken.position)
+
+
+
 
         // Lights
 
@@ -64,8 +83,8 @@ class SurvivalGame extends BaseGame {
           this.rotYOffset -= this.mouse.xVel * 0.01
           this.heightOffset -= this.mouse.yVel * 5
         }
-        else{
-            this.rotYOffset = this.rotYOffset + delta * 0.1
+        else{ // rotate slowly
+            // this.rotYOffset = this.rotYOffset + delta * 0.1
         }
 
 
@@ -77,6 +96,34 @@ class SurvivalGame extends BaseGame {
         this.camera.position.add(this.lookPos)
         this.camera.lookAt(this.lookPos);
 
+
+        if (TerrainGenerator.world.done && !this.chickensDone){
+            console.log("start generating chickens")
+            
+            for (let x = 0; x < TerrainGenerator.world.totalWidth; x++){
+
+                for (let z = 0; z < TerrainGenerator.world.totalDepth; z++){
+                    
+                    if ( !this.chickensDone && TerrainGenerator.world.getChunk(x,TerrainGenerator.world.waterLevel,z)) {
+
+                        let chickenScale = chunkClass.blockScale // * 10
+                        let mapChicken = new THREE.TextureLoader().load( "assets/chicken.png" );
+                        let matChicken = new THREE.SpriteMaterial( { map: mapChicken, color: 0xffffff } );
+                        let chicken = new THREE.Sprite( matChicken );
+                        chicken.scale.set(chickenScale, chickenScale, 1)
+                        chicken.position.set(x * chunkClass.blockScale,  chickenScale + (TerrainGenerator.world.waterLevel - 1) * chunkClass.blockScale, z*chunkClass.blockScale)
+                        this.scene.add( chicken );
+                        console.log('Adding chicken: ', chicken.position)
+                        this.chickenCount++
+                    }
+
+                    if (this.chickenCount > 20){
+                        this.chickensDone = true
+                    }
+
+                }
+            }
+        }
 
     }
 }
