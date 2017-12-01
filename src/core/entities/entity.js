@@ -25,7 +25,7 @@ class Entity {
     
     update(delta) {
         this.vel += 5 * delta
-        this.chicken.position.y += delta * this.vel
+        // this.chicken.position.y += delta * this.vel
     }
 }
 

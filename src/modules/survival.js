@@ -87,15 +87,16 @@ class SurvivalGame extends BaseGame {
         this.camera.lookAt(this.lookPos);
 
 
-        if (TerrainGenerator.world.done && !this.chickensDone){
+        if (!this.chickensDone){ // TerrainGenerator.world.done && 
             console.log("start generating chickens")
             
             for (let x = 0; x < TerrainGenerator.world.totalWidth; x++){
 
                 for (let z = 0; z < TerrainGenerator.world.totalDepth; z++){
                     
-                    if ( !this.chickensDone && TerrainGenerator.world.getChunk(x,TerrainGenerator.world.waterLevel,z)) {
-                        let chicken = new entityClass.Entity(this.scene, x * chunkClass.blockScale,  chunkClass.blockScale + (TerrainGenerator.world.waterLevel - 1) * chunkClass.blockScale, z * chunkClass.blockScale)
+                    
+                    if ( TerrainGenerator.getHeight(x,z) > TerrainGenerator.world.waterLevel && !this.chickensDone ){//&& TerrainGenerator.world.getChunk(x,TerrainGenerator.world.waterLevel,z)) {
+                        let chicken = new entityClass.Entity(this.scene, x * chunkClass.blockScale,  chunkClass.blockScale + (TerrainGenerator.world.waterLevel) * chunkClass.blockScale, z * chunkClass.blockScale)
                         this.chickens.push(chicken)
                     }
 

@@ -41,4 +41,5 @@ function generateTerrain(scene) {
 module.exports = {
     generateTerrain: generateTerrain,
     world: WORLD,
+    getHeight,
 }
