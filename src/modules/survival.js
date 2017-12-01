@@ -93,16 +93,20 @@ class SurvivalGame extends BaseGame {
             for (let x = 0; x < TerrainGenerator.world.totalWidth; x++){
 
                 for (let z = 0; z < TerrainGenerator.world.totalDepth; z++){
+
+                    let minY = TerrainGenerator.world.waterLevel - 1
+                    let maxY = TerrainGenerator.world.waterLevel + 10
                     
+                    for (let y = minY ; y < maxY; y++)
                     
-                    if ( TerrainGenerator.getHeight(x,z) > TerrainGenerator.world.waterLevel && !this.chickensDone ){//&& TerrainGenerator.world.getChunk(x,TerrainGenerator.world.waterLevel,z)) {
-                        let chicken = new entityClass.Entity(this.scene, x * chunkClass.blockScale,  chunkClass.blockScale + (TerrainGenerator.world.waterLevel) * chunkClass.blockScale, z * chunkClass.blockScale)
+                    if ( TerrainGenerator.getHeight(x,z) === y + 1 && !this.chickensDone ){//&& TerrainGenerator.world.getChunk(x,TerrainGenerator.world.waterLevel,z)) {
+                        let chicken = new entityClass.Entity(this.scene, x * chunkClass.blockScale,  chunkClass.blockScale + y * chunkClass.blockScale, z * chunkClass.blockScale)
                         this.chickens.push(chicken)
                     }
 
                     console.log('chicken count: ', entityClass.chickenCount)
 
-                    if (entityClass.chickenCount > 200){
+                    if (entityClass.chickenCount > 3000){
                         this.chickensDone = true
                         break;
                     }
@@ -115,9 +119,9 @@ class SurvivalGame extends BaseGame {
             }
         }
         
-        for (var i = 0; i < this.chickens.length; i++) {
-            this.chickens[i].update(delta)
-        }
+        // for (var i = 0; i < this.chickens.length; i++) {
+        //     this.chickens[i].update(delta)
+        // }
 
     }
 }
