@@ -77,6 +77,31 @@ app.on('activate', () => {
 // code. You can also put them in separate files and require them here.
 console.log("TODO: Backend goes here")
 
+/*
+
+const worker = new Worker('./../core/worker.js')
+const length = 10;
+
+// Creating a shared buffer
+const sharedBuffer = new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT * length)
+
+// Creating a data structure on top of that shared memory area
+const sharedArray = new Int32Array(sharedBuffer)
+
+// Let's build an array with 10 even numbers
+for (let i = 0; i < length; i++) sharedArray[i] = i && sharedArray[i - 1] + 2
+
+// Send memory area to our worker
+worker.postMessage(sharedBuffer)
+
+setTimeout(function() {
+    console.log('[MASTER] Change triggered.')
+    sharedArray[0] = 1337
+}, 5000)
+
+*/
+
+
 
 const http = require('http')
 const port = 3000
