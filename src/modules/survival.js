@@ -4,6 +4,7 @@ let { BaseGame } = require('./../core/base_game')
 let TerrainGenerator = require('./../core/terrain_generator')
 
 let chunkClass = require('./../core/chunk')
+let entityClass = require('./../core/entities/entity')
 
 class SurvivalGame extends BaseGame {
 
@@ -29,20 +30,7 @@ class SurvivalGame extends BaseGame {
 
         TerrainGenerator.generateTerrain(this.scene)
         console.log('moving on while terrain generates')
-
-
-
-        let chickenScale = chunkClass.blockScale // * 10
-        let mapChicken = new THREE.TextureLoader().load( "assets/chicken.png" );
-        let matChicken = new THREE.SpriteMaterial( { map: mapChicken, color: 0xffffff } );
-        let chicken = new THREE.Sprite( matChicken );
-        chicken.scale.set(chickenScale, chickenScale, 1)
-        chicken.position.set(50 * chunkClass.blockScale,  chickenScale + (TerrainGenerator.world.waterLevel - 1) * chunkClass.blockScale, 50*chunkClass.blockScale)
-        this.scene.add( chicken );
         // console.log(chicken.position)
-
-
-
 
         // Lights
 
@@ -58,6 +46,8 @@ class SurvivalGame extends BaseGame {
         this.camera.position.set(100,500,100)
         this.lookPos.set(TerrainGenerator.world.totalBlockWidth * 0.5, 0, TerrainGenerator.world.totalBlockDepth * 0.5)
         console.log(this.lookPos)
+
+        this.chickens = []
     }
 
     deInit() {
@@ -105,24 +95,27 @@ class SurvivalGame extends BaseGame {
                 for (let z = 0; z < TerrainGenerator.world.totalDepth; z++){
                     
                     if ( !this.chickensDone && TerrainGenerator.world.getChunk(x,TerrainGenerator.world.waterLevel,z)) {
-
-                        let chickenScale = chunkClass.blockScale // * 10
-                        let mapChicken = new THREE.TextureLoader().load( "assets/chicken.png" );
-                        let matChicken = new THREE.SpriteMaterial( { map: mapChicken, color: 0xffffff } );
-                        let chicken = new THREE.Sprite( matChicken );
-                        chicken.scale.set(chickenScale, chickenScale, 1)
-                        chicken.position.set(x * chunkClass.blockScale,  chickenScale + (TerrainGenerator.world.waterLevel - 1) * chunkClass.blockScale, z*chunkClass.blockScale)
-                        this.scene.add( chicken );
-                        console.log('Adding chicken: ', chicken.position)
-                        this.chickenCount++
+                        let chicken = new entityClass.Entity(this.scene, x * chunkClass.blockScale,  chunkClass.blockScale + (TerrainGenerator.world.waterLevel - 1) * chunkClass.blockScale, z * chunkClass.blockScale)
+                        this.chickens.push(chicken)
                     }
 
-                    if (this.chickenCount > 20){
+                    console.log('chicken count: ', entityClass.chickenCount)
+
+                    if (entityClass.chickenCount > 200){
                         this.chickensDone = true
+                        break;
                     }
 
                 }
+
+                if (this.chickensDone) {
+                    break
+                }
             }
+        }
+        
+        for (var i = 0; i < this.chickens.length; i++) {
+            this.chickens[i].update(delta)
         }
 
     }
