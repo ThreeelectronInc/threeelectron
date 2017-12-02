@@ -33,6 +33,10 @@ class BaseGame {
 
         this.parentDiv = document.getElementById(this.tagName)
 
+        // Shows framerate stats
+        this.stats = new Stats();
+        this.parentDiv.appendChild(this.stats.dom)
+
         this.clock = new THREE.Clock()
 
 
@@ -210,6 +214,7 @@ class BaseGame {
         this.update(delta)
         this.render();
 
+        this.stats.update()
 
         this.mouse.xVel = 0
         this.mouse.yVel = 0

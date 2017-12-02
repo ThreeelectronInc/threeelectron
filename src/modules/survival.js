@@ -5,17 +5,13 @@ let TerrainGenerator = require('./../core/terrain_generator')
 
 let chunkClass = require('./../core/chunk')
 let entityClass = require('./../core/entities/entity')
-// let {Stats} = require('./../libs/stats.min.js')
+
 class SurvivalGame extends BaseGame {
 
     constructor(tagName, fps = 0) {
         super(tagName, fps)
 
         this.camSpeed = 500
-        this.rotYOffset = 0
-        this.radiusOffset = 1000
-        this.heightOffset = 1000
-
         this.lookPos = new THREE.Vector3()
 
         this.chickenCount = 0
@@ -28,10 +24,6 @@ class SurvivalGame extends BaseGame {
     init() {
 
         // this.renderer.setClearColor("green")
-
-
-        this.stats = new Stats();
-        this.parentDiv.appendChild(this.stats.dom)
 
         
         TerrainGenerator.generateTerrain(this.scene)
@@ -107,36 +99,54 @@ class SurvivalGame extends BaseGame {
     update(delta) {
 
 
-        this.stats.update()
         // Make short named wrapper since we'll be calling this method a lot here
         const keyD = (key) => this.keyDown(key)
 
         let camVel = this.camSpeed * delta
 
-        if (keyD("w")) { this.radiusOffset -= camVel }
-        if (keyD("s")) { this.radiusOffset += camVel }
-        if (keyD("a")) { this.rotYOffset += camVel * 0.005 }
-        if (keyD("d")) { this.rotYOffset -= camVel * 0.005 }
+        let forwardVec = new THREE.Vector3()
+        let mouseVec = new THREE.Vector3()
+        let lookVec = new THREE.Vector3()
+        let upVec = new THREE.Vector3(0,1,0)
+        let leftVec = upVec.clone()
 
-        if (keyD("e")) { this.heightOffset += camVel }
-        if (keyD("q")) { this.heightOffset -= camVel }
+        lookVec.subVectors(this.lookPos, this.camera.position)
+
+        forwardVec = lookVec.clone() 
+        forwardVec.y = 0
+
+        
+        forwardVec = forwardVec.normalize().multiplyScalar(delta * 500)
+
+        mouseVec = forwardVec.clone()
+
+        leftVec.cross(forwardVec)
+
+        if (keyD("w")) { this.camera.position.add(forwardVec); this.lookPos.add(forwardVec)}
+        if (keyD("s")) {this.camera.position.sub(forwardVec); this.lookPos.sub(forwardVec)}
+        if (keyD("a")) { this.camera.position.add(leftVec);  this.lookPos.add(leftVec)}
+        if (keyD("d")) {this.camera.position.sub(leftVec);  this.lookPos.sub(leftVec)}
+
+        if (keyD("e")) { this.camera.position.y += camVel }
+        if (keyD("q")) { this.camera.position.y -= camVel }
+        
 
 
         if (this.isMouseDown[0]) {
-            this.rotYOffset -= this.mouse.xVel * 0.01
-            this.heightOffset -= this.mouse.yVel * 5
+
+            let rotVec = lookVec.clone()
+            rotVec.applyAxisAngle(upVec, this.mouse.xVel * 0.01)
+            
+            this.camera.position.subVectors(this.lookPos, rotVec)
+
+            this.camera.position.y += this.mouse.yVel * -2
         }
-        else { // rotate slowly
-            // this.rotYOffset = this.rotYOffset + delta * 0.1
-        }
 
+        mouseVec.multiplyScalar(this.mouse.wheel * 0.1)
+        
+        this.camera.position.add(mouseVec)
+        
 
-        this.radiusOffset -= 0.25 * this.mouse.wheel
-
-        this.radiusOffset = Math.max(this.radiusOffset, 0.01)
-
-        this.camera.position.set(this.radiusOffset * Math.cos(this.rotYOffset), Math.sin(this.rotYOffset) * 50 + this.heightOffset, this.radiusOffset * Math.sin(this.rotYOffset));
-        this.camera.position.add(this.lookPos)
         this.camera.lookAt(this.lookPos);
 
 
@@ -160,7 +170,7 @@ class SurvivalGame extends BaseGame {
 
                         }
 
-                    if (entityClass.chickenCount > 2000) {
+                    if (entityClass.chickenCount > 500) {
                         this.chickensDone = true
                         break;
                     }
