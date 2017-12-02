@@ -5,7 +5,7 @@ let TerrainGenerator = require('./../core/terrain_generator')
 
 let chunkClass = require('./../core/chunk')
 let entityClass = require('./../core/entities/entity')
-
+// let {Stats} = require('./../libs/stats.min.js')
 class SurvivalGame extends BaseGame {
 
     constructor(tagName, fps = 0) {
@@ -20,6 +20,8 @@ class SurvivalGame extends BaseGame {
 
         this.chickenCount = 0
         this.chickensDone = false
+
+
     }
 
     // Called when start() is called and the renderer has been initialised
@@ -28,6 +30,10 @@ class SurvivalGame extends BaseGame {
         // this.renderer.setClearColor("green")
 
 
+        this.stats = new Stats();
+        this.parentDiv.appendChild(this.stats.dom)
+
+        
         TerrainGenerator.generateTerrain(this.scene)
         console.log('moving on while terrain generates')
         // console.log(chicken.position)
@@ -43,11 +49,56 @@ class SurvivalGame extends BaseGame {
 
 
         // Camera
-        this.camera.position.set(100,500,100)
+        this.camera.position.set(100, 500, 100)
         this.lookPos.set(TerrainGenerator.world.totalBlockWidth * 0.5, 0, TerrainGenerator.world.totalBlockDepth * 0.5)
         console.log(this.lookPos)
 
         this.chickens = []
+
+
+
+        let matShader = new THREE.ShaderMaterial({
+
+            uniforms: {
+
+                time: { value: 1.0 },
+                resolution: { value: new THREE.Vector2() }
+
+            },
+
+            vertexShader: `	
+            varying vec2 vUv;
+            
+                        void main()
+                        {
+                            vUv = uv;
+                            vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+                            gl_Position = projectionMatrix * mvPosition;
+                        }
+            `,
+
+            fragmentShader: `			
+            uniform float time;
+            
+                        varying vec2 vUv;
+            
+                        void main( void ) {
+            
+                            vec2 position = - 1.0 + 2.0 * vUv;
+            
+                            float red = abs( sin( position.x * position.y + time / 5.0 ) );
+                            float green = abs( sin( position.x * position.y + time / 4.0 ) );
+                            float blue = abs( sin( position.x * position.y + time / 3.0 ) );
+                            gl_FragColor = vec4( red, green, blue, 1.0 );
+                        }
+            `
+        });
+
+
+        let geomShader = new THREE.PlaneGeometry(1000,1000,1000);
+        let meshShader = new THREE.Mesh( geomShader, matShader );
+        this.scene.add(meshShader)
+        // geomShader.scale.set()
     }
 
     deInit() {
@@ -55,6 +106,8 @@ class SurvivalGame extends BaseGame {
 
     update(delta) {
 
+
+        this.stats.update()
         // Make short named wrapper since we'll be calling this method a lot here
         const keyD = (key) => this.keyDown(key)
 
@@ -70,10 +123,10 @@ class SurvivalGame extends BaseGame {
 
 
         if (this.isMouseDown[0]) {
-          this.rotYOffset -= this.mouse.xVel * 0.01
-          this.heightOffset -= this.mouse.yVel * 5
+            this.rotYOffset -= this.mouse.xVel * 0.01
+            this.heightOffset -= this.mouse.yVel * 5
         }
-        else{ // rotate slowly
+        else { // rotate slowly
             // this.rotYOffset = this.rotYOffset + delta * 0.1
         }
 
@@ -82,31 +135,32 @@ class SurvivalGame extends BaseGame {
 
         this.radiusOffset = Math.max(this.radiusOffset, 0.01)
 
-        this.camera.position.set(this.radiusOffset * Math.cos(this.rotYOffset), Math.sin(this.rotYOffset) * 50 + this.heightOffset, this.radiusOffset * Math.sin(this.rotYOffset));        
+        this.camera.position.set(this.radiusOffset * Math.cos(this.rotYOffset), Math.sin(this.rotYOffset) * 50 + this.heightOffset, this.radiusOffset * Math.sin(this.rotYOffset));
         this.camera.position.add(this.lookPos)
         this.camera.lookAt(this.lookPos);
 
 
-        if (!this.chickensDone){ // TerrainGenerator.world.done && 
+        if (!this.chickensDone) { // TerrainGenerator.world.done && 
             console.log("start generating chickens")
-            
-            for (let x = 0; x < TerrainGenerator.world.totalWidth; x++){
 
-                for (let z = 0; z < TerrainGenerator.world.totalDepth; z++){
+            for (let x = 0; x < TerrainGenerator.world.totalWidth; x++) {
+
+                for (let z = 0; z < TerrainGenerator.world.totalDepth; z++) {
 
                     let minY = TerrainGenerator.world.waterLevel - 1
                     let maxY = TerrainGenerator.world.waterLevel + 10
-                    
-                    for (let y = minY ; y < maxY; y++)
-                    
-                    if ( TerrainGenerator.getHeight(x,z) === y + 1 && !this.chickensDone ){//&& TerrainGenerator.world.getChunk(x,TerrainGenerator.world.waterLevel,z)) {
-                        let chicken = new entityClass.Entity(this.scene, x * chunkClass.blockScale,  chunkClass.blockScale + y * chunkClass.blockScale, z * chunkClass.blockScale)
-                        this.chickens.push(chicken)
-                    }
 
-                    console.log('chicken count: ', entityClass.chickenCount)
+                    for (let y = minY; y < maxY; y++)
 
-                    if (entityClass.chickenCount > 3000){
+                        if (TerrainGenerator.getHeight(x, z) === y + 1 && !this.chickensDone) {//&& TerrainGenerator.world.getChunk(x,TerrainGenerator.world.waterLevel,z)) {
+                            let chicken = new entityClass.Entity(this.scene, x * chunkClass.blockScale, chunkClass.blockScale + y * chunkClass.blockScale, z * chunkClass.blockScale)
+                            this.chickens.push(chicken)
+
+                            // console.log('chicken count: ', entityClass.chickenCount)
+
+                        }
+
+                    if (entityClass.chickenCount > 2000) {
                         this.chickensDone = true
                         break;
                     }
@@ -118,7 +172,7 @@ class SurvivalGame extends BaseGame {
                 }
             }
         }
-        
+
         // for (var i = 0; i < this.chickens.length; i++) {
         //     this.chickens[i].update(delta)
         // }

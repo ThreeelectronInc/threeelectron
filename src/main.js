@@ -14,6 +14,12 @@ function sleep(ms) {
   
   demo();
 
+
+
+/*
+
+
+
 // TODO: Move chunk generation into separate process thread like so
 const worker = new Worker('./core/worker.js')
 
@@ -21,6 +27,12 @@ worker.onmessage = function(e) {
     // result.textContent = e.data;
     console.log('Message received from worker', e.data);
   }
+
+*/
+
+
+
+
 
   // NOTE: SharedArrayBuffer, which is used for 
   //    sharing memory between processes is only available in chromium 60+

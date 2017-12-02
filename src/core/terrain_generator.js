@@ -3,8 +3,9 @@ let THREE = require('./../libs/three/three')
 let noise = require('./../libs/improved_noise')
 let WORLD = require('./world').Instance
 
-let perlin = new noise.ImprovedNoise(),
-    randSeed = Math.random(), randX = Math.random(), randZ = Math.random()
+let perlin = new noise.ImprovedNoise()
+
+let randSeed = Math.random(), randX = Math.random(), randZ = Math.random()
 
 
 function lerp (a,  b,  c) {

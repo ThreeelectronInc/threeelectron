@@ -201,7 +201,7 @@ class BaseGame {
         // console.log(time)
         if (currentSecond !== this.prevSecond) {
             this.prevSecond = currentSecond
-            console.log(`Second: ${currentSecond} FPS: ${this.framesThisSecond}`)
+            // console.log(`Second: ${currentSecond} FPS: ${this.framesThisSecond}`)
             this.framesThisSecond = 0
         }
 
@@ -263,5 +263,5 @@ class BaseGame {
 }
 
 module.exports = {
-    BaseGame: BaseGame
+    BaseGame
 }

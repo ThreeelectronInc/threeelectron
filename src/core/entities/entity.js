@@ -21,7 +21,7 @@ class Entity {
         //chicken.position.set(x * chunkClass.blockScale,  chickenScale + (TerrainGenerator.world.waterLevel - 1) * chunkClass.blockScale, z*chunkClass.blockScale)
         this.chicken.position.set(x, y, z)
         scene.add(this.chicken);
-        console.log('Adding chicken: ', this.chicken.position)
+        // console.log('Adding chicken: ', this.chicken.position)
         module.exports.chickenCount++
 
         this.vel = 0

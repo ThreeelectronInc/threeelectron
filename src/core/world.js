@@ -6,8 +6,8 @@ let chunkClass = require('./chunk')
 class World {
     constructor() {
 
-        this.worldChunkWidth = 20//32//8//3//2
-        this.worldChunkDepth = 20//32//3//2
+        this.worldChunkWidth = 20//8//3//2
+        this.worldChunkDepth = 20//3//2
         this.worldChunkHeight = 1//2  This doesn't appear to do anything
 
         this.waterLevel = 12
@@ -93,7 +93,7 @@ class World {
                 this.done = true
             }
 
-            console.log(`Chunk ${i} done`)
+            // console.log(`Chunk ${i} done`)
         }, 0)
 
 
