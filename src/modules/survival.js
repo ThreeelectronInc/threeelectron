@@ -122,6 +122,8 @@ class SurvivalGame extends BaseGame {
 
         leftVec.cross(forwardVec)
 
+        // TODO: Make pan and zoom methods
+
         if (keyD("w")) { this.camera.position.add(forwardVec); this.lookPos.add(forwardVec)}
         if (keyD("s")) {this.camera.position.sub(forwardVec); this.lookPos.sub(forwardVec)}
         if (keyD("a")) { this.camera.position.add(leftVec);  this.lookPos.add(leftVec)}
@@ -147,13 +149,17 @@ class SurvivalGame extends BaseGame {
             
             this.camera.position.subVectors(this.lookPos, rotVec)
 
-            this.camera.position.y += this.mouse.yVel * -2
 
+            // this.camera.position.y += this.mouse.yVel * -2
+            mouseVec.multiplyScalar(this.mouse.yVel * 1)
+
+            this.camera.position.add(mouseVec)
         }
 
-        mouseVec.multiplyScalar(this.mouse.wheel * 0.05)
-        
-        this.camera.position.add(mouseVec)
+        // mouseVec.multiplyScalar(this.mouse.wheel * 0.05)
+        // this.camera.position.add(mouseVec)
+
+        this.camera.position.y += this.mouse.wheel * -2
         
 
         this.camera.lookAt(this.lookPos);
