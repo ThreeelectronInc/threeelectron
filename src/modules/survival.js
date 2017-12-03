@@ -187,7 +187,7 @@ class SurvivalGame extends BaseGame {
                     for (let y = minY; y < maxY; y++)
 
                         if (TerrainGenerator.getHeight(x, z) === y + 1 && !this.chickensDone) {//&& TerrainGenerator.world.getChunk(x,TerrainGenerator.world.waterLevel,z)) {
-                            let chicken = new entityClass.Entity(this.scene, x * chunkClass.blockScale, chunkClass.blockScale + y * chunkClass.blockScale, z * chunkClass.blockScale)
+                            let chicken = new entityClass.Entity(this.scene, x * chunkClass.blockScale, chunkClass.blockScale + (y + 20) * chunkClass.blockScale, z * chunkClass.blockScale)
                             this.chickens.push(chicken)
 
                             // console.log('chicken count: ', entityClass.chickenCount)
@@ -207,9 +207,9 @@ class SurvivalGame extends BaseGame {
             }
         }
 
-        // for (var i = 0; i < this.chickens.length; i++) {
-        //     this.chickens[i].update(delta)
-        // }
+        for (var i = 0; i < this.chickens.length; i++) {
+            this.chickens[i].update(delta)
+        }
 
     }
 }
