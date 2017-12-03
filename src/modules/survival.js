@@ -131,18 +131,27 @@ class SurvivalGame extends BaseGame {
         if (keyD("q")) { this.camera.position.y -= camVel }
         
 
-
         if (this.isMouseDown[0]) {
+            let mousePan = forwardVec.clone().multiplyScalar(this.mouse.yVel)
+                .add(leftVec.clone().multiplyScalar(this.mouse.xVel))
 
+            
+            this.camera.position.add(mousePan); 
+  
+            this.lookPos.add(mousePan)
+        }
+        if  (this.isMouseDown[2]) {
+            
             let rotVec = lookVec.clone()
             rotVec.applyAxisAngle(upVec, this.mouse.xVel * 0.01)
             
             this.camera.position.subVectors(this.lookPos, rotVec)
 
             this.camera.position.y += this.mouse.yVel * -2
+
         }
 
-        mouseVec.multiplyScalar(this.mouse.wheel * 0.1)
+        mouseVec.multiplyScalar(this.mouse.wheel * 0.05)
         
         this.camera.position.add(mouseVec)
         
