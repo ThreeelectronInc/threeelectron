@@ -151,15 +151,24 @@ class SurvivalGame extends BaseGame {
 
 
             // this.camera.position.y += this.mouse.yVel * -2
-            mouseVec.multiplyScalar(this.mouse.yVel * 1)
 
-            this.camera.position.add(mouseVec)
+            let testZoomDistanceVec = lookVec.clone()
+            testZoomDistanceVec.y = 0 
+            console.log(testZoomDistanceVec.length())
+            if (testZoomDistanceVec.length() > 50 || this.mouse.yVel < 0 ){
+
+                mouseVec.multiplyScalar(this.mouse.yVel * 1)
+            
+                this.camera.position.add(mouseVec)
+                    
+
+            }
         }
 
         // mouseVec.multiplyScalar(this.mouse.wheel * 0.05)
         // this.camera.position.add(mouseVec)
 
-        this.camera.position.y += this.mouse.wheel * -2
+        this.camera.position.y += this.mouse.wheel * -0.25
         
 
         this.camera.lookAt(this.lookPos);
