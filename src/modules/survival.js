@@ -129,7 +129,7 @@ class SurvivalGame extends BaseGame {
         forwardVec.y = 0
 
 
-        forwardVec = forwardVec.normalize().multiplyScalar(delta * 500)
+        forwardVec = forwardVec.normalize().multiplyScalar(delta * 1000)
 
         mouseVec = forwardVec.clone()
 
@@ -137,10 +137,10 @@ class SurvivalGame extends BaseGame {
 
         // TODO: Make pan and zoom methods
 
-        if (keyD("w")) { this.camera.position.add(forwardVec); }
-        if (keyD("s")) { this.camera.position.sub(forwardVec); }
-        if (keyD("a")) { this.camera.position.add(leftVec); }
-        if (keyD("d")) { this.camera.position.sub(leftVec); }
+        if (keyD("w")) { this.camera.position.add(forwardVec); this.lookPos.add(forwardVec) }
+        if (keyD("s")) { this.camera.position.sub(forwardVec); this.lookPos.sub(forwardVec)}
+        if (keyD("a")) { this.camera.position.add(leftVec); this.lookPos.add(leftVec)}
+        if (keyD("d")) { this.camera.position.sub(leftVec); this.lookPos.sub(leftVec)}
 
 
 
