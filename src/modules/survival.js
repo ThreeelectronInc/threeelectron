@@ -173,6 +173,10 @@ ipcRenderer.on('ping', (event, arg) => {
             console.log(this.devTools)
         }
 
+        if (this.keyPressed('l')) {
+          let gameElem = document.getElementById('myContainer');
+          gameElem.requestPointerLock();
+        }
         const mousePadSpeed = 0.25
         if (this.isMouseDown[0]) {
             let mousePan = forwardVec.clone().multiplyScalar(this.mouse.yVel * mousePadSpeed)
