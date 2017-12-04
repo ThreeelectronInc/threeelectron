@@ -24,6 +24,9 @@ class SurvivalGame extends BaseGame {
         this.chickensDone = false
         this.time_elapsed = 0
 
+    this.r = 2;
+    this.theta = Math.PI / 2;
+    this.phi = 0;
 
     }
 
@@ -169,6 +172,36 @@ ipcRenderer.on('ping', (event, arg) => {
             ipcRenderer.send('toggle-dev', this.devTools)
             console.log(this.devTools)
         }
+
+        if (this.keyPressed('l')) {
+          let gameElem = document.getElementById('myContainer');
+          gameElem.requestPointerLock();
+        }
+
+        // Update the spherical coordinates based on the mouse movement
+        // and calculate the lookPos (offset from the camera position).
+        // r >= 0
+        // 0 < theta < 180
+        // 0 <= phi < 360
+        let xMouseSen = 0.001;
+        let yMouseSen = 0.001;
+        let minAngle = 0.001;
+        this.theta += this.mouse.yVel * yMouseSen;
+        if (this.theta >= Math.PI) {
+          this.theta = Math.PI - minAngle;
+        } else if (this.theta <= 0) {
+          this.theta = minAngle;
+        }
+        this.phi += this.mouse.xVel * xMouseSen;
+        let twoPI = 2 * Math.PI;
+        while (this.phi > twoPI) this.phi -= twoPI;
+        while (this.phi < 0) this.phi += 2 * twoPI;
+        let lookAt = new THREE.Vector3(this.r * Math.sin(this.theta) * Math.cos(this.phi),
+          this.r * Math.cos(this.theta),
+          this.r * Math.sin(this.theta) * Math.sin(this.phi))
+        this.lookPos = this.camera.position.clone()
+        this.lookPos.add(lookAt);
+
 
         const mousePadSpeed = 0.25
         if (this.isMouseDown[0]) {
