@@ -46,5 +46,6 @@ class Entity {
 
 module.exports = {
     Entity: Entity,
-    chickenCount: 0
+    chickenCount: 0,
+    geomChicken
 }
