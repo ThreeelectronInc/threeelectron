@@ -260,7 +260,7 @@ ipcRenderer.on('ping', (event, arg) => {
         this.matShader2.uniforms['time'] = {value: this.time_elapsed * 0.05}
         // self.shader.uniformf('positionOffset', 0, 0)
         this.matShader2.uniforms['scale'] = {value: 1.5}
-        this.matShader2.uniforms['toColor'] = {value: 0}
+        this.matShader2.uniforms['toColor'] = {value: 1}
         this.matShader2.uniforms['step'] = {value: 0.1}
         
         this.renderBuffer.render()
