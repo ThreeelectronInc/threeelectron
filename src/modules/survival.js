@@ -28,6 +28,9 @@ class SurvivalGame extends BaseGame {
     this.theta = Math.PI / 2;
     this.phi = 0;
 
+    // The number of block sizes the camera hovers above the ground.
+    this.hoverHeight = 1;
+
     }
 
     // Called when start() is called and the renderer has been initialised
@@ -178,9 +181,12 @@ ipcRenderer.on('ping', (event, arg) => {
           gameElem.requestPointerLock();
         }
 
+        // Update the hoverHeight if the mouse is scrolled.
+        this.hoverHeight += this.mouse.wheel / 120
+
         this.camera.position.y = (TerrainGenerator.getHeight(
           this.camera.position.x / chunkClass.blockScale,
-          this.camera.position.z / chunkClass.blockScale) + 1) *
+          this.camera.position.z / chunkClass.blockScale) + this.hoverHeight) *
           chunkClass.blockScale
 
         // Update the spherical coordinates based on the mouse movement
@@ -244,8 +250,8 @@ ipcRenderer.on('ping', (event, arg) => {
         // mouseVec.multiplyScalar(this.mouse.wheel * 0.05)
         // this.camera.position.add(mouseVec)
 
-        this.camera.position.y += this.mouse.wheel * 0.25
-        this.lookPos.y += this.mouse.wheel * 0.25
+        // this.camera.position.y += this.mouse.wheel * 0.25
+        // this.lookPos.y += this.mouse.wheel * 0.25
 
 
 
