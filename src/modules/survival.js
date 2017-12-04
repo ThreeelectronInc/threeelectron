@@ -132,10 +132,10 @@ class SurvivalGame extends BaseGame {
         if (keyD("e")) { this.camera.position.y += camVel }
         if (keyD("q")) { this.camera.position.y -= camVel }
         
-
+        const mousePadSpeed = 0.25
         if (this.isMouseDown[0]) {
-            let mousePan = forwardVec.clone().multiplyScalar(this.mouse.yVel)
-                .add(leftVec.clone().multiplyScalar(this.mouse.xVel))
+            let mousePan = forwardVec.clone().multiplyScalar(this.mouse.yVel * mousePadSpeed)
+                .add(leftVec.clone().multiplyScalar(this.mouse.xVel * mousePadSpeed))
 
             
             this.camera.position.add(mousePan); 
@@ -145,7 +145,7 @@ class SurvivalGame extends BaseGame {
         if  (this.isMouseDown[2]) {
             
             let rotVec = lookVec.clone()
-            rotVec.applyAxisAngle(upVec, this.mouse.xVel * 0.01)
+            rotVec.applyAxisAngle(upVec, this.mouse.xVel * 0.005)
             
             this.camera.position.subVectors(this.lookPos, rotVec)
 
@@ -157,7 +157,7 @@ class SurvivalGame extends BaseGame {
             console.log(testZoomDistanceVec.length())
             if (testZoomDistanceVec.length() > 50 || this.mouse.yVel < 0 ){
 
-                mouseVec.multiplyScalar(this.mouse.yVel * 1)
+                mouseVec.multiplyScalar(this.mouse.yVel * 0.5)
             
                 this.camera.position.add(mouseVec)
                     
@@ -168,7 +168,7 @@ class SurvivalGame extends BaseGame {
         // mouseVec.multiplyScalar(this.mouse.wheel * 0.05)
         // this.camera.position.add(mouseVec)
 
-        this.camera.position.y += this.mouse.wheel * -0.25
+        this.camera.position.y += this.mouse.wheel * 0.25
         
 
         this.camera.lookAt(this.lookPos);
