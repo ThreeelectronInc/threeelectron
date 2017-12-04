@@ -211,9 +211,11 @@ class BaseGame {
 
         // this.handleInput(delta)        
 
-        this.update(delta)
-        this.render();
 
+        this.renderer.clear();
+        this.update(delta)
+        this.renderer.render(this.scene, this.camera)
+        
         this.stats.update()
 
         this.mouse.xVel = 0
@@ -221,12 +223,6 @@ class BaseGame {
         this.mouse.wheel = 0
     }
 
-
-    render() {
-        // console.log(this)
-        this.renderer.clear();
-        this.renderer.render(this.scene, this.camera);
-    }
 
     start() {
         this._init();
