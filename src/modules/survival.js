@@ -293,7 +293,7 @@ ipcRenderer.on('ping', (event, arg) => {
         this.matShader2.uniforms['toColor'] = {value: 1}
         this.matShader2.uniforms['step'] = {value: 0.1}
         
-        //this.renderBuffer.render()
+        this.renderBuffer.render()
     }
 }
 
