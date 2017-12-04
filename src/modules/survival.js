@@ -8,7 +8,7 @@ let chickenClass = require('./../core/entities/chicken')
 
 
 
-let {ipcRenderer, remote} = require('electron'); 
+let { ipcRenderer, remote } = require('electron');
 
 
 class SurvivalGame extends BaseGame {
@@ -23,9 +23,9 @@ class SurvivalGame extends BaseGame {
         this.chickensDone = false
         this.time_elapsed = 0
 
-    this.r = 2;
-    this.theta = Math.PI / 2;
-    this.phi = 0;
+        this.r = 2;
+        this.theta = Math.PI / 2;
+        this.phi = 0;
 
     }
 
@@ -72,10 +72,10 @@ class SurvivalGame extends BaseGame {
 
         // Create a different scene to hold our buffer objects
         this.bufferScene = new THREE.Scene()
-        let {RenderBuffer} = require('./../core/render_buffer')
-        this.renderBuffer = new RenderBuffer(this.renderer,this.bufferScene, 512)
+        let { RenderBuffer } = require('./../core/render_buffer')
+        this.renderBuffer = new RenderBuffer(this.renderer, this.bufferScene, 512)
         this.bufferMaterial = new THREE.MeshBasicMaterial({ map: this.renderBuffer.bufferTexture.texture, transparent: true, side: THREE.DoubleSide })
-        
+
         let mapChicken = new THREE.TextureLoader().load("assets/chicken.png");
         let matChicken = new THREE.SpriteMaterial({ map: mapChicken, color: 0xffffff });
         let geomChicken = new THREE.Sprite(matChicken);
@@ -96,13 +96,13 @@ class SurvivalGame extends BaseGame {
 
 
 
-// Listen for main message
-ipcRenderer.on('ping', (event, arg) => {  
-    // Print 5
-    console.log(arg);
-    // Invoke method directly on main process
-    // main.pong(6);
-});
+        // Listen for main message
+        ipcRenderer.on('ping', (event, arg) => {
+            // Print 5
+            console.log(arg);
+            // Invoke method directly on main process
+            // main.pong(6);
+        });
 
     }
 
@@ -137,107 +137,80 @@ ipcRenderer.on('ping', (event, arg) => {
 
         // TODO: Make pan and zoom methods
 
-        if (keyD("w")) { this.camera.position.add(forwardVec); this.lookPos.add(forwardVec) }
-        if (keyD("s")) { this.camera.position.sub(forwardVec); this.lookPos.sub(forwardVec) }
-        if (keyD("a")) { this.camera.position.add(leftVec); this.lookPos.add(leftVec) }
-        if (keyD("d")) { this.camera.position.sub(leftVec); this.lookPos.sub(leftVec) }
+        if (keyD("w")) { this.camera.position.add(forwardVec); }
+        if (keyD("s")) { this.camera.position.sub(forwardVec); }
+        if (keyD("a")) { this.camera.position.add(leftVec); }
+        if (keyD("d")) { this.camera.position.sub(leftVec); }
 
-        let rotSpeed = 0.05
-        if (keyD("e")) { 
-            
-            let rotVec = lookVec.clone()
-            rotVec.applyAxisAngle(upVec, rotSpeed)
 
-            this.camera.position.subVectors(this.lookPos, rotVec)
-
-        }
-        if (keyD("q")) { 
-            
-
-            let rotVec = lookVec.clone()
-            rotVec.applyAxisAngle(upVec, -rotSpeed)
-
-            this.camera.position.subVectors(this.lookPos, rotVec)
-
-        }
 
         if (keyD("r")) { this.camera.position.y += camVel; this.lookPos.y += camVel }
         if (keyD("f")) { this.camera.position.y -= camVel; this.lookPos.y -= camVel }
 
-        if (this.keyPressed('h')){
+        if (this.keyPressed('h')) {
             this.devTools = !this.devTools
             ipcRenderer.send('toggle-dev', this.devTools)
             console.log(this.devTools)
         }
 
-        if (this.keyPressed('l')) {
-          let gameElem = document.getElementById('myContainer');
-          gameElem.requestPointerLock();
-        }
-
-        // Update the spherical coordinates based on the mouse movement
-        // and calculate the lookPos (offset from the camera position).
-        // r >= 0
-        // 0 < theta < 180
-        // 0 <= phi < 360
-        let xMouseSen = 0.001;
-        let yMouseSen = 0.001;
-        let minAngle = 0.001;
-        this.theta += this.mouse.yVel * yMouseSen;
-        if (this.theta >= Math.PI) {
-          this.theta = Math.PI - minAngle;
-        } else if (this.theta <= 0) {
-          this.theta = minAngle;
-        }
-        this.phi += this.mouse.xVel * xMouseSen;
-        let twoPI = 2 * Math.PI;
-        while (this.phi > twoPI) this.phi -= twoPI;
-        while (this.phi < 0) this.phi += 2 * twoPI;
-        let lookAt = new THREE.Vector3(this.r * Math.sin(this.theta) * Math.cos(this.phi),
-          this.r * Math.cos(this.theta),
-          this.r * Math.sin(this.theta) * Math.sin(this.phi))
-        this.lookPos = this.camera.position.clone()
-        this.lookPos.add(lookAt);
+    
 
 
-        const mousePadSpeed = 0.25
+        const mousePanSpeed = 0.25
         if (this.isMouseDown[0]) {
-            let mousePan = forwardVec.clone().multiplyScalar(this.mouse.yVel * mousePadSpeed)
-                .add(leftVec.clone().multiplyScalar(this.mouse.xVel * mousePadSpeed))
+
+            let gameElem = document.getElementById('myContainer');
+            gameElem.requestPointerLock();
+
+            let mousePan = forwardVec.clone().multiplyScalar(this.mouse.yVel * mousePanSpeed)
+                .add(leftVec.clone().multiplyScalar(this.mouse.xVel * mousePanSpeed))
 
 
             this.camera.position.add(mousePan);
 
             this.lookPos.add(mousePan)
         }
-        if (this.isMouseDown[2]) {
-
-            let rotVec = lookVec.clone()
-            rotVec.applyAxisAngle(upVec, this.mouse.xVel * 0.005)
-
-            this.camera.position.subVectors(this.lookPos, rotVec)
+        else if (this.isMouseDown[2]) {
 
 
-            // this.camera.position.y += this.mouse.yVel * -2
-
-            let testZoomDistanceVec = lookVec.clone()
-            testZoomDistanceVec.y = 0
-            // console.log(testZoomDistanceVec.length())
-            if (testZoomDistanceVec.length() > 50 || this.mouse.yVel < 0) {
-
-                mouseVec.multiplyScalar(this.mouse.yVel * 0.5)
-
-                this.camera.position.add(mouseVec)
-
-
+            let gameElem = document.getElementById('myContainer');
+            gameElem.requestPointerLock();
+            // Update the spherical coordinates based on the mouse movement
+            // and calculate the lookPos (offset from the camera position).
+            // r >= 0
+            // 0 < theta < 180
+            // 0 <= phi < 360
+            let xMouseSen = 0.005;
+            let yMouseSen = 0.005;
+            let minAngle = 0.001;
+            this.theta += this.mouse.yVel * yMouseSen;
+            if (this.theta >= Math.PI) {
+                this.theta = Math.PI - minAngle;
+            } else if (this.theta <= 0) {
+                this.theta = minAngle;
             }
+            this.phi += this.mouse.xVel * xMouseSen;
+            let twoPI = 2 * Math.PI;
+            while (this.phi > twoPI) this.phi -= twoPI;
+            while (this.phi < 0) this.phi += 2 * twoPI;
+            let lookAt = new THREE.Vector3(this.r * Math.sin(this.theta) * Math.cos(this.phi),
+                this.r * Math.cos(this.theta),
+                this.r * Math.sin(this.theta) * Math.sin(this.phi))
+            this.lookPos = this.camera.position.clone()
+            this.lookPos.add(lookAt);
+        }
+        else {
+
+            document.exitPointerLock();
+            
+
         }
 
         // mouseVec.multiplyScalar(this.mouse.wheel * 0.05)
         // this.camera.position.add(mouseVec)
 
-        this.camera.position.y += this.mouse.wheel * 0.25 
-        this.lookPos.y += this.mouse.wheel * 0.25 
+        this.camera.position.y += this.mouse.wheel * 0.25
+        this.lookPos.y += this.mouse.wheel * 0.25
 
         this.camera.lookAt(this.lookPos);
 
@@ -263,7 +236,7 @@ ipcRenderer.on('ping', (event, arg) => {
                             // console.log('chicken count: ', entityClass.chickenCount)
 
                         }
-						
+
                     if (chickenClass.chickenCount > 50) {
                         this.chickensDone = true
                         break;
@@ -282,17 +255,17 @@ ipcRenderer.on('ping', (event, arg) => {
         }
 
         // # set a uniform to tell the shader the size of a single pixel
-        this.matShader2.uniforms['pixel'] = {value: new THREE.Vector2( 1.0/this.renderBuffer.bufferScale, 1.0/this.renderBuffer.bufferScale)}
-        this.matShader2.uniforms['window'] = {value: new THREE.Vector2( this.renderBuffer.bufferScale, this.renderBuffer.bufferScale)}
-        
-        
+        this.matShader2.uniforms['pixel'] = { value: new THREE.Vector2(1.0 / this.renderBuffer.bufferScale, 1.0 / this.renderBuffer.bufferScale) }
+        this.matShader2.uniforms['window'] = { value: new THREE.Vector2(this.renderBuffer.bufferScale, this.renderBuffer.bufferScale) }
+
+
         this.time_elapsed += delta
-        this.matShader2.uniforms['time'] = {value: this.time_elapsed * 0.05}
+        this.matShader2.uniforms['time'] = { value: this.time_elapsed * 0.05 }
         // self.shader.uniformf('positionOffset', 0, 0)
-        this.matShader2.uniforms['scale'] = {value: 1.5}
-        this.matShader2.uniforms['toColor'] = {value: 1}
-        this.matShader2.uniforms['step'] = {value: 0.1}
-        
+        this.matShader2.uniforms['scale'] = { value: 1.5 }
+        this.matShader2.uniforms['toColor'] = { value: 1 }
+        this.matShader2.uniforms['step'] = { value: 0.1 }
+
         this.renderBuffer.render()
     }
 }
