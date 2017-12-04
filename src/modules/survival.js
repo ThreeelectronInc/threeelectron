@@ -6,6 +6,12 @@ let TerrainGenerator = require('./../core/terrain_generator')
 let chunkClass = require('./../core/chunk')
 let entityClass = require('./../core/entities/entity')
 
+
+
+let {ipcRenderer, remote} = require('electron'); 
+
+
+
 class SurvivalGame extends BaseGame {
 
     constructor(tagName, fps = 0) {
@@ -58,15 +64,15 @@ class SurvivalGame extends BaseGame {
         this.scene.add(meshShader)
 
 
-        
+
         //// This is where we create our off-screen render target ////
 
 
         // Create a different scene to hold our buffer objects
         this.bufferScene = new THREE.Scene()
         let {RenderBuffer} = require('./../core/render_buffer')
-        this.renderBuffer = new RenderBuffer(this.renderer,this.bufferScene)
-        this.bufferMaterial = new THREE.MeshLambertMaterial({ map: this.renderBuffer.bufferTexture.texture, transparent: true, side: THREE.DoubleSide })
+        this.renderBuffer = new RenderBuffer(this.renderer,this.bufferScene, 256)
+        this.bufferMaterial = new THREE.MeshBasicMaterial({ map: this.renderBuffer.bufferTexture.texture, transparent: true, side: THREE.DoubleSide })
         
         let mapChicken = new THREE.TextureLoader().load("assets/chicken.png");
         let matChicken = new THREE.SpriteMaterial({ map: mapChicken, color: 0xffffff });
@@ -87,6 +93,14 @@ class SurvivalGame extends BaseGame {
         this.scene.add(meshRTT)
 
 
+
+// Listen for main message
+ipcRenderer.on('ping', (event, arg) => {  
+    // Print 5
+    console.log(arg);
+    // Invoke method directly on main process
+    // main.pong(6);
+});
 
     }
 
@@ -130,6 +144,12 @@ class SurvivalGame extends BaseGame {
 
         if (keyD("e")) { this.camera.position.y += camVel; this.lookPos.y += camVel }
         if (keyD("q")) { this.camera.position.y -= camVel; this.lookPos.y -= camVel }
+
+        if (this.keyPressed('h')){
+            this.devTools = !this.devTools
+            ipcRenderer.send('toggle-dev', this.devTools)
+            console.log(this.devTools)
+        }
 
         const mousePadSpeed = 0.25
         if (this.isMouseDown[0]) {
@@ -216,7 +236,7 @@ class SurvivalGame extends BaseGame {
         this.matShader2.uniforms['pixel'] = {value: new THREE.Vector2( 1.0/this.renderBuffer.bufferScale, 1.0/this.renderBuffer.bufferScale)}
         this.matShader2.uniforms['window'] = {value: new THREE.Vector2( this.renderBuffer.bufferScale, this.renderBuffer.bufferScale)}
         
-
+        
         this.time_elapsed += delta
         this.matShader2.uniforms['time'] = {value: this.time_elapsed * 0.05}
         // self.shader.uniformf('positionOffset', 0, 0)

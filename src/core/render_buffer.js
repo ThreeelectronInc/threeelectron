@@ -3,12 +3,12 @@ let THREE = require('./../libs/three/three')
 
 class RenderBuffer {
 
-    constructor(renderer, scene){
+    constructor(renderer, scene, bufferSize){
         this.renderer = renderer
         this.bufferScene = scene
 
 
-        this.bufferScale = 512
+        this.bufferScale = bufferSize
         // Create the texture that will store our result
         this.bufferTexture = new THREE.WebGLRenderTarget(
             this.bufferScale, this.bufferScale, 

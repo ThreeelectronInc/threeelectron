@@ -101,6 +101,7 @@ class BaseGame {
 
         this.tagName = ""
         this.isKeyDown = {}
+        this.wasKeyDown = {}
         this.isMouseDown = {}
         this.mouse = {x: 0, y: 0, xVel: 0, yVel: 0, xPrev: 0, yPrev: 0, wheel: 0}
 
@@ -129,6 +130,8 @@ class BaseGame {
 
         // console.log(event.keyCode)
 
+        this.wasKeyDown[event.keyCode] = this.isKeyDown[event.keyCode]
+        
         this.isKeyDown[event.keyCode] = true
 
         // console.log(this.isKeyDown)
@@ -140,6 +143,10 @@ class BaseGame {
     }
 
     handleKeyUp(event) {
+
+
+        this.wasKeyDown[event.keyCode] = this.isKeyDown[event.keyCode]
+
         this.isKeyDown[event.keyCode] = false
     }
 
@@ -191,6 +198,13 @@ class BaseGame {
         return this.isKeyDown[keyCode]
     }
 
+    keyPressed(key){
+        let keyCode = key.charCodeAt(0) - 32
+        // console.log(keyCode)
+        return this.isKeyDown[keyCode] && !this.wasKeyDown[keyCode]
+
+    }
+
     _update() {
 
         if (!this.forceFPS) {
@@ -221,6 +235,10 @@ class BaseGame {
         this.mouse.xVel = 0
         this.mouse.yVel = 0
         this.mouse.wheel = 0
+
+        for (let key in this.isKeyDown){
+            this.wasKeyDown[key] = this.isKeyDown[key]
+        }
     }
 
 

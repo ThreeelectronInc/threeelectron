@@ -1,4 +1,4 @@
-const {app, BrowserWindow} = require('electron')
+const { app, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
 const url = require('url')
 
@@ -9,9 +9,9 @@ const url = require('url')
 // be closed automatically when the JavaScript object is garbage collected.
 let win
 
-function createWindow () {
+function createWindow() {
   // Create the browser window.
-  win = new BrowserWindow({width: 800, height: 600})
+  win = new BrowserWindow({ width: 800, height: 600 })
   // win = new BrowserWindow({width: 800, height: 600, webPreferences: { experimentalFeatures: true } })
   // win = new BrowserWindow({ experimentalFeatures: true })
 
@@ -24,15 +24,14 @@ function createWindow () {
 
   let dev_mode = true
 
-  if (dev_mode){
+  if (dev_mode) {
     // Open the DevTools.
     win.webContents.openDevTools()
 
   }
-  else{
+  else {
     win.setMenu(null)
   }
-
 
 
   // Emitted when the window is closed.
@@ -42,6 +41,17 @@ function createWindow () {
     // when you should delete the corresponding element.
     win = null
   })
+
+
+  win.on('enter-full-screen', () => {
+    win.webContents.closeDevTools()
+  })
+  win.on('leave-full-screen', () => {
+
+    win.webContents.openDevTools()
+
+  })
+
 }
 
 // This method will be called when Electron has finished
@@ -65,6 +75,11 @@ app.on('activate', () => {
     createWindow()
   }
 })
+
+
+
+
+
 
 // let fetch = require('fetch')
 // let testFunc = async () => await fetch('www.google.com').then(out => console.log('woot', out))
@@ -120,3 +135,32 @@ server.listen(port, (err) => {
 
   console.log(`server is listening on ${port}`)
 })
+
+
+
+
+
+
+
+// Listen for sync message from renderer process
+ipcMain.on('sync', (event, arg) => {
+  // Print 3
+  console.log(arg);
+  // Send value synchronously back to renderer process
+  event.returnValue = 4;
+  // Send async message to renderer process
+  win.webContents.send('ping', 5);
+});
+
+// Listen custom event to hide or show dev tools
+ipcMain.on('toggle-dev', (event, arg) => {
+  if (arg) {
+    win.webContents.closeDevTools()
+  }
+  else {
+    win.webContents.openDevTools()
+  }
+
+  console.log('show dev tools: ', arg)
+
+});
