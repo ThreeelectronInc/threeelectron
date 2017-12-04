@@ -16,7 +16,6 @@ class Chicken extends Entity {
     constructor(scene, x, y, z) {
         super(scene, x, y, z, geomChicken.clone(), ChunkClass.blockScale)
         module.exports.chickenCount++
-        console.log("adding chicken!!!", x, y, z)
     }
     
     update(delta) {
