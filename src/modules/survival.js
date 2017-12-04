@@ -8,7 +8,7 @@ let entityClass = require('./../core/entities/entity')
 
 
 
-let {ipcRenderer, remote} = require('electron'); 
+let {ipcRenderer, remote} = require('electron');
 
 
 
@@ -76,7 +76,7 @@ class SurvivalGame extends BaseGame {
         let {RenderBuffer} = require('./../core/render_buffer')
         this.renderBuffer = new RenderBuffer(this.renderer,this.bufferScene, 512)
         this.bufferMaterial = new THREE.MeshBasicMaterial({ map: this.renderBuffer.bufferTexture.texture, transparent: true, side: THREE.DoubleSide })
-        
+
         let mapChicken = new THREE.TextureLoader().load("assets/chicken.png");
         let matChicken = new THREE.SpriteMaterial({ map: mapChicken, color: 0xffffff });
         let geomChicken = new THREE.Sprite(matChicken);
@@ -98,7 +98,7 @@ class SurvivalGame extends BaseGame {
 
 
 // Listen for main message
-ipcRenderer.on('ping', (event, arg) => {  
+ipcRenderer.on('ping', (event, arg) => {
     // Print 5
     console.log(arg);
     // Invoke method directly on main process
@@ -146,16 +146,16 @@ ipcRenderer.on('ping', (event, arg) => {
         if (keyD("d")) { this.camera.position.sub(leftVec); this.lookPos.sub(leftVec) }
 
         let rotSpeed = 0.05
-        if (keyD("e")) { 
-            
+        if (keyD("e")) {
+
             let rotVec = lookVec.clone()
             rotVec.applyAxisAngle(upVec, rotSpeed)
 
             this.camera.position.subVectors(this.lookPos, rotVec)
 
         }
-        if (keyD("q")) { 
-            
+        if (keyD("q")) {
+
 
             let rotVec = lookVec.clone()
             rotVec.applyAxisAngle(upVec, -rotSpeed)
@@ -239,15 +239,15 @@ ipcRenderer.on('ping', (event, arg) => {
         // mouseVec.multiplyScalar(this.mouse.wheel * 0.05)
         // this.camera.position.add(mouseVec)
 
-        this.camera.position.y += this.mouse.wheel * 0.25 
-        this.lookPos.y += this.mouse.wheel * 0.25 
-        
+        this.camera.position.y += this.mouse.wheel * 0.25
+        this.lookPos.y += this.mouse.wheel * 0.25
+
 
 
         this.camera.lookAt(this.lookPos);
 
 
-        if (!this.chickensDone) { // TerrainGenerator.world.done && 
+        if (!this.chickensDone) { // TerrainGenerator.world.done &&
             console.log("start generating chickens")
 
             for (let x = 0; x < TerrainGenerator.world.totalWidth; x++) {
@@ -287,15 +287,15 @@ ipcRenderer.on('ping', (event, arg) => {
         // # set a uniform to tell the shader the size of a single pixel
         this.matShader2.uniforms['pixel'] = {value: new THREE.Vector2( 1.0/this.renderBuffer.bufferScale, 1.0/this.renderBuffer.bufferScale)}
         this.matShader2.uniforms['window'] = {value: new THREE.Vector2( this.renderBuffer.bufferScale, this.renderBuffer.bufferScale)}
-        
-        
+
+
         this.time_elapsed += delta
         this.matShader2.uniforms['time'] = {value: this.time_elapsed * 0.05}
         // self.shader.uniformf('positionOffset', 0, 0)
         this.matShader2.uniforms['scale'] = {value: 1.5}
         this.matShader2.uniforms['toColor'] = {value: 1}
         this.matShader2.uniforms['step'] = {value: 0.1}
-        
+
         this.renderBuffer.render()
     }
 }
