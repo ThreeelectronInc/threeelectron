@@ -238,11 +238,8 @@ ipcRenderer.on('ping', (event, arg) => {
 
         this.camera.position.y += this.mouse.wheel * 0.25 
         this.lookPos.y += this.mouse.wheel * 0.25 
-        
-
 
         this.camera.lookAt(this.lookPos);
-
 
         if (!this.chickensDone) { // TerrainGenerator.world.done && 
             console.log("start generating chickens")
@@ -257,13 +254,16 @@ ipcRenderer.on('ping', (event, arg) => {
                     for (let y = minY; y < maxY; y++)
 
                         if (TerrainGenerator.getHeight(x, z) === y + 1 && !this.chickensDone) {//&& TerrainGenerator.world.getChunk(x,TerrainGenerator.world.waterLevel,z)) {
-                            let chicken = new entityClass.Entity(this.scene, x * chunkClass.blockScale, chunkClass.blockScale + (y + 20) * chunkClass.blockScale, z * chunkClass.blockScale)
+
+                            let chicken = new chickenClass.Chicken(this.scene, x * chunkClass.blockScale, chunkClass.blockScale + (y + 40) * chunkClass.blockScale, z * chunkClass.blockScale)
                             this.chickens.push(chicken)
+
+                            chicken.poop()
 
                             // console.log('chicken count: ', entityClass.chickenCount)
 
                         }
-
+						
                     if (entityClass.chickenCount > 50) {
                         this.chickensDone = true
                         break;
