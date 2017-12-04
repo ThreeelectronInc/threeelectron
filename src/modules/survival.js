@@ -4,7 +4,7 @@ let { BaseGame } = require('./../core/base_game')
 let TerrainGenerator = require('./../core/terrain_generator')
 
 let chunkClass = require('./../core/chunk')
-let entityClass = require('./../core/entities/entity')
+let chickenClass = require('./../core/entities/chicken')
 
 
 
@@ -264,7 +264,7 @@ ipcRenderer.on('ping', (event, arg) => {
 
                         }
 						
-                    if (entityClass.chickenCount > 50) {
+                    if (chickenClass.chickenCount > 50) {
                         this.chickensDone = true
                         break;
                     }
@@ -293,7 +293,7 @@ ipcRenderer.on('ping', (event, arg) => {
         this.matShader2.uniforms['toColor'] = {value: 1}
         this.matShader2.uniforms['step'] = {value: 0.1}
         
-        this.renderBuffer.render()
+        //this.renderBuffer.render()
     }
 }
 
