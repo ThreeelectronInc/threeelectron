@@ -18,10 +18,10 @@ class Entity {
         this.vel = 0
     }
 
-    move(x,y,z) {
-        let newX = this.geometry.position.x + x
-        let newY = this.geometry.position.y + y
-        let newZ = this.geometry.position.z + z
+    move(dir) {
+        let newX = this.geometry.position.x + dir.x
+        let newY = this.geometry.position.y + dir.y
+        let newZ = this.geometry.position.z + dir.z
 
         if (!WORLD.getBlock(Math.floor(newX / ChunkClass.blockScale) | 0, Math.floor(newY / ChunkClass.blockScale) | 0, Math.floor(newZ / ChunkClass.blockScale) | 0)) {
             this.geometry.position.set(newX, newY, newZ)

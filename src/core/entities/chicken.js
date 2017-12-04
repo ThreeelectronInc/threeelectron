@@ -16,14 +16,24 @@ class Chicken extends Entity {
     constructor(scene, x, y, z) {
         super(scene, x, y, z, geomChicken.clone(), ChunkClass.blockScale)
         module.exports.chickenCount++
+
+        this.randomOffset = new THREE.Vector3(Math.random() * 2 -1, 0, Math.random() * 2 -1)
+        this.randomOffset.multiplyScalar(50)
+        this.randomOffset.add(this.geometry.position)
     }
     
     update(delta) {
-        this.vel -= 0.2 * delta
-
-        this.move(0, this.vel, 0)
-
         this.poop_update(delta)
+
+        let dirVec = new THREE.Vector3(0,0,0)
+        dirVec.subVectors(this.randomOffset, this.geometry.position)
+        dirVec.normalize()
+        dirVec.multiplyScalar(1 * delta)
+        let down = new THREE.Vector3(0,-3,0)
+        down.multiplyScalar(delta * 15)
+        dirVec.add(down)
+
+        this.move(dirVec)
     }
 
     poop_update (delta) {

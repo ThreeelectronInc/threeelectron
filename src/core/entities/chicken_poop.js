@@ -16,9 +16,9 @@ class ChickenPoop extends Entity {
     }
     
     update(delta) {
-        this.vel -= 0.2 * delta
+        let down = new THREE.Vector3(0, -0.8, 0)
 
-        this.move(0, this.vel, 0)
+        this.move(down)
     }
 }
 
