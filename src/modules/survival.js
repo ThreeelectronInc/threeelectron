@@ -178,6 +178,11 @@ ipcRenderer.on('ping', (event, arg) => {
           gameElem.requestPointerLock();
         }
 
+        this.camera.position.y = (TerrainGenerator.getHeight(
+          this.camera.position.x / chunkClass.blockScale,
+          this.camera.position.z / chunkClass.blockScale) + 1) *
+          chunkClass.blockScale
+
         // Update the spherical coordinates based on the mouse movement
         // and calculate the lookPos (offset from the camera position).
         // r >= 0
