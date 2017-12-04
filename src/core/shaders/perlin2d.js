@@ -232,7 +232,7 @@ void main() {
         gl_FragColor = vec4(red(c.x), green(c.x), blue(c.x), 1.0);
     }
     else{
-        gl_FragColor = c; //clamp(c, 0, 1);
+        gl_FragColor = c + vec4(0.5,0.5,0.5,1); //clamp(c, 0, 1);
     }
 }
                 `

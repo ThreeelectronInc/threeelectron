@@ -71,7 +71,7 @@ class SurvivalGame extends BaseGame {
         // Create a different scene to hold our buffer objects
         this.bufferScene = new THREE.Scene()
         let {RenderBuffer} = require('./../core/render_buffer')
-        this.renderBuffer = new RenderBuffer(this.renderer,this.bufferScene, 256)
+        this.renderBuffer = new RenderBuffer(this.renderer,this.bufferScene, 512)
         this.bufferMaterial = new THREE.MeshBasicMaterial({ map: this.renderBuffer.bufferTexture.texture, transparent: true, side: THREE.DoubleSide })
         
         let mapChicken = new THREE.TextureLoader().load("assets/chicken.png");
@@ -82,7 +82,7 @@ class SurvivalGame extends BaseGame {
         let perlin2d = require('./../core/shaders/perlin2d')
         this.matShader2 = perlin2d.make()
 
-        this.bufferBackgroundPlane = new THREE.PlaneGeometry(0.9, 0.9, 1)
+        this.bufferBackgroundPlane = new THREE.PlaneGeometry(1, 1, 1)
         this.backgroundRRT = new THREE.Mesh(this.bufferBackgroundPlane, this.matShader2);
         this.bufferScene.add(this.backgroundRRT)
 
@@ -142,8 +142,27 @@ ipcRenderer.on('ping', (event, arg) => {
         if (keyD("a")) { this.camera.position.add(leftVec); this.lookPos.add(leftVec) }
         if (keyD("d")) { this.camera.position.sub(leftVec); this.lookPos.sub(leftVec) }
 
-        if (keyD("e")) { this.camera.position.y += camVel; this.lookPos.y += camVel }
-        if (keyD("q")) { this.camera.position.y -= camVel; this.lookPos.y -= camVel }
+        let rotSpeed = 0.05
+        if (keyD("e")) { 
+            
+            let rotVec = lookVec.clone()
+            rotVec.applyAxisAngle(upVec, rotSpeed)
+
+            this.camera.position.subVectors(this.lookPos, rotVec)
+
+        }
+        if (keyD("q")) { 
+            
+
+            let rotVec = lookVec.clone()
+            rotVec.applyAxisAngle(upVec, -rotSpeed)
+
+            this.camera.position.subVectors(this.lookPos, rotVec)
+
+        }
+
+        if (keyD("r")) { this.camera.position.y += camVel; this.lookPos.y += camVel }
+        if (keyD("f")) { this.camera.position.y -= camVel; this.lookPos.y -= camVel }
 
         if (this.keyPressed('h')){
             this.devTools = !this.devTools
@@ -241,7 +260,7 @@ ipcRenderer.on('ping', (event, arg) => {
         this.matShader2.uniforms['time'] = {value: this.time_elapsed * 0.05}
         // self.shader.uniformf('positionOffset', 0, 0)
         this.matShader2.uniforms['scale'] = {value: 1.5}
-        this.matShader2.uniforms['toColor'] = {value: 1}
+        this.matShader2.uniforms['toColor'] = {value: 0}
         this.matShader2.uniforms['step'] = {value: 0.1}
         
         this.renderBuffer.render()
