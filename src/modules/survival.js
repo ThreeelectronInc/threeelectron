@@ -24,6 +24,9 @@ class SurvivalGame extends BaseGame {
         this.chickensDone = false
         this.time_elapsed = 0
 
+    this.r = 2;
+    this.theta = Math.PI / 2;
+    this.phi = 0;
 
     }
 
