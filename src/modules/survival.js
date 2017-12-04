@@ -234,7 +234,7 @@ ipcRenderer.on('ping', (event, arg) => {
 
                         }
 
-                    if (entityClass.chickenCount > 500) {
+                    if (entityClass.chickenCount > 50) {
                         this.chickensDone = true
                         break;
                     }
