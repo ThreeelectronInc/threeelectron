@@ -33,7 +33,6 @@ class SurvivalGame extends BaseGame {
 
         TerrainGenerator.generateTerrain(this.scene)
         console.log('moving on while terrain generates')
-        // console.log(chicken.position)
 
         // Lights
 
@@ -46,50 +45,12 @@ class SurvivalGame extends BaseGame {
 
 
         // Camera
-        this.camera.position.set(100, 500, 100)
         // this.lookPos.set(TerrainGenerator.world.totalBlockWidth * 0.5, 0, TerrainGenerator.world.totalBlockDepth * 0.5)
-        // console.log(this.lookPos)
+        this.camera.position.set(0, 500, 1000)
+        this.camera.lookAt(0,500,0)
+
 
         this.chickens = []
-
-
-        let simpleShader = require('./../core/shaders/simple')
-        let matShader = simpleShader.make()
-
-
-        let geomShader = new THREE.PlaneGeometry(1000, 1000, 1000);
-        let meshShader = new THREE.Mesh(geomShader, matShader);
-        this.scene.add(meshShader)
-
-
-
-        //// This is where we create our off-screen render target ////
-
-
-        // Create a different scene to hold our buffer objects
-        this.bufferScene = new THREE.Scene()
-        let { RenderBuffer } = require('./../core/render_buffer')
-        this.renderBuffer = new RenderBuffer(this.renderer, this.bufferScene, 512)
-        this.bufferMaterial = new THREE.MeshBasicMaterial({ map: this.renderBuffer.bufferTexture.texture, transparent: true, side: THREE.DoubleSide })
-
-        let mapChicken = new THREE.TextureLoader().load("assets/chicken.png");
-        let matChicken = new THREE.SpriteMaterial({ map: mapChicken, color: 0xffffff });
-        let geomChicken = new THREE.Sprite(matChicken);
-        this.bufferScene.add(geomChicken)
-
-        let perlin2d = require('./../core/shaders/perlin2d')
-        this.matShader2 = perlin2d.make()
-
-        this.bufferBackgroundPlane = new THREE.PlaneGeometry(1, 1, 1)
-        this.backgroundRRT = new THREE.Mesh(this.bufferBackgroundPlane, this.matShader2);
-        this.bufferScene.add(this.backgroundRRT)
-
-        let geomRTT = new THREE.PlaneGeometry(1000, 1000, 1000);
-        let meshRTT = new THREE.Mesh(geomRTT, this.bufferMaterial);
-
-        meshRTT.position.set(1000, 1000, 1000)
-        this.scene.add(meshRTT)
-
 
         this.cameraControl = new DeityCamera(this.camera, (key) => this.keyDown(key), this.mouse)
 
@@ -149,20 +110,6 @@ class SurvivalGame extends BaseGame {
         for (var i = 0; i < this.chickens.length; i++) {
             this.chickens[i].update(delta)
         }
-
-        // # set a uniform to tell the shader the size of a single pixel
-        this.matShader2.uniforms['pixel'] = { value: new THREE.Vector2(1.0 / this.renderBuffer.bufferScale, 1.0 / this.renderBuffer.bufferScale) }
-        this.matShader2.uniforms['window'] = { value: new THREE.Vector2(this.renderBuffer.bufferScale, this.renderBuffer.bufferScale) }
-
-
-        this.time_elapsed += delta
-        this.matShader2.uniforms['time'] = { value: this.time_elapsed * 0.05 }
-        // self.shader.uniformf('positionOffset', 0, 0)
-        this.matShader2.uniforms['scale'] = { value: 1.5 }
-        this.matShader2.uniforms['toColor'] = { value: 1 }
-        this.matShader2.uniforms['step'] = { value: 0.1 }
-
-        this.renderBuffer.render()
     }
 }
 
