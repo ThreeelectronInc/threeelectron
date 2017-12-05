@@ -102,8 +102,8 @@ class BaseGame {
         this.tagName = ""
         this.isKeyDown = {}
         this.wasKeyDown = {}
-        this.isMouseDown = {}
-        this.mouse = {x: 0, y: 0, xVel: 0, yVel: 0, xPrev: 0, yPrev: 0, wheel: 0}
+        
+        this.mouse = {x: 0, y: 0, xVel: 0, yVel: 0, xPrev: 0, yPrev: 0, wheel: 0, buttonDown: {}}
 
         if (this.clock) {
             this.clock.stop()
@@ -151,11 +151,11 @@ class BaseGame {
     }
 
     handleMouseUp(event) {
-        this.isMouseDown[event.button] = false
+        this.mouse.buttonDown[event.button] = false
     }
 
     handleMouseDown(event) {
-        this.isMouseDown[event.button] = true
+        this.mouse.buttonDown[event.button] = true
     }
     handleMouseMove(event) {
 

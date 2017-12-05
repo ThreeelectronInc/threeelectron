@@ -7,7 +7,6 @@ let chunkClass = require('./../core/chunk')
 let chickenClass = require('./../core/entities/chicken')
 
 
-let DeityCamera = require('./../core/camera/deity')
 
 let { ipcRenderer, remote } = require('electron');
 
@@ -17,11 +16,16 @@ class SurvivalGame extends BaseGame {
     constructor(tagName, fps = 0) {
         super(tagName, fps)
 
+        this.camSpeed = 500
+        this.lookPos = new THREE.Vector3()
 
         this.chickenCount = 0
         this.chickensDone = false
         this.time_elapsed = 0
 
+        this.r = 2;
+        this.theta = Math.PI / 2;
+        this.phi = 0;
 
     }
 
@@ -47,8 +51,8 @@ class SurvivalGame extends BaseGame {
 
         // Camera
         this.camera.position.set(100, 500, 100)
-        // this.lookPos.set(TerrainGenerator.world.totalBlockWidth * 0.5, 0, TerrainGenerator.world.totalBlockDepth * 0.5)
-        // console.log(this.lookPos)
+        this.lookPos.set(TerrainGenerator.world.totalBlockWidth * 0.5, 0, TerrainGenerator.world.totalBlockDepth * 0.5)
+        console.log(this.lookPos)
 
         this.chickens = []
 
@@ -91,7 +95,14 @@ class SurvivalGame extends BaseGame {
         this.scene.add(meshRTT)
 
 
-        this.cameraControl = new DeityCamera(this.camera, (key) => this.keyDown(key), this.mouse)
+
+        // Listen for main message
+        ipcRenderer.on('ping', (event, arg) => {
+            // Print 5
+            console.log(arg);
+            // Invoke method directly on main process
+            // main.pong(6);
+        });
 
     }
 
@@ -100,8 +111,41 @@ class SurvivalGame extends BaseGame {
 
     update(delta) {
 
-        this.cameraControl.update(delta)
 
+        // Make short named wrapper since we'll be calling this method a lot here
+        const keyD = (key) => this.keyDown(key)
+
+        let camVel = this.camSpeed * delta
+
+        let forwardVec = new THREE.Vector3()
+        let mouseVec = new THREE.Vector3()
+        let lookVec = new THREE.Vector3()
+        let upVec = new THREE.Vector3(0, 1, 0)
+        let leftVec = upVec.clone()
+
+        lookVec.subVectors(this.lookPos, this.camera.position)
+
+        forwardVec = lookVec.clone()
+        forwardVec.y = 0
+
+
+        forwardVec = forwardVec.normalize().multiplyScalar(delta * 1000)
+
+        mouseVec = forwardVec.clone()
+
+        leftVec.cross(forwardVec)
+
+        // TODO: Make pan and zoom methods
+
+        if (keyD("w")) { this.camera.position.add(forwardVec); this.lookPos.add(forwardVec) }
+        if (keyD("s")) { this.camera.position.sub(forwardVec); this.lookPos.sub(forwardVec)}
+        if (keyD("a")) { this.camera.position.add(leftVec); this.lookPos.add(leftVec)}
+        if (keyD("d")) { this.camera.position.sub(leftVec); this.lookPos.sub(leftVec)}
+
+
+
+        if (keyD("r")) { this.camera.position.y += camVel; this.lookPos.y += camVel }
+        if (keyD("f")) { this.camera.position.y -= camVel; this.lookPos.y -= camVel }
 
         if (this.keyPressed('h')) {
             this.devTools = !this.devTools
@@ -109,6 +153,66 @@ class SurvivalGame extends BaseGame {
             console.log(this.devTools)
         }
 
+    
+
+
+        const mousePanSpeed = 0.25
+        if (this.isMouseDown[0]) {
+
+            let gameElem = document.getElementById('myContainer');
+            gameElem.requestPointerLock();
+
+            let mousePan = forwardVec.clone().multiplyScalar(this.mouse.yVel * mousePanSpeed)
+                .add(leftVec.clone().multiplyScalar(this.mouse.xVel * mousePanSpeed))
+
+
+            this.camera.position.add(mousePan);
+
+            this.lookPos.add(mousePan)
+        }
+        else if (this.isMouseDown[2]) {
+
+
+            let gameElem = document.getElementById('myContainer');
+            gameElem.requestPointerLock();
+            // Update the spherical coordinates based on the mouse movement
+            // and calculate the lookPos (offset from the camera position).
+            // r >= 0
+            // 0 < theta < 180
+            // 0 <= phi < 360
+            let xMouseSen = 0.005;
+            let yMouseSen = 0.005;
+            let minAngle = 0.001;
+            this.theta += this.mouse.yVel * yMouseSen;
+            if (this.theta >= Math.PI) {
+                this.theta = Math.PI - minAngle;
+            } else if (this.theta <= 0) {
+                this.theta = minAngle;
+            }
+            this.phi += this.mouse.xVel * xMouseSen;
+            let twoPI = 2 * Math.PI;
+            while (this.phi > twoPI) this.phi -= twoPI;
+            while (this.phi < 0) this.phi += 2 * twoPI;
+            let lookAt = new THREE.Vector3(this.r * Math.sin(this.theta) * Math.cos(this.phi),
+                this.r * Math.cos(this.theta),
+                this.r * Math.sin(this.theta) * Math.sin(this.phi))
+            this.lookPos = this.camera.position.clone()
+            this.lookPos.add(lookAt);
+        }
+        else {
+
+            document.exitPointerLock();
+            
+
+        }
+
+        // mouseVec.multiplyScalar(this.mouse.wheel * 0.05)
+        // this.camera.position.add(mouseVec)
+
+        this.camera.position.y += this.mouse.wheel * 0.25
+        this.lookPos.y += this.mouse.wheel * 0.25
+
+        this.camera.lookAt(this.lookPos);
 
         if (!this.chickensDone) { // TerrainGenerator.world.done && 
             console.log("start generating chickens")

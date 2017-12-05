@@ -1,67 +1,50 @@
 
 
-// TODO: try to get chunk generation to use this async sleep example
-//          instead of setInterval hack
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
-  
-  async function demo() {
-    console.log('Taking a break...');
-    await sleep(2000);
-    console.log('Two second later');
-  }
-  
-  demo();
+// /*
+// let SurvivalGame = require('./modules/survival')
 
+// // Second argument allows forcing FPS.  Warning: this is buggy if machine cannot keep up
+// let game = new SurvivalGame('myContainer')//, 120)
 
+// game.start()
+// */
 
-/*
+let $ = require('./libs/jquery-3.2.1.js')
 
+// Create a button for each module
 
+let modulesPath = './src/modules/'
+let modulesPathRelative = './modules/'
 
-// TODO: Move chunk generation into separate process thread like so
-const worker = new Worker('./core/worker.js')
+$(window).on('load', function(){
+          const fs = require("fs");
 
-worker.onmessage = function(e) {
-    // result.textContent = e.data;
-    console.log('Message received from worker', e.data);
-  }
+          fs.readdir(modulesPath, (err, dir) => {
+            //console.log(dir);
+            for(let filePath of dir){
 
-*/
+              // console.log(filePath);
 
+              if (filePath.endsWith('.js')){
 
+                let moduleName = filePath.replace('.js','')
+                $('#moduleSelector').append(`
+                  <div id='${moduleName}' class='module_buttons'> <button  >${moduleName}</button> </div>
+                `)  
+                $(`#${moduleName}`).on('click', 'button', () => {
+                  // console.log('asdfasdf'))
+                  let ModuleClass = require(`${modulesPathRelative}${filePath}`)
+                  let game = new ModuleClass('myContainer')//, 120)
 
+                  game.start()
 
+                  // $('#moduleSelector').hide()
+                  $('.module_buttons').hide()
 
-  // NOTE: SharedArrayBuffer, which is used for 
-  //    sharing memory between processes is only available in chromium 60+
-  //    Will need to wait until electron upgrades from 58 to 60 before we can optimise using this.
+                })
+              }
 
-// const length = 10;
-
-// // Creating a shared buffer
-// const sharedBuffer = new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT * length)
-
-// // Creating a data structure on top of that shared memory area
-// const sharedArray = new Int32Array(sharedBuffer)
-
-// // Let's build an array with 10 even numbers
-// for (let i = 0; i < length; i++) sharedArray[i] = i && sharedArray[i - 1] + 2
-
-// // Send memory area to our worker
-// worker.postMessage(sharedBuffer)
-
-// setTimeout(function() {
-//     console.log('[MASTER] Change triggered.')
-//     sharedArray[0] = 1337
-// }, 5000)
-
-
-let {SurvivalGame} = require('./modules/survival')
-
-// Second argument allows forcing FPS.  Warning: this is buggy if machine cannot keep up
-// let game = new SurvivalGame('myContainer', 120)
-let game = new SurvivalGame('myContainer')//, 120)
-
-game.start()
+              
+            }
+          });
+      });

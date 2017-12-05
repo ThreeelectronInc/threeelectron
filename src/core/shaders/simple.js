@@ -9,7 +9,7 @@ let make = () => {
             resolution: { value: new THREE.Vector2() }
 
         },
-
+        side: THREE.DoubleSide,
         vertexShader: `	
                     varying vec2 vUv;
                     
