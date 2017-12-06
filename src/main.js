@@ -30,7 +30,7 @@ let onClick = (filePath, moduleName) => {
   game.start()
 
   // $('#moduleSelector').hide()
-  $('.module_buttons').hide()
+  // $('.module_buttons').hide()
   
 }
 
@@ -50,14 +50,14 @@ let onLoad = () => {
         $('#moduleSelector').append(`
                     <div style='' id='${moduleName}' class='module_buttons'> <button  >${moduleName}</button> </div>
                   `)
-        $(`#${moduleName}`).on('click', 'button', () => onClick(filePath, moduleName))
-
+        // $(`#${moduleName}`).on('click', 'button', () => onClick(filePath, moduleName))
+        $(`#${moduleName}`).mousedown(() => onClick(filePath, moduleName))
       }
 
 
     }
 
-  $('.module_buttons').hide()
+  // $('.module_buttons').hide()
   
   });
 

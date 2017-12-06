@@ -163,6 +163,9 @@ class BaseGame {
     }
 
     handleMouseDown(event) {
+        // if (event.target == this){
+        //     console.log('HERE')
+        // }
         this.mouse.buttonDown[event.button] = true
     }
     handleMouseMove(event) {
