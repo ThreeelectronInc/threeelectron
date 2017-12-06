@@ -289,6 +289,4 @@ class BaseGame {
     }
 }
 
-module.exports = {
-    BaseGame
-}
+module.exports = BaseGame

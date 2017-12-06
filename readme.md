@@ -2,6 +2,8 @@
 
 A minimal setup to get going quickly with Three.js and Electron for 3D desktop applications.
 
+Please note: the absence of NPM is deliberate.  One goal of this project is that it should only ever require the developer or user to install Electron.
+
 ## Requirements (tested with)
 
 ### - Ubuntu 16.04, Windows 10 or MacOS High Sierra

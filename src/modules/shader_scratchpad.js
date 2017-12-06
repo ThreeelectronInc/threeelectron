@@ -7,7 +7,7 @@
 
 let THREE = require('./../libs/three/three')
 
-let { BaseGame } = require('./../core/base_game')
+let BaseGame = require('./../core/base_game')
 let TerrainGenerator = require('./../core/terrain_generator')
 
 let chunkClass = require('./../core/chunk')
