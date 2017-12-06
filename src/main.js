@@ -13,7 +13,7 @@ let modulesPath = './src/modules/'
 let modulesPathRelative = './modules/'
 
 let onClick = (filePath, moduleName) => {
-  console.log("HERE")
+  
   if (game) { game.stop() }
 
   // console.log('asdfasdf'))
