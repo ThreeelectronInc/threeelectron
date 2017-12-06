@@ -76,7 +76,7 @@ class SurvivalIsland2D extends BaseGame {
             for (var y = 0; y < this.WORLD_HEIGHT; y++) {
                 let h = TerrainGenerator.getHeight(x * 0.1, y * 0.1)
 
-                console.log(h)
+                // console.log(h)
 
                 let tile = 0
                 if (h < 0.3) {
@@ -105,6 +105,7 @@ class SurvivalIsland2D extends BaseGame {
 
     update(delta) {
 
+        this.cameraControl.update(delta)
     }
 
 }
