@@ -54,7 +54,7 @@ class SurvivalGame extends BaseGame {
         // Camera
         // this.lookPos.set(TerrainGenerator.world.totalBlockWidth * 0.5, 0, TerrainGenerator.world.totalBlockDepth * 0.5)
         this.camera.position.set(0, 500, 1000)
-        this.camera.lookAt(0,500,0)
+        // this.camera.lookAt(0,500,0)
 
 
         this.chickens = []

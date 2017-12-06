@@ -12,15 +12,18 @@ class DeityCamera {
     constructor(camera, keyDown, mouse) {
 
         this.camSpeed = 500
-        this.lookPos = new THREE.Vector3()
 
         this.r = 2;
         this.theta = Math.PI / 2;
-        this.phi = 0;
+        this.phi = -Math.PI / 2;
 
         this.camera = camera
         this.keyDown = keyDown
         this.mouse = mouse
+
+        this.lookPos =new THREE.Vector3(0,0,0)
+        // this.lookPos = this.camera.position.addVectors(this.camera.position, this.lookPos)
+        
     }
 
     update(delta) {
