@@ -74,6 +74,8 @@ class SurvivalGame extends BaseGame {
 
         let perlin2d = require('./../core/shaders/perlin2d')
         this.matShader2 = perlin2d.make()
+        this.matShader2.uniforms['toColor'] = { value: 1 }
+
 
         this.bufferBackgroundPlane = new THREE.PlaneGeometry(1, 1, 1)
         this.backgroundRRT = new THREE.Mesh(this.bufferBackgroundPlane, this.matShader2);
@@ -104,6 +106,10 @@ class SurvivalGame extends BaseGame {
             console.log(this.devTools)
         }
 
+        if (this.keyPressed('c')) {
+            this.matShader2.uniforms['toColor'].value = (this.matShader2.uniforms['toColor'].value - 1) * -1
+            console.log(this.matShader2.uniforms['toColor'].value)
+        }
 
         // # set a uniform to tell the shader the size of a single pixel
         this.matShader2.uniforms['pixel'] = { value: new THREE.Vector2(1.0 / this.renderBuffer.bufferScale, 1.0 / this.renderBuffer.bufferScale) }
@@ -114,7 +120,7 @@ class SurvivalGame extends BaseGame {
         this.matShader2.uniforms['time'] = { value: this.time_elapsed * 0.05 }
         // self.shader.uniformf('positionOffset', 0, 0)
         this.matShader2.uniforms['scale'] = { value: 1.5 }
-        this.matShader2.uniforms['toColor'] = { value: 1 }
+        
         this.matShader2.uniforms['step'] = { value: 0.1 }
 
         this.renderBuffer.render()
