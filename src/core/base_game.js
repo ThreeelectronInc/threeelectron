@@ -8,7 +8,7 @@
 let THREE = require('./../libs/three/three')
 
 class BaseGame {
-    constructor(tagName, fps = 0) {
+    constructor(tagName, fps = 0, clearColor = "#33aadd") {
 
 
         // Assert that required methods have been overridden
@@ -28,6 +28,7 @@ class BaseGame {
         this.framesThisSecond = 0
 
         this.forceFPS = fps // 0 // 60 
+        this.clearColor = clearColor
 
         if (this.forceFPS) {
             this.updateFunction = setInterval(() => this.nextFrameRequest = requestAnimationFrame(this.bound_update), 1000 / this.forceFPS)
@@ -62,7 +63,7 @@ class BaseGame {
         this.renderer = new THREE.WebGLRenderer({ antialias: true });
 
         // Configure renderer clear color
-        this.renderer.setClearColor("#33aadd");
+        this.renderer.setClearColor(this.clearColor);
 
         this.renderer.setPixelRatio(window.devicePixelRatio);
         

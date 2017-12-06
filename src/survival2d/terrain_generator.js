@@ -13,11 +13,11 @@ function lerp (a,  b,  c) {
 function getHeight(x, z) {
 
     let h = 0
-    let q = 2
+    let q = 1
 
     for (var j = 0; j < 1; j++) {
 
-        h += (perlin.noise(randX + x / q, randZ + z / q, randSeed) + 0.4) * 0.5 * q;
+        h += (perlin.noise(randX + x / q, randZ + z / q, randSeed) + 0.4) * q;
         q *= 4;
     }
 
