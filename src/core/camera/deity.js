@@ -65,7 +65,7 @@ class DeityCamera {
 
 
         const mousePanSpeed = 0.25
-        if (this.mouse.buttonDown[0]) {
+        if (this.mouse.buttonDown[2]) {
 
             let gameElem = document.getElementById('myContainer');
             gameElem.requestPointerLock();
@@ -78,7 +78,7 @@ class DeityCamera {
 
             this.lookPos.add(mousePan)
         }
-        else if (this.mouse.buttonDown[2]) {
+        else if (this.mouse.buttonDown[0]) {
 
 
             let gameElem = document.getElementById('myContainer');
