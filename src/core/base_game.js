@@ -72,6 +72,8 @@ class BaseGame {
 
         this.renderer.autoClear = false; // To allow render overlay on top of sprited sphere
 
+        this.renderer.gammaOutput = false
+
         // Add ThreeJS DOM element to existing element
         this.thisCanvas = this.parentDiv.appendChild(this.renderer.domElement)
 
