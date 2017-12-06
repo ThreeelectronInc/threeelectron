@@ -23,7 +23,7 @@ class BaseGame {
         this.forceFPS = fps // 0 // 60 
 
         if (this.forceFPS) {
-            this.updateFunction = setInterval(() => requestAnimationFrame(this.bound_update), 1000 / this.forceFPS)
+            this.updateFunction = setInterval(() => this.nextFrameRequest = requestAnimationFrame(this.bound_update), 1000 / this.forceFPS)
         }
 
     }
@@ -138,6 +138,7 @@ class BaseGame {
         // TODO: Prevent Esc from messing up the scale when exiting fullscreen
         if (event.keyCode == 27) { //Esc
             // event.preventDefault()
+            // this.stop()
         }
 
     }
@@ -208,7 +209,7 @@ class BaseGame {
     _update() {
 
         if (!this.forceFPS) {
-            requestAnimationFrame(this.bound_update);
+            this.nextFrameRequest = requestAnimationFrame(this.bound_update);
         }
 
         

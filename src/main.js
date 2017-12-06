@@ -1,13 +1,9 @@
 
 
-// /*
-// let SurvivalGame = require('./modules/survival')
+let SurvivalGame = require('./modules/survival')
+let game = new SurvivalGame('myContainer')//, 120)
+game.start()
 
-// // Second argument allows forcing FPS.  Warning: this is buggy if machine cannot keep up
-// let game = new SurvivalGame('myContainer')//, 120)
-
-// game.start()
-// */
 
 let $ = require('./libs/jquery-3.2.1.js')
 
@@ -16,35 +12,56 @@ let $ = require('./libs/jquery-3.2.1.js')
 let modulesPath = './src/modules/'
 let modulesPathRelative = './modules/'
 
-$(window).on('load', function(){
-          const fs = require("fs");
+let onClick = (filePath, moduleName) => {
+  console.log("HERE")
+  if (game) { game.stop() }
 
-          fs.readdir(modulesPath, (err, dir) => {
-            //console.log(dir);
-            for(let filePath of dir){
+  // console.log('asdfasdf'))
+  let ModuleClass = require(`${modulesPathRelative}${filePath}`)
+  game = new ModuleClass('myContainer')//, 120)
 
-              // console.log(filePath);
+  game.start()
 
-              if (filePath.endsWith('.js')){
+  // $('#moduleSelector').hide()
+  $('.module_buttons').hide()
+  
+}
 
-                let moduleName = filePath.replace('.js','')
-                $('#moduleSelector').append(`
-                  <div id='${moduleName}' class='module_buttons'> <button  >${moduleName}</button> </div>
-                `)  
-                $(`#${moduleName}`).on('click', 'button', () => {
-                  // console.log('asdfasdf'))
-                  let ModuleClass = require(`${modulesPathRelative}${filePath}`)
-                  let game = new ModuleClass('myContainer')//, 120)
+let onLoad = () => {
 
-                  game.start()
+  const fs = require("fs");
 
-                  // $('#moduleSelector').hide()
-                  $('.module_buttons').hide()
+  fs.readdir(modulesPath, (err, dir) => {
+    //console.log(dir);
+    for (let filePath of dir) {
 
-                })
-              }
+      // console.log(filePath);
 
-              
-            }
-          });
-      });
+      if (filePath.endsWith('.js')) {
+
+        let moduleName = filePath.replace('.js', '')
+        $('#moduleSelector').append(`
+                    <div style='' id='${moduleName}' class='module_buttons'> <button  >${moduleName}</button> </div>
+                  `)
+        $(`#${moduleName}`).on('click', 'button', () => onClick(filePath, moduleName))
+
+      }
+
+
+    }
+
+  $('.module_buttons').hide()
+  
+  });
+
+}
+
+$(window).on('load', onLoad);
+
+window.addEventListener('keydown', () => {
+  if (event.keyCode == 27) { //Esc
+    // event.preventDefault()
+    game.stop()
+    $('.module_buttons').show()
+  }
+})
