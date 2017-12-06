@@ -1,6 +1,7 @@
+// THIS GAME BELONGS TO MIT
 let THREE = require('./../libs/three/three')
 
-let { BaseGame } = require('./../core/base_game')
+let BaseGame = require('./../core/base_game')
 
 let DeityCamera = require('./../core/camera/deity')
 
