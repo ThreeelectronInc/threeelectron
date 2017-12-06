@@ -1,4 +1,6 @@
-# Survival JS
+# Threeelectron
+
+A minimal setup to get going quickly with Three.js and Electron for 3D desktop applications.
 
 ## Requirements (tested with)
 
