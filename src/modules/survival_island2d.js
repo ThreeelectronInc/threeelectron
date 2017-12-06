@@ -10,6 +10,8 @@ let { ipcRenderer, remote } = require('electron');
 let TerrainGenerator = require('./../survival2d/terrain_generator')
 
 
+require('./../survival2d/tile_sprites')
+
 class SurvivalIsland2D extends BaseGame {
 
     constructor(tagName, fps = 0) {
@@ -24,18 +26,9 @@ class SurvivalIsland2D extends BaseGame {
     init() {
 
 
-
-        let ambientLight = new THREE.AmbientLight(0xcccccc);
-        this.scene.add(ambientLight);
-
-        let directionalLight = new THREE.DirectionalLight(0xffffff, 2);
-        directionalLight.position.set(1, 1, 0.5).normalize();
-        this.scene.add(directionalLight);
-
-
         // Camera
         // this.lookPos.set(TerrainGenerator.world.totalBlockWidth * 0.5, 0, TerrainGenerator.world.totalBlockDepth * 0.5)
-        this.camera.position.set(50, 50, 50)
+        this.camera.position.set(50, 30, 50)
         this.camera.lookAt(50,0,50)
 
         this.cameraControl = new DeityCamera(this.camera, (key) => this.keyDown(key), this.mouse)
@@ -57,20 +50,27 @@ class SurvivalIsland2D extends BaseGame {
         textureWater.magFilter = THREE.NearestFilter;
         textureWater.minFilter = THREE.LinearMipMapLinearFilter;
 
-        let matWater = new THREE.SpriteMaterial( { map: textureWater, color: 0xffffff } );
+        let matWater = new THREE.SpriteMaterial( { map: textureWater } );
         let waterSprite =  new THREE.Sprite( matWater );
 
-        let matGrass = new THREE.SpriteMaterial( { map: textureGrass, color: 0xffffff } );
+        let matGrass = new THREE.SpriteMaterial( { map: textureGrass } );
         let grassSprite =  new THREE.Sprite( matGrass );
 
-        let matSand = new THREE.SpriteMaterial( { map: textureSand, color: 0xffffff } );
+        let matSand = new THREE.SpriteMaterial( { map: textureSand } );
         let sandSprite =  new THREE.Sprite( matSand );
 
-        let matRock = new THREE.SpriteMaterial( { map: textureRock, color: 0xffffff } );
+        var textureRock = new THREE.TextureLoader().load('assets/images/Rock.png');
+        textureRock.magFilter = THREE.NearestFilter;
+        textureRock.minFilter = THREE.LinearMipMapLinearFilter;
+        textureRock.encoding = THREE.sRGBEncoding
+
+        let matRock = new THREE.SpriteMaterial( { map: textureRock } );
         let rockSprite =  new THREE.Sprite( matRock );
 
 
-        var textureRock = new THREE.TextureLoader().load('assets/images/Rock.png');
+        let SpriteManager = require('./../core/sprite_manager')
+        let { TileType } = require('./../survival2d/tile')
+
 
         for (var x = 0; x < this.WORLD_WIDTH; x++) {
             for (var y = 0; y < this.WORLD_HEIGHT; y++) {
@@ -80,16 +80,16 @@ class SurvivalIsland2D extends BaseGame {
 
                 let tile = 0
                 if (h < 0.3) {
-                    tile = waterSprite.clone()
+                    tile = SpriteManager.get_sprite(TileType.WATER)
                 }
                 else if (h < 0.5) {
-                    tile = sandSprite.clone()
+                    tile = SpriteManager.get_sprite(TileType.SAND)
                 }
                 else if (h < 0.8) {
-                    tile = grassSprite.clone()
+                    tile = SpriteManager.get_sprite(TileType.GRASS)
                 }
                 else {
-                    tile = rockSprite.clone()
+                    tile = SpriteManager.get_sprite(TileType.ROCK)
                 }
     
                 tile.position.set(x, 0, y)
