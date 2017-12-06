@@ -3,6 +3,10 @@ let perlin = new noise.ImprovedNoise()
 
 let randSeed = Math.random(), randX = Math.random(), randZ = Math.random()
 
+let Mathf = require('./../core/utils/math')
+let OCEAN_DEPTH = 10
+let WORLD_WIDTH = 100
+let WORLD_HEIGHT = 100
 
 function lerp (a,  b,  c) {
     c = c < 0 ? 0 : c
@@ -10,21 +14,21 @@ function lerp (a,  b,  c) {
     return a + c * (b - a);
 }
 
-function getHeight(x, z) {
+function getHeight(x, y, f) {
 
     let h = 0
     let q = 1
 
     for (var j = 0; j < 1; j++) {
 
-        h += (perlin.noise(randX + x / q, randZ + z / q, randSeed) + 0.4) * q;
+        h += (perlin.noise(randX + f * x / q, randZ + f * y / q, randSeed) + 0.4) * q;
         q *= 4;
     }
 
-  //  h = lerp(-1, h, x / 100)
-   // h = lerp(-1, h, z / 100)
-  //  h = lerp(-1, h, (WORLD.totalWidth - x) / 100)
-  //  h = lerp(-1, h, (WORLD.totalDepth - z) / 100)
+    h *= Mathf.lerp (0, 1, x / OCEAN_DEPTH);
+    h *= Mathf.lerp (0, 1, y / OCEAN_DEPTH);
+    h *= Mathf.lerp (0, 1, (WORLD_WIDTH - x) / OCEAN_DEPTH);
+    h *= Mathf.lerp (0, 1, (WORLD_HEIGHT - y) / OCEAN_DEPTH);
 
     return h;
 }
