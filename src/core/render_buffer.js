@@ -1,3 +1,10 @@
+/**
+ * Copyright (c) 2017 Alex Forbes and Denzil Buchner
+ * 
+ * This software is released under the MIT License.
+ * https://opensource.org/licenses/MIT
+ */
+
 let THREE = require('./../libs/three/three')
 
 

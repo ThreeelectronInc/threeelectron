@@ -1,3 +1,10 @@
+/**
+ * Copyright (c) 2017 Alex Forbes and Denzil Buchner
+ * 
+ * This software is released under the MIT License.
+ * https://opensource.org/licenses/MIT
+ */
+
   
 let chunkBlockWidth = 16, chunkBlockDepth = 16, chunkBlockHeight = 128
 let octaves = 4

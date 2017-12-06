@@ -1,3 +1,10 @@
+/**
+ * Copyright (c) 2017 Alex Forbes and Denzil Buchner
+ * 
+ * This software is released under the MIT License.
+ * https://opensource.org/licenses/MIT
+ */
+
 // self.addEventListener('message', (m) => {
 //     // Create an Int32Array on top of that shared memory area
 //     const sharedArray = new Int32Array(m.data)

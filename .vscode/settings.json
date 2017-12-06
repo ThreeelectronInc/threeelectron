@@ -1,0 +1,11 @@
+
+{
+    "licenser.license": "MIT",
+    "licenser.customHeader": "@FILENAME@ - @PROJECT@ \n\nCopyright @YEAR@ @AUTHOR@\n\n",
+    "licenser.author": "Alex Forbes and Denzil Buchner",
+
+    "licenser.projectName": "Threeelectron",
+
+    "licenser.useSingleLineStyle": false
+    
+}
