@@ -16,13 +16,15 @@ class Man extends Entity {
         this.t = 0
         this.keyDown = kd
 
-        this.col_frac = 1 / 4
-        this.row_frac = 1 / 4
-        man_image.repeat.set(this.col_frac, this.row_frac)
+        let numCols = 4
+        let numRows = 4
+        let col = 1 / numCols
+        let row = 1 / numRows
         man_image.offset.set(0, 0)
+        man_image.repeat.set(col, row)
 
         this.setSpriteTile = (i, j) => {
-            man_image.offset.set(i * this.col_frac, j * this.row_frac)
+            man_image.offset.set(i * col, j * row)
         }
 
         this.i = 0
