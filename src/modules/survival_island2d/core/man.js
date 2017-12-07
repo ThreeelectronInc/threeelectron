@@ -23,17 +23,20 @@ class Man extends Entity {
 
         let moveDir = new THREE.Vector3(0,0,0)
         if (this.keyDown('w')) {
-          moveDir.z -= 0.1
+          moveDir.z -= 1
         }
         if (this.keyDown('s')) {
-          moveDir.z += 0.1
+          moveDir.z += 1
         }
         if (this.keyDown('d')) {
-          moveDir.x += 0.1
+          moveDir.x += 1
         }
         if (this.keyDown('a')) {
-          moveDir.x -= 0.1
+          moveDir.x -= 1
         }
+
+        moveDir.normalize()
+        moveDir.multiplyScalar(delta * 5)
 
         this.move(moveDir)
 
