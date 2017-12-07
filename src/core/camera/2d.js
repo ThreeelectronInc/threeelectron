@@ -17,7 +17,7 @@ class DeityCamera {
         this.keyDown = keyDown
         this.mouse = mouse
 
-        this.camera.position.set(0,10,0)
+        this.camera.position.set(0,5,0)
 
         this.lookPos =new THREE.Vector3(0,0,0)
         this.camera.lookAt(this.lookPos)
