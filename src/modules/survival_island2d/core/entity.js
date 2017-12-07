@@ -24,7 +24,11 @@ class Entity {
         let tile = this.game.getTile(newX + 0.5, newZ + 0.5)
         if (tile !== TileType.WATER && tile != TileType.ROCK) {
             this.geometry.position.set(newX, newY, newZ)
+
+            return true
         }
+
+        return false
     }
 }
 

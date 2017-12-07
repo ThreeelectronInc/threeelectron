@@ -12,6 +12,10 @@ class Chicken extends Entity {
         super(scene, x, y, z, geomChicken.clone(), 0.3)
         module.exports.chickenCount++
 
+        this.pickTarget()
+    }
+
+    pickTarget() {
         this.randomOffset = new THREE.Vector3(Math.random() * 2 -1, 0, Math.random() * 2 -1)
         this.randomOffset.multiplyScalar(10)
         this.randomOffset.add(this.geometry.position)
@@ -20,10 +24,18 @@ class Chicken extends Entity {
     update(delta) {
         let dirVec = new THREE.Vector3(0,0,0)
         dirVec.subVectors(this.randomOffset, this.geometry.position)
-        dirVec.normalize()
-        dirVec.multiplyScalar(1 * delta)
 
-        this.move(dirVec)
+        if (dirVec.manhattanLength() > 0.1) {
+            dirVec.normalize()
+            dirVec.multiplyScalar(1 * delta)
+            if (!this.move(dirVec)) {
+                this.pickTarget()
+            }
+        }
+        else {
+            this.pickTarget()
+        }
+        
     }
 }
 
