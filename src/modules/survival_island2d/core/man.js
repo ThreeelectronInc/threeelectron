@@ -48,6 +48,10 @@ class Man extends Entity {
           this.speed -= 0.25
         }
 
+        if (this.keyDown('f')) {
+          console.log('action')
+        }
+
         let moveDir = new THREE.Vector3(0,0,0)
         let move = false
         if (this.keyDown('w')) {
