@@ -4,11 +4,16 @@ let perlin = new noise.ImprovedNoise()
 let randSeed = Math.random(), randX = Math.random(), randZ = Math.random()
 let { TileType } = require('./../survival2d/tile')
 let Mathf = require('./../core/utils/math')
-let OCEAN_DEPTH = 10
+let OCEAN_DEPTH = 30
 let WORLD_WIDTH = 200
 let WORLD_HEIGHT = 200
-let SEA_LEVEL_OFFSET = 0.14
+let SEA_LEVEL_OFFSET = 0.16
 let BASE_FREQUENCY = 0.06
+
+
+let OCEAN_LEVEL = 0.2
+let SAND_LEVEL = 0.45
+let MAIN_LAND_LEVEL = 0.85
 
 function lerp (a,  b,  c) {
     c = c < 0 ? 0 : c
@@ -44,17 +49,17 @@ function getHeight(x, y) {
 function getBaseHeight(x, y) {
     let h = getHeight(x, y)
 
-    if (h < 0.3) {
+    if (h < OCEAN_LEVEL) {
         return 0
     }
-    else if (h < 0.5) {
-        return 0.3
+    else if (h < SAND_LEVEL) {
+        return OCEAN_LEVEL
     }
-    else if (h < 0.86) {
-        return 0.5
+    else if (h < MAIN_LAND_LEVEL) {
+        return SAND_LEVEL
     }
     else {
-        return 0.86
+        return MAIN_LAND_LEVEL
     }
 
     return 1
@@ -66,13 +71,13 @@ function generateTileMap(world) {
             let h = getHeight(x, y)
 
             let tile = 0
-            if (h < 0.3) {
+            if (h < OCEAN_LEVEL) {
                 tile = TileType.WATER 
             }
-            else if (h < 0.5) {
+            else if (h < SAND_LEVEL) {
                 tile = TileType.SAND
             }
-            else if (h < 0.86) {
+            else if (h < MAIN_LAND_LEVEL) {
                 let r1 = getPerlinRandom(x, y, 0.15)
                 let r2 = getPerlinRandom(x, y, 0.4)
 
