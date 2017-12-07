@@ -58,15 +58,15 @@ class SurvivalIsland2D extends BaseGame {
         texPaths[TileType.TREE] = "assets/images/Tree.png"
         
 
-        for (let blockType in TileType){
-            geometriesTmp[TileType[blockType]] = new THREE.Geometry(); 
+        for (let enumString in TileType){
+            geometriesTmp[TileType[enumString]] = new THREE.Geometry(); 
 
-            let texture = new THREE.TextureLoader().load(texPaths[TileType[blockType]])
+            let texture = new THREE.TextureLoader().load(texPaths[TileType[enumString]])
             texture.magFilter = THREE.NearestFilter
             texture.minFilter = THREE.LinearMipMapLinearFilter
             texture.encoding = THREE.sRGBEncoding
 
-            materials[TileType[blockType]] = new THREE.MeshBasicMaterial( { map: texture } )
+            materials[TileType[enumString]] = new THREE.MeshBasicMaterial( { map: texture } )
 
         }
 
@@ -98,13 +98,13 @@ class SurvivalIsland2D extends BaseGame {
         let geometries = {}
         // let meshes = []
 
-        for (let blockType in TileType){
-            geometriesTmp[TileType[blockType]].mergeVertices() // Not sure if this actually helps much or at all
-            console.log(geometriesTmp[TileType[blockType]])
-            geometries[TileType[blockType]] = new THREE.BufferGeometry().fromGeometry(geometriesTmp[TileType[blockType]]);
-            // geometries[blockType].computeBoundingSphere();
+        for (let enumString in TileType){
+            geometriesTmp[TileType[enumString]].mergeVertices() // Not sure if this actually helps much or at all
+            console.log(geometriesTmp[TileType[enumString]])
+            geometries[TileType[enumString]] = new THREE.BufferGeometry().fromGeometry(geometriesTmp[TileType[enumString]]);
+            // geometries[enumString].computeBoundingSphere();
     
-            let mesh = new THREE.Mesh(geometries[TileType[blockType]], materials[TileType[blockType]]);
+            let mesh = new THREE.Mesh(geometries[TileType[enumString]], materials[TileType[enumString]]);
             this.scene.add(mesh);
     
         }
