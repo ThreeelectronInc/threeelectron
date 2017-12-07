@@ -32,6 +32,75 @@ class SurvivalGame extends BaseGame {
 
     }
 
+    makeParticles() {
+
+        let particles, geometry, materials = [], parameters, i, h, color, sprite, size;
+
+        geometry = new THREE.Geometry();
+
+        var textureLoader = new THREE.TextureLoader();
+
+        var sprite1 = textureLoader.load("assets/bee.png");
+        var sprite2 = textureLoader.load("assets/chicken.png");
+        var sprite3 = textureLoader.load("assets/bee.png");
+        var sprite4 = textureLoader.load("assets/skull.png");
+        var sprite5 = textureLoader.load("assets/skull.png");
+
+        for (i = 0; i < 10000; i++) {
+
+            var vertex = new THREE.Vector3();
+            vertex.x = Math.random() * 2000 - 1000;
+            vertex.y = Math.random() * 2000 - 1000;
+            vertex.z = Math.random() * 2000 - 1000;
+
+            geometry.vertices.push(vertex);
+
+        }
+
+        // parameters = [
+        //     [[1.0, 0.2, 0.5], sprite2, 20],
+        //     [[0.95, 0.1, 0.5], sprite3, 15],
+        //     [[0.90, 0.05, 0.5], sprite1, 10],
+        //     [[0.85, 0, 0.5], sprite5, 8],
+        //     [[0.80, 0, 0.5], sprite4, 5]
+        // ];
+        parameters = [
+            [[1.0, 1.0, 1.0], sprite2, 20],
+            [[1.0, 1.0, 1.0], sprite3, 15],
+            [[1.0, 1.0, 1.0], sprite1, 10],
+            [[1.0, 1.0, 1.0], sprite5, 8],
+            [[1.0, 1.0, 1.0], sprite4, 5]
+        ];
+
+        for (i = 0; i < parameters.length; i++) {
+
+            color = parameters[i][0];
+            sprite = parameters[i][1];
+            size = parameters[i][2];
+
+            materials[i] = new THREE.PointsMaterial({ 
+                size: size, 
+                map: sprite, 
+                blending: THREE.NoBlending,//THREE.AdditiveBlending, 
+                depthTest: true, 
+                transparent: true,
+                alphaTest: 0.1// 1.0
+            });
+            // materials[i].color.setHSL(color[0], color[1], color[2]);
+            materials[i].color.setRGB(color[0], color[1], color[2]);
+            
+            
+            particles = new THREE.Points(geometry, materials[i]);
+
+            particles.rotation.x = Math.random() * 6;
+            particles.rotation.y = Math.random() * 6;
+            particles.rotation.z = Math.random() * 6;
+
+            this.scene.add(particles);
+
+        }
+    }
+
     // Called when start() is called and the renderer has been initialised
     init() {
 
@@ -59,9 +128,10 @@ class SurvivalGame extends BaseGame {
 
         this.chickens = []
 
-        this.cameraControl = new DeityCamera(this.camera, 
-            (key) => this.keyDown(key), 
+        this.cameraControl = new DeityCamera(this.camera,
+            (key) => this.keyDown(key),
             this.mouse)
+
 
     }
 
@@ -69,7 +139,12 @@ class SurvivalGame extends BaseGame {
         TerrainGenerator.world.clear()
     }
 
+
+
     update(delta) {
+
+
+        // TWEEN.update();
 
         this.cameraControl.update(delta)
 
@@ -119,6 +194,12 @@ class SurvivalGame extends BaseGame {
 
         for (var i = 0; i < this.chickens.length; i++) {
             this.chickens[i].update(delta)
+        }
+
+        if (TerrainGenerator.world.done && !this.particlesDone){
+
+            this.makeParticles()
+            this.particlesDone = true
         }
     }
 }
