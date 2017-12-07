@@ -106,8 +106,8 @@ class DeityCamera {
         }
 
         
-        let mouseWheelDelta = this.mouse.wheel * 0.25
-        if (this.camera.position.y + mouseWheelDelta > 5){
+        let mouseWheelDelta = this.mouse.wheel * 0.005
+        if (this.camera.position.y + mouseWheelDelta > 0.005){
 
             this.camera.position.y += mouseWheelDelta
             this.lookPos.y += mouseWheelDelta
