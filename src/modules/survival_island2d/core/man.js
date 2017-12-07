@@ -15,23 +15,39 @@ class Man extends Entity {
         super(scene, x, y, z, sprite.clone(), 1)
         this.t = 0
         this.keyDown = kd
+
+        this.col_frac = 1 / 4
+        this.row_frac = 1 / 4
+        man_image.repeat.set(this.col_frac, this.row_frac)
+        man_image.offset.set(0, 0)
+
+        this.i = 0
     }
 
     update(delta) {
         this.t += delta
+        if (this.t > 0.2) {
+            this.t = 0
+            this.i++
+            this.i %= 4
+        }
 
 
         let moveDir = new THREE.Vector3(0,0,0)
         if (this.keyDown('w')) {
+          man_image.offset.set(2 * this.col_frac, this.i * this.row_frac)
           moveDir.z -= 1
         }
         if (this.keyDown('s')) {
+          man_image.offset.set(0 * this.col_frac, this.i * this.row_frac)
           moveDir.z += 1
         }
         if (this.keyDown('d')) {
+          man_image.offset.set(3 * this.col_frac, this.i * this.row_frac)
           moveDir.x += 1
         }
         if (this.keyDown('a')) {
+          man_image.offset.set(1 * this.col_frac, this.i * this.row_frac)
           moveDir.x -= 1
         }
 
@@ -39,10 +55,6 @@ class Man extends Entity {
         moveDir.multiplyScalar(delta * 5)
 
         this.move(moveDir)
-
-        if (this.t > 500) {
-            this.t = 0
-        }
     }
 }
 
