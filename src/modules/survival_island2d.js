@@ -64,7 +64,7 @@ class SurvivalIsland2D extends BaseGame {
             let texture = new THREE.TextureLoader().load(texPaths[TileType[enumString]])
             texture.magFilter = THREE.NearestFilter
             texture.minFilter = THREE.LinearMipMapLinearFilter
-            texture.encoding = THREE.sRGBEncoding
+            texture.encoding = THREE.LinearEncoding
 
             materials[TileType[enumString]] = new THREE.MeshBasicMaterial( { map: texture } )
 
