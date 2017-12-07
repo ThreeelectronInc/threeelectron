@@ -21,6 +21,16 @@ class SurvivalIsland2D extends BaseGame {
 
         this.WORLD_WIDTH = 100
         this.WORLD_HEIGHT = 100
+
+        this.tiles = []
+    }
+
+    setTile(x, y, tileType) {
+        this.tiles[y * this.WORLD_WIDTH + x] = tileType
+    }
+
+    getTile(x, y) {
+        return this.tiles[y * this.WORLD_WIDTH + x]
     }
 
     init() {
@@ -53,28 +63,14 @@ class SurvivalIsland2D extends BaseGame {
         }
 
 
+        TerrainGenerator.generateTileMap(this)
+
         for (var x = 0; x < this.WORLD_WIDTH; x++) {
             for (var y = 0; y < this.WORLD_HEIGHT; y++) {
-                let h = TerrainGenerator.getHeight(x, y, 0.1)
-
                 let matrix = new THREE.Matrix4();
                 matrix.makeTranslation(x,0,y);
-
-                let tile = 0
-                if (h < 0.3) {
-                    geometriesTmp[TileType.WATER].merge(planeTmpGeometry, matrix)
-                }
-                else if (h < 0.5) {
-                    geometriesTmp[TileType.SAND].merge(planeTmpGeometry, matrix)
-                }
-                else if (h < 0.8) {
-                    geometriesTmp[TileType.GRASS].merge(planeTmpGeometry, matrix)
-                }
-                else {
-                    geometriesTmp[TileType.ROCK].merge(planeTmpGeometry, matrix)
-                }
-
-            }    
+                geometriesTmp[this.getTile(x,y)].merge(planeTmpGeometry, matrix)
+            }
         }
 
         let geometries = {}
