@@ -29,10 +29,16 @@ class SurvivalIsland2D extends BaseGame {
     }
 
     setTile(x, y, tileType) {
+        x = Math.floor(x) | 0
+        y = Math.floor(y) | 0
+
         this.tiles[y * this.WORLD_WIDTH + x] = tileType
     }
 
     getTile(x, y) {
+        x = Math.floor(x) | 0
+        y = Math.floor(y) | 0
+
         return this.tiles[y * this.WORLD_WIDTH + x]
     }
 
@@ -109,9 +115,10 @@ class SurvivalIsland2D extends BaseGame {
             this.scene.add(mesh);
         }
 
-        this.chicken = new chickenClass.Chicken(this.scene, 50, 1, 50)
-        this.man = new manClass.Man(this.scene, 50, 1, 50,
+        this.chicken = new chickenClass.Chicken(this, 50, 1, 50)
+        this.man = new manClass.Man(this, 50, 1, 50,
           (key) => this.keyDown(key))
+
 
         this.cameraControl.focus(this.man)
     }

@@ -1,15 +1,17 @@
 let THREE = require('./../../../libs/three/three')
+let { TileType } = require('./../../../survival2d/tile')
 
 class Entity {
 
-    constructor(scene, x, y, z, geometry, scale) {
+    constructor(game, x, y, z, geometry, scale) {
 
         this.geometry = geometry
         this.geometry.scale.set(scale, scale, 1) // for later
         this.geometry.position.set(x, y, z)
-        scene.add(this.geometry)
+        game.scene.add(this.geometry)
 
-        this.scene = scene
+        this.game = game
+        this.scene = game.scene
 
         this.vel = 0
     }
@@ -19,7 +21,10 @@ class Entity {
         let newY = this.geometry.position.y
         let newZ = this.geometry.position.z + dir.z
 
-        this.geometry.position.set(newX, newY, newZ)
+        let tile = this.game.getTile(newX, newZ)
+        if (tile !== TileType.WATER && tile != TileType.ROCK) {
+            this.geometry.position.set(newX, newY, newZ)
+        }
     }
 }
 
