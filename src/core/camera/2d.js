@@ -66,15 +66,15 @@ class DeityCamera {
 
         // TODO: Make pan and zoom methods
 
-        if (keyD("w")) { this.camera.position.add(upVec); this.lookPos.add(upVec) }
-        if (keyD("s")) { this.camera.position.sub(upVec); this.lookPos.sub(upVec) }
-        if (keyD("a")) { this.camera.position.add(leftVec); this.lookPos.add(leftVec) }
-        if (keyD("d")) { this.camera.position.sub(leftVec); this.lookPos.sub(leftVec) }
+     ///   if (keyD("w")) { this.camera.position.add(upVec); this.lookPos.add(upVec) }
+     ///   if (keyD("s")) { this.camera.position.sub(upVec); this.lookPos.sub(upVec) }
+     ///   if (keyD("a")) { this.camera.position.add(leftVec); this.lookPos.add(leftVec) }
+     ///   if (keyD("d")) { this.camera.position.sub(leftVec); this.lookPos.sub(leftVec) }
 
 
 
-        if (keyD("r")) { this.camera.position.y += camVel; this.lookPos.y += camVel }
-        if (keyD("f")) { this.camera.position.y -= camVel; this.lookPos.y -= camVel }
+      //  if (keyD("r")) { this.camera.position.y += camVel; this.lookPos.y += camVel }
+      //  if (keyD("f")) { this.camera.position.y -= camVel; this.lookPos.y -= camVel }
 
         
         // console.log(forwardVec, this.camera.position)
