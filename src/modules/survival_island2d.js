@@ -3,7 +3,7 @@ let THREE = require('./../libs/three/three')
 
 let BaseGame = require('./../core/base_game')
 
-let DeityCamera = require('./../core/camera/deity')
+let Camera2D = require('./../core/camera/2d')
 
 let { ipcRenderer, remote } = require('electron');
 
@@ -31,7 +31,7 @@ class SurvivalIsland2D extends BaseGame {
         this.camera.position.set(50, 70, 50)
         this.camera.lookAt(50,0,50)
 
-        this.cameraControl = new DeityCamera(this.camera, (key) => this.keyDown(key), this.mouse)
+        this.cameraControl = new Camera2D(this.camera, (key) => this.keyDown(key), this.mouse)
 
         // let SpriteManager = require('./../core/sprite_manager')
         let { TileType } = require('./../survival2d/tile')
