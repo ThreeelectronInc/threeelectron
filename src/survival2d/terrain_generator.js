@@ -7,11 +7,16 @@ let Mathf = require('./../core/utils/math')
 let OCEAN_DEPTH = 10
 let WORLD_WIDTH = 100
 let WORLD_HEIGHT = 100
+let SEA_LEVEL_OFFSET = 0.14
 
 function lerp (a,  b,  c) {
     c = c < 0 ? 0 : c
     c = c > 1 ? 1 : c
     return a + c * (b - a);
+}
+
+function getPerlinRandom(x, y, f) {
+    return perlin.noise(randX + f * x, randZ + f * y, randSeed) + 0.4
 }
 
 function getHeight(x, y, f) {
@@ -21,9 +26,11 @@ function getHeight(x, y, f) {
 
     for (var j = 0; j < 1; j++) {
 
-        h += (perlin.noise(randX + f * x / q, randZ + f * y / q, randSeed) + 0.4) * q;
+        h += getPerlinRandom(x, y, f);
         q *= 4;
     }
+
+    h += SEA_LEVEL_OFFSET
 
     h *= Mathf.lerp (0, 1, x / OCEAN_DEPTH);
     h *= Mathf.lerp (0, 1, y / OCEAN_DEPTH);
@@ -45,8 +52,22 @@ function generateTileMap(world) {
             else if (h < 0.5) {
                 tile = TileType.SAND
             }
-            else if (h < 0.8) {
-                tile = TileType.GRASS
+            else if (h < 0.86) {
+                let r1 = getPerlinRandom(x, y, 0.15)
+                let r2 = getPerlinRandom(x, y, 0.4)
+
+                if (r2 > 0.8) {
+                    tile = TileType.TREE
+                }
+                else {
+                    if (r1 > 0.8) {
+                        tile = TileType.DIRT
+                    }
+                    else {
+                        tile = TileType.GRASS
+                    } 
+                }
+ 
             }
             else {
                 tile = TileType.ROCK
