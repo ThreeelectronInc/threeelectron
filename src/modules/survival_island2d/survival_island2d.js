@@ -128,11 +128,9 @@ class SurvivalIsland2D extends BaseGame {
     }
 
     update(delta) {
-
-        this.cameraControl.update(delta)
-
         this.chicken.update(delta)
         this.man.update(delta)
+        this.cameraControl.update(delta)
     }
 
 }
