@@ -5,16 +5,16 @@
  * https://opensource.org/licenses/MIT
  */
 
-let THREE = require('./../libs/three/three')
+let THREE = require('./../../libs/three/three')
 
-let BaseGame = require('./../core/base_game')
-let TerrainGenerator = require('./../core/terrain_generator')
+let BaseGame = require('./../../core/base_game')
+let TerrainGenerator = require('./../../core/terrain_generator')
 
-let chunkClass = require('./../core/chunk')
-let chickenClass = require('./../core/entities/chicken')
+let chunkClass = require('./../../core/chunk')
+let chickenClass = require('./../../core/entities/chicken')
 
 
-let DeityCamera = require('./../core/camera/deity')
+let DeityCamera = require('./../../core/camera/deity')
 
 let { ipcRenderer, remote } = require('electron');
 
@@ -84,7 +84,7 @@ class SurvivalGame extends BaseGame {
                 blending: THREE.NoBlending,//THREE.AdditiveBlending, 
                 depthTest: true, 
                 transparent: true,
-                alphaTest: 0.1// 1.0
+                alphaTest: 0.01// 1.0
             });
             // materials[i].color.setHSL(color[0], color[1], color[2]);
             materials[i].color.setRGB(color[0], color[1], color[2]);

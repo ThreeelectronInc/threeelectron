@@ -7,7 +7,7 @@
 
 
 
-let SurvivalGame = require('./modules/survival_island2d')
+let SurvivalGame = require('./modules/survival_island2d/survival_island2d')
 // let SurvivalGame = require('./modules/survival')
 let game = new SurvivalGame('myContainer')//, 120)
 game.start()
@@ -20,19 +20,19 @@ let $ = require('./libs/jquery-3.2.1.js')
 let modulesPath = './src/modules/'
 let modulesPathRelative = './modules/'
 
-let onClick = (filePath, moduleName) => {
-  
+let onClick = (filePath) => {
+
   if (game) { game.stop() }
 
   // console.log('asdfasdf'))
-  let ModuleClass = require(`${modulesPathRelative}${filePath}`)
+  let ModuleClass = require(`${modulesPathRelative}${filePath}/${filePath}`)
   game = new ModuleClass('myContainer')//, 120)
 
   game.start()
 
   // $('#moduleSelector').hide()
   // $('.module_buttons').hide()
-  
+
 }
 
 let onLoad = () => {
@@ -45,21 +45,27 @@ let onLoad = () => {
 
       // console.log(filePath);
 
-      if (filePath.endsWith('.js')) {
+      // if (filePath.endsWith('.js')) {
 
-        let moduleName = filePath.replace('.js', '')
-        $('#moduleSelector').append(`
-                    <div style='' id='${moduleName}' class='module_buttons'> <button  >${moduleName}</button> </div>
+      // let moduleName = filePath.replace('.js', '')
+      $('#moduleSelector').append(`
+                    <div style='' id='${filePath}' class='module_buttons'> <button  >${filePath}</button> </div>
                   `)
-        // $(`#${moduleName}`).on('click', 'button', () => onClick(filePath, moduleName))
-        $(`#${moduleName}`).mousedown(() => onClick(filePath, moduleName))
-      }
+      fs.readdir(modulesPath+'/'+filePath, (err, dir) => {
+
+      })
+
+      // $(`#${moduleName}`).on('click', 'button', () => onClick(filePath, moduleName))
+      $(`#${filePath}`).mousedown(() => onClick(filePath))
+      // }
+
+
 
 
     }
 
-  // $('.module_buttons').hide()
-  
+    // $('.module_buttons').hide()
+
   });
 
 }

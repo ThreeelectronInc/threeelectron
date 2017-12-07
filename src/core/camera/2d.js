@@ -81,7 +81,7 @@ class DeityCamera {
 
             this.lookPos.add(mousePan)
 
-            console.log(this.mouse.yVel)
+            // console.log(this.mouse.yVel)
         }
         else {
 
