@@ -55,7 +55,7 @@ class SurvivalIsland2D extends BaseGame {
         planeGeom.attributes.uv.array[7] = 0.5;
         planeGeom.rotateX(-Math.PI / 2);
         planeGeom.translate(0, 0.5, 0);
-        
+
         // Use to merge faces
         let planeTmpGeometry = new THREE.Geometry().fromBufferGeometry(planeGeom);
         let materials = {}
@@ -74,13 +74,13 @@ class SurvivalIsland2D extends BaseGame {
                 let tile = this.getTile(x,y)
 
                 let h = TerrainGenerator.getHeight(x,y) - TerrainGenerator.getBaseHeight(x, y)
-                
+
                 let v = Math.floor(h * resolution) | 0
 
                 let key = tile + "_" + v
 
                 if (!(key in geometriesTmp)) {
-                    geometriesTmp[key] = new THREE.Geometry(); 
+                    geometriesTmp[key] = new THREE.Geometry();
                 }
 
                 if (!(key in materials)) {
@@ -92,7 +92,7 @@ class SurvivalIsland2D extends BaseGame {
                     materials[key] = MaterialManager.get_colored_material(tile, new THREE.Color(heightVal, heightVal, heightVal))
                     uniqueMaterials++
                 }
- 
+
                 geometriesTmp[key].merge(planeTmpGeometry, matrix)
             }
         }
@@ -110,13 +110,14 @@ class SurvivalIsland2D extends BaseGame {
         }
 
         this.chicken = new chickenClass.Chicken(this.scene, 50, 1, 50)
-        this.man = new manClass.Man(this.scene, 50, 1, 50)
+        this.man = new manClass.Man(this.scene, 50, 1, 50,
+          (key) => this.keyDown(key))
 
         this.cameraControl.focus(this.man)
     }
 
     deInit() {
-        
+
     }
 
     update(delta) {
