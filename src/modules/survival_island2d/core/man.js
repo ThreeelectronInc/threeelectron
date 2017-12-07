@@ -12,7 +12,7 @@ let sprite =  new THREE.Sprite( material );
 class Man extends Entity {
 
     constructor(scene, x, y, z, kd) {
-        super(scene, x, y, z, sprite.clone(), 1)
+        super(scene, x, y, z, sprite.clone(), 0.5)
         this.t = 0
         this.keyDown = kd
 
@@ -28,6 +28,7 @@ class Man extends Entity {
         }
 
         this.i = 0
+        this.moveSpeed = 1.5
     }
 
     update(delta) {
@@ -57,7 +58,7 @@ class Man extends Entity {
         }
 
         moveDir.normalize()
-        moveDir.multiplyScalar(delta * 5)
+        moveDir.multiplyScalar(delta * this.moveSpeed )
 
         this.move(moveDir)
     }
