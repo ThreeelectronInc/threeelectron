@@ -20,18 +20,22 @@ class Man extends Entity {
     update(delta) {
         this.t += delta
 
+
+        let moveDir = new THREE.Vector3(0,0,0)
         if (this.keyDown('w')) {
-          this.geometry.position.z -= 0.1
+          moveDir.z -= 0.1
         }
         if (this.keyDown('s')) {
-          this.geometry.position.z += 0.1
+          moveDir.z += 0.1
         }
         if (this.keyDown('d')) {
-          this.geometry.position.x += 0.1
+          moveDir.x += 0.1
         }
         if (this.keyDown('a')) {
-          this.geometry.position.x -= 0.1
+          moveDir.x -= 0.1
         }
+
+        this.move(moveDir)
 
         if (this.t > 500) {
             this.t = 0
