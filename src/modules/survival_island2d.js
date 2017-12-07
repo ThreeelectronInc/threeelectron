@@ -33,34 +33,83 @@ class SurvivalIsland2D extends BaseGame {
 
         this.cameraControl = new DeityCamera(this.camera, (key) => this.keyDown(key), this.mouse)
 
-        let SpriteManager = require('./../core/sprite_manager')
+        // let SpriteManager = require('./../core/sprite_manager')
         let { TileType } = require('./../survival2d/tile')
+
+
+        let planeGeom = new THREE.PlaneBufferGeometry(1, 1);
+        planeGeom.attributes.uv.array[5] = 0.5;
+        planeGeom.attributes.uv.array[7] = 0.5;
+        planeGeom.rotateX(-Math.PI / 2);
+        planeGeom.translate(0, 0.5, 0);
+        
+        // Use to merge faces
+        let planeTmpGeometry = new THREE.Geometry().fromBufferGeometry(planeGeom);
+
+        let geometriesTmp = {}
+        let materials = {}
+
+        let texPaths = {}
+        texPaths[TileType.WATER] = "assets/images/Water.png"
+        texPaths[TileType.SAND] = "assets/images/Sand.png"
+        texPaths[TileType.DIRT] = "assets/images/Dirt.png"
+        texPaths[TileType.GRASS] = "assets/images/Grass.png"
+        texPaths[TileType.ROCK] = "assets/images/Rock.png"
+        texPaths[TileType.TREE] = "assets/images/Tree.png"
+        
+
+        for (let blockType in TileType){
+            geometriesTmp[TileType[blockType]] = new THREE.Geometry(); 
+
+            let texture = new THREE.TextureLoader().load(texPaths[TileType[blockType]])
+            texture.magFilter = THREE.NearestFilter
+            texture.minFilter = THREE.LinearMipMapLinearFilter
+            texture.encoding = THREE.sRGBEncoding
+
+            materials[TileType[blockType]] = new THREE.MeshBasicMaterial( { map: texture } )
+
+        }
 
 
         for (var x = 0; x < this.WORLD_WIDTH; x++) {
             for (var y = 0; y < this.WORLD_HEIGHT; y++) {
                 let h = TerrainGenerator.getHeight(x, y, 0.1)
 
-                // console.log(h)
+                let matrix = new THREE.Matrix4();
+                matrix.makeTranslation(x,0,y);
 
                 let tile = 0
                 if (h < 0.3) {
-                    tile = SpriteManager.get_sprite(TileType.WATER)
+                    geometriesTmp[TileType.WATER].merge(planeTmpGeometry, matrix)
                 }
                 else if (h < 0.5) {
-                    tile = SpriteManager.get_sprite(TileType.SAND)
+                    geometriesTmp[TileType.SAND].merge(planeTmpGeometry, matrix)
                 }
                 else if (h < 0.8) {
-                    tile = SpriteManager.get_sprite(TileType.GRASS)
+                    geometriesTmp[TileType.GRASS].merge(planeTmpGeometry, matrix)
                 }
                 else {
-                    tile = SpriteManager.get_sprite(TileType.ROCK)
+                    geometriesTmp[TileType.ROCK].merge(planeTmpGeometry, matrix)
                 }
-    
-                tile.position.set(x, 0, y)
-                this.scene.add(tile)
+
             }    
         }
+
+        let geometries = {}
+        // let meshes = []
+
+        for (let blockType in TileType){
+            geometriesTmp[TileType[blockType]].mergeVertices() // Not sure if this actually helps much or at all
+            console.log(geometriesTmp[TileType[blockType]])
+            geometries[TileType[blockType]] = new THREE.BufferGeometry().fromGeometry(geometriesTmp[TileType[blockType]]);
+            // geometries[blockType].computeBoundingSphere();
+    
+            let mesh = new THREE.Mesh(geometries[TileType[blockType]], materials[TileType[blockType]]);
+            this.scene.add(mesh);
+    
+        }
+
+
         console.log("done")
 
     }
