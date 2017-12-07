@@ -48,6 +48,11 @@ class SurvivalIsland2D extends BaseGame {
 
         let geometriesTmp = {}
 
+        for (let enumString in TileType){
+            geometriesTmp[TileType[enumString]] = new THREE.Geometry(); 
+        }
+
+
         for (var x = 0; x < this.WORLD_WIDTH; x++) {
             for (var y = 0; y < this.WORLD_HEIGHT; y++) {
                 let h = TerrainGenerator.getHeight(x, y, 0.1)
@@ -82,6 +87,7 @@ class SurvivalIsland2D extends BaseGame {
     
             let mesh = new THREE.Mesh(geometries[TileType[enumString]], MaterialManager.get_material(TileType[enumString]));
             this.scene.add(mesh);
+    
         }
 
 
