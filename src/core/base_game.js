@@ -8,7 +8,7 @@
 let THREE = require('./../libs/three/three')
 
 class BaseGame {
-    constructor(tagName, fps = 0, clearColor = "#33aadd") {
+    constructor(tagName, fps = 0, clearColor = "#33aadd", is2D = false) {
 
 
         // Assert that required methods have been overridden
@@ -34,6 +34,8 @@ class BaseGame {
             this.updateFunction = setInterval(() => this.nextFrameRequest = requestAnimationFrame(this.bound_update), 1000 / this.forceFPS)
         }
 
+        this.is2D = is2D
+
     }
 
     // private init
@@ -48,8 +50,19 @@ class BaseGame {
         this.clock = new THREE.Clock()
 
 
-        // Create a basic perspective camera
-        this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100000);
+        if (this.is2D) {
+            // Create a basic ortho camera
+
+            let height = 10
+            let width = height  * window.innerWidth / window.innerHeight
+            
+            this.camera = new THREE.OrthographicCamera( width / - 2, width / 2, height / 2, height / - 2, 1, 1000 );
+            this.camZoom = 5
+        }
+        else {
+            // Create a basic perspective camera
+            this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100000);
+        }
         // camera.position.z = 60;
 
         // Place camera on x axis
@@ -197,12 +210,24 @@ class BaseGame {
 
 
     onWindowResize() {
-
         let {camera, renderer} = this
+        let aspect = window.innerWidth / window.innerHeight;
+        let size = 6
+        camera.aspect = aspect;
 
-        camera.aspect = window.innerWidth / window.innerHeight;
+        if (this.is2D) {
+            camera.left = - size * aspect / 2  
+            camera.right = size * aspect / 2
+            camera.top = size / 2
+            camera.bottom = - size / 2
+        }
+        else {            
+
+            
+
+        }
+
         camera.updateProjectionMatrix();
-
         renderer.setSize(window.innerWidth, window.innerHeight);
     }
 

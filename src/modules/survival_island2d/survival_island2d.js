@@ -18,7 +18,7 @@ require('./../../survival2d/tile_materials')
 class SurvivalIsland2D extends BaseGame {
 
     constructor(tagName, fps = 0) {
-        super(tagName, fps, "#000000")
+        super(tagName, fps, "#000000", true)
 
         this.time_elapsed = 0
 

@@ -101,17 +101,9 @@ class DeityCamera {
         else {
 
             document.exitPointerLock();
-            
 
         }
 
-        
-        let mouseWheelDelta = this.mouse.wheel * 0.005
-        if (this.camera.position.y + mouseWheelDelta > 0.005){
-
-            this.camera.position.y += mouseWheelDelta
-            this.lookPos.y += mouseWheelDelta
-        }
 
         this.camera.lookAt(this.lookPos);
     }
