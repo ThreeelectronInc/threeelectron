@@ -23,6 +23,10 @@ class Man extends Entity {
             this.t = 0
         }
     }
+
+    position() {
+        return this.geometry.position
+    }
 }
 
 module.exports = {

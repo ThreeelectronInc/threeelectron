@@ -23,9 +23,24 @@ class DeityCamera {
         this.camera.lookAt(this.lookPos)
         // this.lookPos = this.camera.position.addVectors(this.camera.position, this.lookPos)
         
+        this.entity = null
+    }
+
+    focus(entity) {
+        this.entity = entity
     }
 
     update(delta) {
+
+
+        if (this.entity !== null) {
+
+            this.camera.position.x = this.entity.geometry.position.x
+            this.camera.position.z = this.entity.geometry.position.z
+
+            this.lookPos.x = this.entity.geometry.position.x
+            this.lookPos.z = this.entity.geometry.position.z
+        }
 
         // Make short named wrapper since we'll be calling this method a lot here
         let keyD = (key) => this.keyDown(key)

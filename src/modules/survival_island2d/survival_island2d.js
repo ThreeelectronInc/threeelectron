@@ -100,7 +100,6 @@ class SurvivalIsland2D extends BaseGame {
         console.log("Unique Materials: ", uniqueMaterials)
 
         let geometries = {}
-        // let meshes = []
 
         for (let key in geometriesTmp){
             geometriesTmp[key].mergeVertices() // Not sure if this actually helps much or at all
@@ -108,18 +107,16 @@ class SurvivalIsland2D extends BaseGame {
 
             let mesh = new THREE.Mesh(geometries[key],materials[key]);
             this.scene.add(mesh);
-    
         }
-
 
         this.chicken = new chickenClass.Chicken(this.scene, 50, 1, 50)
         this.man = new manClass.Man(this.scene, 50, 1, 50)
 
-        console.log("done")
-
+        this.cameraControl.focus(this.man)
     }
 
     deInit() {
+        
     }
 
     update(delta) {
