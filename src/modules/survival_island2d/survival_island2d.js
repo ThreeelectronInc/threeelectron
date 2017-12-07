@@ -62,14 +62,15 @@ class SurvivalIsland2D extends BaseGame {
 
         // Use to merge faces
         let planeTmpGeometry = new THREE.Geometry().fromBufferGeometry(planeGeom);
-        let materials = {}
+        this.materials = {}
+        this.materialBrightness = {}
 
         let geometriesTmp = {}
 
         TerrainGenerator.generateTileMap(this)
 
         let uniqueMaterials = 0
-        let resolution = 256
+        let resolution = 100
         for (var x = 0; x < this.WORLD_WIDTH; x++) {
             for (var y = 0; y < this.WORLD_HEIGHT; y++) {
                 let matrix = new THREE.Matrix4();
@@ -87,13 +88,13 @@ class SurvivalIsland2D extends BaseGame {
                     geometriesTmp[key] = new THREE.Geometry();
                 }
 
-                if (!(key in materials)) {
+                if (!(key in this.materials)) {
                     v = v > resolution ? resolution : v
-                    let heightVal = 0.4 * v / resolution + 0.8
+                    let bright = 0.4 * v / resolution + 0.8
 
-                    heightVal = heightVal > 1 ? 1 : heightVal
-
-                    materials[key] = MaterialManager.get_colored_material(tile, new THREE.Color(heightVal, heightVal, heightVal))
+                    bright = bright > 1 ? 1 : bright
+                    this.materialBrightness[key] = bright
+                    this.materials[key] = MaterialManager.get_colored_material(tile, new THREE.Color(bright, bright, bright))
                     uniqueMaterials++
                 }
 
@@ -109,7 +110,7 @@ class SurvivalIsland2D extends BaseGame {
             geometriesTmp[key].mergeVertices() // Not sure if this actually helps much or at all
             geometries[key] = new THREE.BufferGeometry().fromGeometry(geometriesTmp[key]);
 
-            let mesh = new THREE.Mesh(geometries[key],materials[key]);
+            let mesh = new THREE.Mesh(geometries[key], this.materials[key]);
             this.scene.add(mesh);
         }
 
@@ -126,9 +127,19 @@ class SurvivalIsland2D extends BaseGame {
     }
 
     update(delta) {
+        this.time_elapsed += delta
         this.chicken.update(delta)
         this.man.update(delta)
         this.cameraControl.update(delta)
+
+        let bright = 0.6 + Math.sin(this.time_elapsed * 0.1) * 0.4
+
+        for (let key in this.materials) {
+            let baseBright = this.materialBrightness[key]
+            let material = this.materials[key]
+            let b = baseBright * bright
+            material.color = new THREE.Color(b, b, b)
+        }
     }
 
 }
