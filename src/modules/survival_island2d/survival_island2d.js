@@ -19,8 +19,8 @@ class SurvivalIsland2D extends BaseGame {
 
         this.time_elapsed = 0
 
-        this.WORLD_WIDTH = 100
-        this.WORLD_HEIGHT = 100
+        this.WORLD_WIDTH = 200
+        this.WORLD_HEIGHT = 200
 
         this.tiles = []
     }
@@ -55,33 +55,55 @@ class SurvivalIsland2D extends BaseGame {
         
         // Use to merge faces
         let planeTmpGeometry = new THREE.Geometry().fromBufferGeometry(planeGeom);
+        let materials = {}
 
         let geometriesTmp = {}
 
-        for (let enumString in TileType){
-            geometriesTmp[TileType[enumString]] = new THREE.Geometry(); 
-        }
-
-
         TerrainGenerator.generateTileMap(this)
 
+        let uniqueMaterials = 0
+        let resolution = 256
         for (var x = 0; x < this.WORLD_WIDTH; x++) {
             for (var y = 0; y < this.WORLD_HEIGHT; y++) {
                 let matrix = new THREE.Matrix4();
                 matrix.makeTranslation(x,0,y);
-                geometriesTmp[this.getTile(x,y)].merge(planeTmpGeometry, matrix)
+
+                let tile = this.getTile(x,y)
+
+                let h = TerrainGenerator.getHeight(x,y) - TerrainGenerator.getBaseHeight(x, y)
+                
+                let v = Math.floor(h * resolution) | 0
+
+                let key = tile + "_" + v
+
+                if (!(key in geometriesTmp)) {
+                    geometriesTmp[key] = new THREE.Geometry(); 
+                }
+
+                if (!(key in materials)) {
+                    v = v > resolution ? resolution : v
+                    let heightVal = 0.4 * v / resolution + 0.8
+
+                    heightVal = heightVal > 1 ? 1 : heightVal
+
+                    materials[key] = MaterialManager.get_colored_material(tile, new THREE.Color(heightVal, heightVal, heightVal))
+                    uniqueMaterials++
+                }
+ 
+                geometriesTmp[key].merge(planeTmpGeometry, matrix)
             }
         }
+
+        console.log("Unique Materials: ", uniqueMaterials)
 
         let geometries = {}
         // let meshes = []
 
-        for (let enumString in TileType){
-            geometriesTmp[TileType[enumString]].mergeVertices() // Not sure if this actually helps much or at all
-            console.log(geometriesTmp[TileType[enumString]])
-            geometries[TileType[enumString]] = new THREE.BufferGeometry().fromGeometry(geometriesTmp[TileType[enumString]]);
-    
-            let mesh = new THREE.Mesh(geometries[TileType[enumString]], MaterialManager.get_material(TileType[enumString]));
+        for (let key in geometriesTmp){
+            geometriesTmp[key].mergeVertices() // Not sure if this actually helps much or at all
+            geometries[key] = new THREE.BufferGeometry().fromGeometry(geometriesTmp[key]);
+
+            let mesh = new THREE.Mesh(geometries[key],materials[key]);
             this.scene.add(mesh);
     
         }

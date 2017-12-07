@@ -5,9 +5,10 @@ let randSeed = Math.random(), randX = Math.random(), randZ = Math.random()
 let { TileType } = require('./../survival2d/tile')
 let Mathf = require('./../core/utils/math')
 let OCEAN_DEPTH = 10
-let WORLD_WIDTH = 100
-let WORLD_HEIGHT = 100
+let WORLD_WIDTH = 200
+let WORLD_HEIGHT = 200
 let SEA_LEVEL_OFFSET = 0.14
+let BASE_FREQUENCY = 0.06
 
 function lerp (a,  b,  c) {
     c = c < 0 ? 0 : c
@@ -19,14 +20,14 @@ function getPerlinRandom(x, y, f) {
     return perlin.noise(randX + f * x, randZ + f * y, randSeed) + 0.4
 }
 
-function getHeight(x, y, f) {
+function getHeight(x, y) {
 
     let h = 0
     let q = 1
 
     for (var j = 0; j < 1; j++) {
 
-        h += getPerlinRandom(x, y, f);
+        h += getPerlinRandom(x, y, BASE_FREQUENCY);
         q *= 4;
     }
 
@@ -40,10 +41,29 @@ function getHeight(x, y, f) {
     return h;
 }
 
+function getBaseHeight(x, y) {
+    let h = getHeight(x, y)
+
+    if (h < 0.3) {
+        return 0
+    }
+    else if (h < 0.5) {
+        return 0.3
+    }
+    else if (h < 0.86) {
+        return 0.5
+    }
+    else {
+        return 0.86
+    }
+
+    return 1
+}
+
 function generateTileMap(world) {
     for (var x = 0; x < world.WORLD_WIDTH; x++) {
         for (var y = 0; y < world.WORLD_HEIGHT; y++) {
-            let h = getHeight(x, y, 0.1)
+            let h = getHeight(x, y)
 
             let tile = 0
             if (h < 0.3) {
@@ -79,5 +99,6 @@ function generateTileMap(world) {
 
 module.exports = {
     getHeight,
-    generateTileMap
+    generateTileMap,
+    getBaseHeight
 }
