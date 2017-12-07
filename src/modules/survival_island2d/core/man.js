@@ -12,7 +12,7 @@ let sprite =  new THREE.Sprite( material );
 class Man extends Entity {
 
     constructor(scene, x, y, z, kd) {
-        super(scene, x, y, z, sprite.clone(), 4)
+        super(scene, x, y, z, sprite.clone(), 1)
         this.t = 0
         this.keyDown = kd
     }

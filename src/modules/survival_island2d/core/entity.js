@@ -21,7 +21,7 @@ class Entity {
         let newY = this.geometry.position.y
         let newZ = this.geometry.position.z + dir.z
 
-        let tile = this.game.getTile(newX, newZ)
+        let tile = this.game.getTile(newX + 0.5, newZ + 0.5)
         if (tile !== TileType.WATER && tile != TileType.ROCK) {
             this.geometry.position.set(newX, newY, newZ)
         }
