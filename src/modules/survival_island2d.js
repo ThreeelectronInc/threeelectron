@@ -9,8 +9,8 @@ let { ipcRenderer, remote } = require('electron');
 
 let TerrainGenerator = require('./../survival2d/terrain_generator')
 
-
-require('./../survival2d/tile_sprites')
+// init the tile materials
+require('./../survival2d/tile_materials')
 
 class SurvivalIsland2D extends BaseGame {
 
@@ -33,7 +33,7 @@ class SurvivalIsland2D extends BaseGame {
 
         this.cameraControl = new Camera2D(this.camera, (key) => this.keyDown(key), this.mouse)
 
-        // let SpriteManager = require('./../core/sprite_manager')
+        let MaterialManager = require('./../core/material_manager_new')
         let { TileType } = require('./../survival2d/tile')
 
 
@@ -47,29 +47,6 @@ class SurvivalIsland2D extends BaseGame {
         let planeTmpGeometry = new THREE.Geometry().fromBufferGeometry(planeGeom);
 
         let geometriesTmp = {}
-        let materials = {}
-
-        let texPaths = {}
-        texPaths[TileType.WATER] = "assets/images/Water.png"
-        texPaths[TileType.SAND] = "assets/images/Sand.png"
-        texPaths[TileType.DIRT] = "assets/images/Dirt.png"
-        texPaths[TileType.GRASS] = "assets/images/Grass.png"
-        texPaths[TileType.ROCK] = "assets/images/Rock.png"
-        texPaths[TileType.TREE] = "assets/images/Tree.png"
-        
-
-        for (let enumString in TileType){
-            geometriesTmp[TileType[enumString]] = new THREE.Geometry(); 
-
-            let texture = new THREE.TextureLoader().load(texPaths[TileType[enumString]])
-            texture.magFilter = THREE.NearestFilter
-            texture.minFilter = THREE.LinearMipMapLinearFilter
-            texture.encoding = THREE.LinearEncoding
-
-            materials[TileType[enumString]] = new THREE.MeshBasicMaterial( { map: texture } )
-
-        }
-
 
         for (var x = 0; x < this.WORLD_WIDTH; x++) {
             for (var y = 0; y < this.WORLD_HEIGHT; y++) {
@@ -102,11 +79,9 @@ class SurvivalIsland2D extends BaseGame {
             geometriesTmp[TileType[enumString]].mergeVertices() // Not sure if this actually helps much or at all
             console.log(geometriesTmp[TileType[enumString]])
             geometries[TileType[enumString]] = new THREE.BufferGeometry().fromGeometry(geometriesTmp[TileType[enumString]]);
-            // geometries[enumString].computeBoundingSphere();
     
-            let mesh = new THREE.Mesh(geometries[TileType[enumString]], materials[TileType[enumString]]);
+            let mesh = new THREE.Mesh(geometries[TileType[enumString]], MaterialManager.get_material(TileType[enumString]));
             this.scene.add(mesh);
-    
         }
 
 

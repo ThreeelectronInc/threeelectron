@@ -9,7 +9,7 @@ function init_sprite(index, image_path) {
     var texture = new THREE.TextureLoader().load(image_path)
     texture.magFilter = THREE.NearestFilter
     texture.minFilter = THREE.LinearMipMapLinearFilter
-    texture.encoding = THREE.sRGBEncoding
+    texture.encoding = THREE.LinearEncoding
 
     let mat = new THREE.SpriteMaterial( { map: texture } )
 
