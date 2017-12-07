@@ -1,6 +1,6 @@
 let THREE = require('./../../../libs/three/three')
 
-let { Entity } = require('./../../../core/entities/entity')
+let { Entity } = require('./entity')
 
 let texture = new THREE.TextureLoader().load( "assets/survival2d/man_0.png" );
 let texture1 = new THREE.TextureLoader().load( "assets/survival2d/man_0.png" );

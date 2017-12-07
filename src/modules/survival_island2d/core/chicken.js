@@ -1,6 +1,6 @@
 let THREE = require('./../../../libs/three/three')
 
-let { Entity } = require('./../../../core/entities/entity')
+let { Entity } = require('./entity')
 
 let mapChicken = new THREE.TextureLoader().load( "assets/chicken.png" );
 let matChicken = new THREE.SpriteMaterial( { map: mapChicken, color: 0xffffff } );
