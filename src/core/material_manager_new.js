@@ -11,6 +11,7 @@ function init_material(index, image_path, materialConstructor) {
     texture.magFilter = THREE.NearestFilter
     texture.minFilter = THREE.LinearMipMapLinearFilter
     texture.encoding = THREE.LinearEncoding
+    texture.repeat.set(1,1)
     managed_textures[index] = texture
     managed_constructors[index] = materialConstructor
 

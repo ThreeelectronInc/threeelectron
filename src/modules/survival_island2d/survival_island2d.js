@@ -57,10 +57,8 @@ class SurvivalIsland2D extends BaseGame {
 
 
         let planeGeom = new THREE.PlaneBufferGeometry(1, 1);
-        planeGeom.attributes.uv.array[5] = 0.5;
-        planeGeom.attributes.uv.array[7] = 0.5;
         planeGeom.rotateX(-Math.PI / 2);
-        planeGeom.translate(0, 0.5, 0);
+        planeGeom.translate(0, 0, 0);
 
         // Use to merge faces
         let planeTmpGeometry = new THREE.Geometry().fromBufferGeometry(planeGeom);
