@@ -9,6 +9,9 @@ let { ipcRenderer, remote } = require('electron');
 
 let TerrainGenerator = require('./../../survival2d/terrain_generator')
 
+let chickenClass = require('./core/chicken')
+let manClass = require('./core/man')
+
 // init the tile materials
 require('./../../survival2d/tile_materials')
 
@@ -109,6 +112,9 @@ class SurvivalIsland2D extends BaseGame {
         }
 
 
+        this.chicken = new chickenClass.Chicken(this.scene, 50, 1, 50)
+        this.man = new manClass.Man(this.scene, 50, 1, 50)
+
         console.log("done")
 
     }
@@ -119,6 +125,9 @@ class SurvivalIsland2D extends BaseGame {
     update(delta) {
 
         this.cameraControl.update(delta)
+
+        this.chicken.update(delta)
+        this.man.update(delta)
     }
 
 }
