@@ -21,6 +21,10 @@ class Man extends Entity {
         man_image.repeat.set(this.col_frac, this.row_frac)
         man_image.offset.set(0, 0)
 
+        this.setSpriteTile = (i, j) => {
+            man_image.offset.set(i * this.col_frac, j * this.row_frac)
+        }
+
         this.i = 0
     }
 
@@ -32,22 +36,21 @@ class Man extends Entity {
             this.i %= 4
         }
 
-
         let moveDir = new THREE.Vector3(0,0,0)
         if (this.keyDown('w')) {
-          man_image.offset.set(2 * this.col_frac, this.i * this.row_frac)
+          this.setSpriteTile(2, this.i)
           moveDir.z -= 1
         }
         if (this.keyDown('s')) {
-          man_image.offset.set(0 * this.col_frac, this.i * this.row_frac)
+          this.setSpriteTile(0, this.i)
           moveDir.z += 1
         }
         if (this.keyDown('d')) {
-          man_image.offset.set(3 * this.col_frac, this.i * this.row_frac)
+          this.setSpriteTile(3, this.i)
           moveDir.x += 1
         }
         if (this.keyDown('a')) {
-          man_image.offset.set(1 * this.col_frac, this.i * this.row_frac)
+          this.setSpriteTile(1, this.i)
           moveDir.x -= 1
         }
 
