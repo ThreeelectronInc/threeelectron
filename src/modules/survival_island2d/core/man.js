@@ -1,6 +1,7 @@
 let THREE = require('./../../../libs/three/three')
 
 let { Entity } = require('./entity')
+let { TileType } = require('./../../../survival2d/tile')
 
 let texture = new THREE.TextureLoader().load( "assets/survival2d/man_0.png" );
 let texture1 = new THREE.TextureLoader().load( "assets/survival2d/man_0.png" );
@@ -28,7 +29,8 @@ class Man extends Entity {
         }
 
         this.i = 0
-        this.moveSpeed = 1.5
+        this.speed = 3.0
+        this.targetSpeed = 3.0
     }
 
     update(delta) {
@@ -39,28 +41,58 @@ class Man extends Entity {
             this.i %= 4
         }
 
+        if (this.speed < this.targetSpeed) {
+          this.speed += 0.25
+        }
+        else if (this.speed > this.targetSpeed) {
+          this.speed -= 0.25
+        }
+
         let moveDir = new THREE.Vector3(0,0,0)
+        let move = false
         if (this.keyDown('w')) {
           this.setSpriteTile(2, this.i)
           moveDir.z -= 1
+          move = true
         }
         if (this.keyDown('s')) {
           this.setSpriteTile(0, this.i)
           moveDir.z += 1
+          move = true
         }
         if (this.keyDown('d')) {
           this.setSpriteTile(3, this.i)
           moveDir.x += 1
+          move = true
         }
         if (this.keyDown('a')) {
           this.setSpriteTile(1, this.i)
           moveDir.x -= 1
+          move = true
         }
 
-        moveDir.normalize()
-        moveDir.multiplyScalar(delta * this.moveSpeed )
-
-        this.move(moveDir)
+        if (move) {
+          moveDir.normalize()
+          let tile = this.game.getTile(this.geometry.position.x,
+            this.geometry.position.z)
+          // Only fast on grass for now
+          switch (tile) {
+            case TileType.GRASS:
+              this.targetSpeed = 6
+              break;
+            case TileType.DIRT:
+              this.targetSpeed = 5
+              break;
+            case TileType.SAND:
+              this.targetSpeed = 3
+              break;
+            default:
+              this.targetSpeed = 1
+              break;
+          }
+          moveDir.multiplyScalar(delta * this.speed)
+          this.move(moveDir)
+        }
     }
 }
 
