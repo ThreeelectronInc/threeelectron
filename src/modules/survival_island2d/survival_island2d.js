@@ -12,6 +12,7 @@ let SoundManager = require('./survival2d/sound_manager')
 
 let chickenClass = require('./core/chicken')
 let manClass = require('./core/man')
+let bearClass = require('./core/bear') 
 
 // init the tile materials
 require('./survival2d/tile_materials')
@@ -137,6 +138,9 @@ class SurvivalIsland2D extends BaseGame {
         this.man = new manClass.Man(this, 50, 1, 50,
             (key) => this.keyDown(key))
 
+        this.bear = new bearClass.Bear(this, 52, 1, 52,
+            (key) => this.keyDown(key))   
+
 
         this.cameraControl.focus(this.man)
 
@@ -145,8 +149,8 @@ class SurvivalIsland2D extends BaseGame {
     onWindowResize() {
         let { camera, renderer } = this
         let aspect = window.innerWidth / window.innerHeight;
-        let size = 6
-        camera.aspect = aspect;
+        let size = 8
+        camera.aspect = aspect *  window.innerWidth;
 
         camera.left = - size * aspect / 2
         camera.right = size * aspect / 2
@@ -162,6 +166,7 @@ class SurvivalIsland2D extends BaseGame {
         this.time_elapsed += delta
         this.chicken.update(delta)
         this.man.update(delta)
+        this.bear.update(delta)
         this.cameraControl.update(delta)
 
         let bright = 0.6 + Math.sin(this.time_elapsed * 0.1) * 0.4

@@ -4,26 +4,25 @@ let SoundManager = require('./../survival2d/sound_manager')
 let { Entity } = require('./entity')
 let { TileType } = require('./../survival2d/tile')
 
-let man_image = new THREE.TextureLoader().load( "assets/survival2d/george.png")
-let material = new THREE.SpriteMaterial( { map: man_image, color: 0xffffff } );
+let bear_image = new THREE.TextureLoader().load( "assets/survival2d/bears.png")
+let material = new THREE.SpriteMaterial( { map: bear_image, color: 0xffffff } );
 let sprite =  new THREE.Sprite( material );
 
-class Man extends Entity {
+class Bear extends Entity {
 
-    constructor(game, x, y, z, kd) {
+    constructor(game, x, y, z) {
         super(game, x, y, z, sprite.clone(), 0.5)
         this.t = 0
-        this.keyDown = kd
 
-        let numCols = 4
-        let numRows = 4
+        let numCols = 12
+        let numRows = 8
         let col = 1 / numCols
         let row = 1 / numRows
-        man_image.offset.set(0, 0)
-        man_image.repeat.set(col, row)
+        bear_image.offset.set(0, 0)
+        bear_image.repeat.set(col, row)
 
         this.setSpriteTile = (i, j) => {
-            man_image.offset.set(i * col, j * row)
+            bear_image.offset.set(i * col, j * row)
         }
 
         this.i = 0
@@ -31,6 +30,14 @@ class Man extends Entity {
         this.targetSpeed = 3.0
         this.footstepAudio = 0
         SoundManager.load_audio('modules/survival_island2d/earthyFootstep.mp3', 1, game.audioListener, (audio) => this.footstepAudio = audio)
+
+        this.pickTarget()
+    }
+
+    pickTarget() {
+        this.randomOffset = new THREE.Vector3(Math.random() * 2 -1, 0, Math.random() * 2 -1)
+        this.randomOffset.multiplyScalar(3)
+        this.randomOffset.add(this.geometry.position)
     }
 
     update(delta) {
@@ -38,7 +45,7 @@ class Man extends Entity {
         if (this.t > 0.2) {
             this.t = 0
             this.i++
-            this.i %= 4
+            this.i %= 3
         }
 
         if (this.speed < this.targetSpeed) {
@@ -48,78 +55,71 @@ class Man extends Entity {
           this.speed -= 0.25
         }
 
-        if (this.keyDown('f')) {
-          console.log('action')
-        }
-
         let moveDir = new THREE.Vector3(0,0,0)
+        moveDir.subVectors(this.randomOffset, this.geometry.position)
+
         let move = false
-        if (this.keyDown('w')) {
-          moveDir.z -= 1
-          move = true
+        if (moveDir.manhattanLength() > 0.1) {
+            move = true
         }
-        if (this.keyDown('s')) {
-          moveDir.z += 1
-          move = true
-        }
-        if (this.keyDown('d')) {
-          moveDir.x += 1
-          move = true
-        }
-        if (this.keyDown('a')) {
-          moveDir.x -= 1
-          move = true
+        else {
+          this.pickTarget()
         }
 
         if (move) {
+          
           moveDir.normalize()
+          
           let tile = this.game.getTile(this.geometry.position.x,
             this.geometry.position.z)
           // Only fast on grass for now
           switch (tile) {
             case TileType.GRASS:
-              this.targetSpeed = 6
-              break;
-            case TileType.DIRT:
-              this.targetSpeed = 5
-              break;
-            case TileType.SAND:
-              this.targetSpeed = 3
-              break;
-            default:
               this.targetSpeed = 1
               break;
+            case TileType.DIRT:
+              this.targetSpeed = 1
+              break;
+            case TileType.SAND:
+              this.targetSpeed = 0.5
+              break;
+            default:
+              this.targetSpeed = 0.2
+              break;
           }
-          
-
           moveDir.multiplyScalar(delta * this.speed)
 
           if (this.move(moveDir)) {
             if (!this.footstepAudio.isPlaying) {
-              this.footstepAudio.play()
+           //   this.footstepAudio.play()
             }
 
             moveDir.normalize()
+
             if (moveDir.dot(new THREE.Vector3(0, 0, -1)) > 0.7) {
-              this.setSpriteTile(2, this.i)
+              this.setSpriteTile(this.i, 0)
             }
             else if (moveDir.dot(new THREE.Vector3(0, 0, 1)) > 0.7) {
-              this.setSpriteTile(0, this.i)
+              this.setSpriteTile(this.i, 3)
             }
             else if (moveDir.dot(new THREE.Vector3(-1, 0, 0)) > 0.7) {
-              this.setSpriteTile(1, this.i)
+              this.setSpriteTile(this.i, 2)
             }
             else {
-              this.setSpriteTile(3, this.i)
+              this.setSpriteTile(this.i, 1)
             }
           }
           else {
-            this.footstepAudio.stop()
+            this.pickTarget()
+            if (this.footstepAudio.isPlaying) {
+              this.footstepAudio.stop()
+            }
           }
 
         }
         else {
           if (this.footstepAudio && this.footstepAudio.isPlaying) {
+            this.pickTarget()
             this.footstepAudio.stop()  
           }
         }
@@ -127,5 +127,5 @@ class Man extends Entity {
 }
 
 module.exports = {
-    Man: Man
+    Bear: Bear
 }
