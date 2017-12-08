@@ -16,6 +16,7 @@ class Entity {
         this.scene = game.scene
 
         this.vel = 0
+        game.registerEntity(this)
     }
 
     initSpriteSheet(texture, rows, cols, animateMove) {

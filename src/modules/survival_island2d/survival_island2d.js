@@ -55,7 +55,7 @@ class SurvivalIsland2D extends BaseGame {
     }
 
     init() {
-
+        this.entities = []
 
         // Camera
         // this.lookPos.set(TerrainGenerator.world.totalBlockWidth * 0.5, 0, TerrainGenerator.world.totalBlockDepth * 0.5)
@@ -138,8 +138,14 @@ class SurvivalIsland2D extends BaseGame {
         this.man = new manClass.Man(this, 50, 1, 50,
             (key) => this.keyDown(key))
 
-        this.bear = new bearClass.Bear(this, 52, 1, 52,
-            (key) => this.keyDown(key))   
+        new bearClass.Bear(this, 52, 1, 52)
+        new bearClass.BlackBear(this, 48, 1, 48)  
+        new bearClass.GoldenBear(this, 52, 1, 48)
+        new bearClass.GreyBear(this, 48, 1, 52)
+        new bearClass.HazelBear(this, 50, 1, 48)
+        new bearClass.RedBear(this, 52, 1, 50)
+        new bearClass.LightBrownBear(this, 52, 1, 50)
+        new bearClass.WhiteBear(this, 50, 1,52)
 
 
         this.cameraControl.focus(this.man)
@@ -162,11 +168,16 @@ class SurvivalIsland2D extends BaseGame {
         this.soundTrack.stop()
     }
 
+    registerEntity(entity) {
+        this.entities.push(entity)
+    }
+
     update(delta) {
         this.time_elapsed += delta
-        this.man.update(delta)
-     //   this.chicken.update(delta)
-        this.bear.update(delta)
+
+        for (var i = 0; i <  this.entities.length; i++) {
+            this.entities[i].update(delta)
+        }
         this.cameraControl.update(delta)
 
         let bright = 0.6 + Math.sin(this.time_elapsed * 0.1) * 0.4
