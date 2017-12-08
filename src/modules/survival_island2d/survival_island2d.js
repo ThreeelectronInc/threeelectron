@@ -7,15 +7,15 @@ let Camera2D = require('./../../core/camera/2d')
 
 let { ipcRenderer, remote } = require('electron');
 
-let TerrainGenerator = require('./survival2d/terrain_generator')
-let SoundManager = require('./survival2d/sound_manager')
+let TerrainGenerator = require('./core/terrain_generator')
+let SoundManager = require('./core/sound_manager')
 
-let chickenClass = require('./core/chicken')
-let manClass = require('./core/man')
-let bearClass = require('./core/bear') 
+let chickenClass = require('./entities/chicken')
+let manClass = require('./entities/man')
+let bearClass = require('./entities/bear') 
 
 // init the tile materials
-require('./survival2d/tile_materials')
+require('./core/tile_materials')
 
 class SurvivalIsland2D extends BaseGame {
 
@@ -72,8 +72,8 @@ class SurvivalIsland2D extends BaseGame {
 
         SoundManager.load_audio('modules/survival_island2d/RightOfPassage.mp3', 0.5, this.audioListener, (audio) => { this.soundTrack = audio; audio.play(); })
 
-        let MaterialManager = require('./survival2d/material_manager_new')
-        let { TileType } = require('./survival2d/tile')
+        let MaterialManager = require('./core/material_manager_new')
+        let { TileType } = require('./core/tile')
 
 
         let planeGeom = new THREE.PlaneBufferGeometry(1, 1);

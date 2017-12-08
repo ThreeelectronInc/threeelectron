@@ -1,5 +1,5 @@
 let THREE = require('./../../../libs/three/three')
-let { TileType } = require('./../survival2d/tile')
+let { TileType } = require('./../core/tile')
 
 class Entity {
 

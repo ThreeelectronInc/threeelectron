@@ -1,8 +1,8 @@
 let THREE = require('./../../../libs/three/three')
-let SoundManager = require('./../survival2d/sound_manager')
+let SoundManager = require('./../core/sound_manager')
 
 let { Entity } = require('./entity')
-let { TileType } = require('./../survival2d/tile')
+let { TileType } = require('./../core/tile')
 
 let man_image = new THREE.TextureLoader().load( "assets/survival2d/george.png")
 let material = new THREE.SpriteMaterial( { map: man_image, color: 0xffffff } );

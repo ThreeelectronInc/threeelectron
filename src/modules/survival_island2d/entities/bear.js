@@ -1,8 +1,8 @@
 let THREE = require('./../../../libs/three/three')
-let SoundManager = require('./../survival2d/sound_manager')
+let SoundManager = require('./../core/sound_manager')
 
 let { Entity } = require('./entity')
-let { TileType } = require('./../survival2d/tile')
+let { TileType } = require('./../core/tile')
 let Mathf = require('./../../../core/utils/math')
 
 let bear_image = new THREE.TextureLoader().load( "assets/survival2d/bears.png")
