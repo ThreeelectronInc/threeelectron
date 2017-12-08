@@ -17,30 +17,26 @@ class DeityCamera {
         this.keyDown = keyDown
         this.mouse = mouse
 
-        this.camera.position.set(0,5,0)
+        this.camera.position.set(0, 5, 0)
 
-        this.lookPos =new THREE.Vector3(0,0,0)
+        this.lookPos = new THREE.Vector3(0, 0, 0)
         this.camera.lookAt(this.lookPos)
         // this.lookPos = this.camera.position.addVectors(this.camera.position, this.lookPos)
-        
+
         this.entity = null
     }
 
     focus(entity) {
-        this.entity = entity
+
+        this.camera.position.x = entity.geometry.position.x
+        this.camera.position.z = entity.geometry.position.z
+
+        this.lookPos.x = entity.geometry.position.x
+        this.lookPos.z = entity.geometry.position.z
     }
 
     update(delta) {
 
-
-        if (this.entity !== null) {
-
-            this.camera.position.x = this.entity.geometry.position.x
-            this.camera.position.z = this.entity.geometry.position.z
-
-            this.lookPos.x = this.entity.geometry.position.x
-            this.lookPos.z = this.entity.geometry.position.z
-        }
 
         // Make short named wrapper since we'll be calling this method a lot here
         let keyD = (key) => this.keyDown(key)
@@ -51,7 +47,7 @@ class DeityCamera {
         let mouseVec = new THREE.Vector3()
         let lookVec = new THREE.Vector3()
         let upVec = new THREE.Vector3(0, 0, -1)
-        let leftVec = new THREE.Vector3(-1,0,0)
+        let leftVec = new THREE.Vector3(-1, 0, 0)
 
         lookVec.subVectors(this.lookPos, this.camera.position)
 
@@ -66,21 +62,21 @@ class DeityCamera {
 
         // TODO: Make pan and zoom methods
 
-     ///   if (keyD("w")) { this.camera.position.add(upVec); this.lookPos.add(upVec) }
-     ///   if (keyD("s")) { this.camera.position.sub(upVec); this.lookPos.sub(upVec) }
-     ///   if (keyD("a")) { this.camera.position.add(leftVec); this.lookPos.add(leftVec) }
-     ///   if (keyD("d")) { this.camera.position.sub(leftVec); this.lookPos.sub(leftVec) }
+        ///   if (keyD("w")) { this.camera.position.add(upVec); this.lookPos.add(upVec) }
+        ///   if (keyD("s")) { this.camera.position.sub(upVec); this.lookPos.sub(upVec) }
+        ///   if (keyD("a")) { this.camera.position.add(leftVec); this.lookPos.add(leftVec) }
+        ///   if (keyD("d")) { this.camera.position.sub(leftVec); this.lookPos.sub(leftVec) }
 
 
 
-      //  if (keyD("r")) { this.camera.position.y += camVel; this.lookPos.y += camVel }
-      //  if (keyD("f")) { this.camera.position.y -= camVel; this.lookPos.y -= camVel }
+        //  if (keyD("r")) { this.camera.position.y += camVel; this.lookPos.y += camVel }
+        //  if (keyD("f")) { this.camera.position.y -= camVel; this.lookPos.y -= camVel }
 
-        
+
         // console.log(forwardVec, this.camera.position)
         // this.camera.position.add(forwardVec)
         // console.log(forwardVec, this.camera.position)
-        
+
 
         const mousePanSpeed = 0.25
         if (this.mouse.buttonDown[0]) {

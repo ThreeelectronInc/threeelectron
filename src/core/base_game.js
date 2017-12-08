@@ -36,6 +36,7 @@ class BaseGame {
         if (this.forceFPS) {
             this.updateFunction = setInterval(() => this.nextFrameRequest = requestAnimationFrame(this.bound_update), 1000 / this.forceFPS)
         }
+        this.paused = false
 
     }
 
@@ -210,6 +211,10 @@ class BaseGame {
 
     }
 
+    pauseToggle(){
+        this.paused = !this.paused
+    }
+
     _update() {
 
         if (!this.forceFPS) {
@@ -218,6 +223,12 @@ class BaseGame {
 
         
         let delta = this.clock.getDelta()
+        if (this.paused){
+            delta = 0
+        }
+
+        console.log(this.paused)
+        
 
         let currentSecond = Math.round(this.clock.getElapsedTime())
         this.framesThisSecond++

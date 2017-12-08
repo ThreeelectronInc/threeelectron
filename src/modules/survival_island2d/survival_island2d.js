@@ -129,11 +129,6 @@ class SurvivalIsland2D extends BaseGame {
             (key) => this.keyDown(key))
 
 
-        this.cameraControl.focus(this.man)
-
-
-
-
 
         // instantiate a listener
         var audioListener = new THREE.AudioListener();
@@ -205,6 +200,18 @@ class SurvivalIsland2D extends BaseGame {
             let b = baseBright * bright
             material.color = new THREE.Color(b, b, b)
         }
+
+        if (this.keyPressed('p')){
+            this.pauseToggle()
+            // console.log('here')
+        }
+
+
+        if (!this.paused){
+            this.cameraControl.focus(this.man)
+        }
+
+
     }
 
 
