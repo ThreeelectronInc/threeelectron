@@ -37,6 +37,10 @@ class Entity {
         }
     }
 
+    getTile() {
+        return this.game.getTile(this.geometry.position.x + 0.5, this.geometry.position.z + 0.5)
+    }
+
     move(dir) {
         let newX = this.geometry.position.x + dir.x
         let newY = this.geometry.position.y

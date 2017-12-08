@@ -71,10 +71,8 @@ class Bear extends Entity {
           
           moveDir.normalize()
           
-          let tile = this.game.getTile(this.geometry.position.x,
-            this.geometry.position.z)
           // Only fast on grass for now
-          switch (tile) {
+          switch (this.getTile()) {
             case TileType.GRASS:
               this.targetSpeed = 1
               break;
