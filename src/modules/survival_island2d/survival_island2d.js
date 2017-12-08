@@ -48,7 +48,7 @@ class SurvivalIsland2D extends BaseGame {
         // Camera
         // this.lookPos.set(TerrainGenerator.world.totalBlockWidth * 0.5, 0, TerrainGenerator.world.totalBlockDepth * 0.5)
         this.camera.position.set(50, 70, 50)
-        this.camera.lookAt(50,0,50)
+        this.camera.lookAt(50, 0, 50)
 
         this.cameraControl = new Camera2D(this.camera, (key) => this.keyDown(key), this.mouse)
 
@@ -74,11 +74,11 @@ class SurvivalIsland2D extends BaseGame {
         for (var x = 0; x < this.WORLD_WIDTH; x++) {
             for (var y = 0; y < this.WORLD_HEIGHT; y++) {
                 let matrix = new THREE.Matrix4();
-                matrix.makeTranslation(x,0,y);
+                matrix.makeTranslation(x, 0, y);
 
-                let tile = this.getTile(x,y)
+                let tile = this.getTile(x, y)
 
-                let h = TerrainGenerator.getHeight(x,y) - TerrainGenerator.getBaseHeight(x, y)
+                let h = TerrainGenerator.getHeight(x, y) - TerrainGenerator.getBaseHeight(x, y)
 
                 let v = Math.floor(h * resolution) | 0
 
@@ -106,7 +106,7 @@ class SurvivalIsland2D extends BaseGame {
 
         let geometries = {}
 
-        for (let key in geometriesTmp){
+        for (let key in geometriesTmp) {
             geometriesTmp[key].mergeVertices() // Not sure if this actually helps much or at all
             geometries[key] = new THREE.BufferGeometry().fromGeometry(geometriesTmp[key]);
 
@@ -116,7 +116,7 @@ class SurvivalIsland2D extends BaseGame {
 
         this.chicken = new chickenClass.Chicken(this, 50, 1, 50)
         this.man = new manClass.Man(this, 50, 1, 50,
-          (key) => this.keyDown(key))
+            (key) => this.keyDown(key))
 
 
         this.cameraControl.focus(this.man)
@@ -125,46 +125,47 @@ class SurvivalIsland2D extends BaseGame {
 
 
 
-// instantiate a listener
-var audioListener = new THREE.AudioListener();
+        // instantiate a listener
+        var audioListener = new THREE.AudioListener();
 
-// add the listener to the camera
-this.camera.add( audioListener );
+        // add the listener to the camera
+        this.camera.add(audioListener);
 
-// instantiate audio object
-var oceanAmbientSound = new THREE.Audio( audioListener );
+        // instantiate audio object
+        this.oceanAmbientSound = new THREE.Audio(audioListener);
 
-// add the audio object to the scene
-this.scene.add( oceanAmbientSound );
+        // add the audio object to the scene
+        this.scene.add(this.oceanAmbientSound);
 
 
-// instantiate a loader
-var loader = new THREE.AudioLoader();
+        // instantiate a loader
+        var loader = new THREE.AudioLoader();
 
-// load a resource
-loader.load(
-	// resource URL
-	'modules/survival_island2d/mhwgo.mp3',
-	// Function when resource is loaded
-	function ( audioBuffer ) {
-		// set the audio object buffer to the loaded object
-		oceanAmbientSound.setBuffer( audioBuffer );
+        // load a resource
+        loader.load(
+            // resource URL
+            'modules/survival_island2d/mhwgo.mp3',
+            // Function when resource is loaded
+             (audioBuffer) =>{
+                // set the audio object buffer to the loaded object
+                this.oceanAmbientSound.setBuffer(audioBuffer);
 
-		// play the audio
-		oceanAmbientSound.play();
-	},
-	// Function called when download progresses
-	function ( xhr ) {
-		console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
-	},
-	// Function called when download errors
-	function ( xhr ) {
-		console.log( 'An error happened' );
-	}
-);
+                // play the audio
+                this.oceanAmbientSound.play();
+            },
+            // Function called when download progresses
+             (xhr) => {
+                console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+            },
+            // Function called when download errors
+            (xhr) => {
+                console.log('An error happened');
+            }
+        );
     }
 
     deInit() {
+        this.oceanAmbientSound.stop()
 
     }
 
