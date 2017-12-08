@@ -44,7 +44,7 @@ class SurvivalGame extends BaseGame {
         this.camera.lookAt(0,500,0)
 
 
-        let simpleShader = require('./../../core/shaders/simple')
+        let simpleShader = require('./shaders/simple')
         let matShader = simpleShader.make()
 
 
@@ -68,7 +68,7 @@ class SurvivalGame extends BaseGame {
         let geomChicken = new THREE.Sprite(matChicken);
         this.bufferScene.add(geomChicken)
 
-        let perlin2d = require('./../../core/shaders/perlin2d')
+        let perlin2d = require('./shaders/perlin2d')
         this.matShader2 = perlin2d.make()
         this.matShader2.uniforms['toColor'] = { value: 1 }
 
