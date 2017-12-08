@@ -49,28 +49,6 @@ class BaseGame {
         this.parentDiv.appendChild(this.stats.dom)
 
         this.clock = new THREE.Clock()
-/*
-        if (this.is2D) {
-            // Create a basic ortho camera
-
-            let height = 10
-            let width = height  * window.innerWidth / window.innerHeight
-            
-            this.camera = new THREE.OrthographicCamera( width / - 2, width / 2, height / 2, height / - 2, 1, 1000 );
-            this.camZoom = 5
-        }
-        else {
-            // Create a basic perspective camera
-            this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100000);
-        }
-        // camera.position.z = 60;
-
-        // Place camera on x axis
-        this.camera.position.set(0, 0, 1);
-        this.camera.up = new THREE.Vector3(0, 1, 0);
-        this.camera.lookAt(new THREE.Vector3(0, 0, 0));
-*/
-        // console.log(cam)
 
         // Create a renderer with Antialiasing
         this.renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -209,10 +187,9 @@ class BaseGame {
     }
 
 
-
     _onWindowResize() {
 
-        onWindowResize()
+        this.onWindowResize()
 
         let {camera, renderer} = this
 
