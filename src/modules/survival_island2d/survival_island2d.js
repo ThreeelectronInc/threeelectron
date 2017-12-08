@@ -18,8 +18,18 @@ require('./survival2d/tile_materials')
 class SurvivalIsland2D extends BaseGame {
 
     constructor(tagName, fps = 0) {
-        super(tagName, fps, "#000000", true)
 
+        // Create a basic ortho camera
+
+        let height = 10
+        let width = height * window.innerWidth / window.innerHeight
+
+        let camera = new THREE.OrthographicCamera(width / - 2, width / 2, height / 2, height / - 2, 1, 1000);
+        
+
+        super(tagName, fps, "#000000", camera)
+
+        this.camZoom = 5
         this.time_elapsed = 0
 
         this.WORLD_WIDTH = 200
@@ -146,7 +156,7 @@ class SurvivalIsland2D extends BaseGame {
             // resource URL
             'modules/survival_island2d/mhwgo.mp3',
             // Function when resource is loaded
-             (audioBuffer) =>{
+            (audioBuffer) => {
                 // set the audio object buffer to the loaded object
                 this.oceanAmbientSound.setBuffer(audioBuffer);
 
@@ -154,7 +164,7 @@ class SurvivalIsland2D extends BaseGame {
                 this.oceanAmbientSound.play();
             },
             // Function called when download progresses
-             (xhr) => {
+            (xhr) => {
                 console.log((xhr.loaded / xhr.total * 100) + '% loaded');
             },
             // Function called when download errors
@@ -162,6 +172,18 @@ class SurvivalIsland2D extends BaseGame {
                 console.log('An error happened');
             }
         );
+    }
+
+    onWindowResize() {
+        let { camera, renderer } = this
+        let aspect = window.innerWidth / window.innerHeight;
+        let size = 6
+        camera.aspect = aspect;
+
+        camera.left = - size * aspect / 2
+        camera.right = size * aspect / 2
+        camera.top = size / 2
+        camera.bottom = - size / 2
     }
 
     deInit() {

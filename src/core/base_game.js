@@ -8,21 +8,24 @@
 let THREE = require('./../libs/three/three')
 
 class BaseGame {
-    constructor(tagName, fps = 0, clearColor = "#33aadd", is2D = false) {
+    constructor(tagName, fps = 0, clearColor = "#33aadd", camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100000)) {
 
 
         // Assert that required methods have been overridden
         if (this.init === undefined) { throw new TypeError("Must override method: init()") }
         if (this.deInit === undefined) { throw new TypeError("Must override method: deInit()") }
         if (this.update === undefined) { throw new TypeError("Must override method: update(delta)") }
-        // if (this.handeInput === undefined) { throw new TypeError("Must override method: handleInput(delta)") }
-
+        if (this.onWindowResize === undefined) { throw new TypeError("Must override method: onWindowResize()") }
+        
+        
         this._clear()
 
         this.tagName = tagName
 
         // Create an empty scene
         this.scene = new THREE.Scene();
+
+        this.camera = camera
 
         this.prevSecond = 0
         this.framesThisSecond = 0
@@ -33,8 +36,6 @@ class BaseGame {
         if (this.forceFPS) {
             this.updateFunction = setInterval(() => this.nextFrameRequest = requestAnimationFrame(this.bound_update), 1000 / this.forceFPS)
         }
-
-        this.is2D = is2D
 
     }
 
@@ -48,8 +49,7 @@ class BaseGame {
         this.parentDiv.appendChild(this.stats.dom)
 
         this.clock = new THREE.Clock()
-
-
+/*
         if (this.is2D) {
             // Create a basic ortho camera
 
@@ -69,7 +69,7 @@ class BaseGame {
         this.camera.position.set(0, 0, 1);
         this.camera.up = new THREE.Vector3(0, 1, 0);
         this.camera.lookAt(new THREE.Vector3(0, 0, 0));
-
+*/
         // console.log(cam)
 
         // Create a renderer with Antialiasing
@@ -91,7 +91,7 @@ class BaseGame {
         this.thisCanvas = this.parentDiv.appendChild(this.renderer.domElement)
 
         // Setup resize callback
-        this.bound_onWindowResize = this.onWindowResize.bind(this)
+        this.bound_onWindowResize = this._onWindowResize.bind(this)
         window.addEventListener('resize', this.bound_onWindowResize, false);
 
         // Setup keyboard callbacks
@@ -209,23 +209,12 @@ class BaseGame {
     }
 
 
-    onWindowResize() {
+
+    _onWindowResize() {
+
+        onWindowResize()
+
         let {camera, renderer} = this
-        let aspect = window.innerWidth / window.innerHeight;
-        let size = 6
-        camera.aspect = aspect;
-
-        if (this.is2D) {
-            camera.left = - size * aspect / 2  
-            camera.right = size * aspect / 2
-            camera.top = size / 2
-            camera.bottom = - size / 2
-        }
-        else {            
-
-            
-
-        }
 
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);

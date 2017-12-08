@@ -128,6 +128,11 @@ class SurvivalGame extends BaseGame {
 
     }
 
+    onWindowResize(){
+        let {camera, renderer} = this
+
+    }
+    
     deInit() {
         TerrainGenerator.world.clear()
     }

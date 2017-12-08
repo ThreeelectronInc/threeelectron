@@ -87,6 +87,11 @@ class SurvivalGame extends BaseGame {
         this.cameraControl = new DeityCamera(this.camera, (key) => this.keyDown(key), this.mouse)
 
     }
+    
+    onWindowResize(){
+        let {camera, renderer} = this
+
+    }
 
     deInit() {
     }
