@@ -5,26 +5,26 @@ let { Entity } = require('./entity')
 let { TileType } = require('./../core/tile')
 let Mathf = require('./../../../core/utils/math')
 
-let bear_image = new THREE.TextureLoader().load( "assets/survival2d/bears.png")
-let material = new THREE.SpriteMaterial( { map: bear_image, color: 0xffffff } );
-let sprite =  new THREE.Sprite( material );
-
 class Bear extends Entity {
 
     constructor(game, x, y, z) {
-        super(game, x, y, z, sprite.clone(), 0.5)
+        super(game, x, y, z, 0.5, "assets/survival2d/bears.png")
         this.t = 0
 
-        let numCols = 12
-        let numRows = 8
-        let col = 1 / numCols
-        let row = 1 / numRows
-        bear_image.offset.set(0, 0)
-        bear_image.repeat.set(col, row)
-
-        this.setSpriteTile = (i, j) => {
-            bear_image.offset.set(i * col, j * row)
-        }
+        this.initSpriteSheet(this.image, 8, 12, (dir) => {
+          if (dir.dot(new THREE.Vector3(0, 0, -1)) > 0.7) {
+            this.setSpriteTile(this.i, 0)
+          }
+          else if (dir.dot(new THREE.Vector3(0, 0, 1)) > 0.7) {
+            this.setSpriteTile(this.i, 3)
+          }
+          else if (dir.dot(new THREE.Vector3(-1, 0, 0)) > 0.7) {
+            this.setSpriteTile(this.i, 2)
+          }
+          else {
+            this.setSpriteTile(this.i, 1)
+          }
+        })
 
         this.i = 0
         this.speed = 3.0
@@ -98,20 +98,6 @@ class Bear extends Entity {
               this.footstepAudio.play()
             }
 
-            moveDir.normalize()
-
-            if (moveDir.dot(new THREE.Vector3(0, 0, -1)) > 0.7) {
-              this.setSpriteTile(this.i, 0)
-            }
-            else if (moveDir.dot(new THREE.Vector3(0, 0, 1)) > 0.7) {
-              this.setSpriteTile(this.i, 3)
-            }
-            else if (moveDir.dot(new THREE.Vector3(-1, 0, 0)) > 0.7) {
-              this.setSpriteTile(this.i, 2)
-            }
-            else {
-              this.setSpriteTile(this.i, 1)
-            }
           }
           else {
             this.pickTarget()

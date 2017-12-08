@@ -4,27 +4,28 @@ let SoundManager = require('./../core/sound_manager')
 let { Entity } = require('./entity')
 let { TileType } = require('./../core/tile')
 
-let man_image = new THREE.TextureLoader().load( "assets/survival2d/george.png")
-let material = new THREE.SpriteMaterial( { map: man_image, color: 0xffffff } );
-let sprite =  new THREE.Sprite( material );
 
 class Man extends Entity {
 
     constructor(game, x, y, z, kd) {
-        super(game, x, y, z, sprite.clone(), 0.5)
+        super(game, x, y, z, 0.5, "assets/survival2d/george.png")
         this.t = 0
         this.keyDown = kd
 
-        let numCols = 4
-        let numRows = 4
-        let col = 1 / numCols
-        let row = 1 / numRows
-        man_image.offset.set(0, 0)
-        man_image.repeat.set(col, row)
-
-        this.setSpriteTile = (i, j) => {
-            man_image.offset.set(i * col, j * row)
-        }
+        this.initSpriteSheet(this.image, 4, 4, (dir) => {
+          if (dir.dot(new THREE.Vector3(0, 0, -1)) > 0.7) {
+            this.setSpriteTile(2, this.i)
+          }
+          else if (dir.dot(new THREE.Vector3(0, 0, 1)) > 0.7) {
+            this.setSpriteTile(0, this.i)
+          }
+          else if (dir.dot(new THREE.Vector3(-1, 0, 0)) > 0.7) {
+            this.setSpriteTile(1, this.i)
+          }
+          else {
+            this.setSpriteTile(3, this.i)
+          }
+        })
 
         this.i = 0
         this.speed = 3.0
@@ -99,19 +100,6 @@ class Man extends Entity {
               this.footstepAudio.play()
             }
 
-            moveDir.normalize()
-            if (moveDir.dot(new THREE.Vector3(0, 0, -1)) > 0.7) {
-              this.setSpriteTile(2, this.i)
-            }
-            else if (moveDir.dot(new THREE.Vector3(0, 0, 1)) > 0.7) {
-              this.setSpriteTile(0, this.i)
-            }
-            else if (moveDir.dot(new THREE.Vector3(-1, 0, 0)) > 0.7) {
-              this.setSpriteTile(1, this.i)
-            }
-            else {
-              this.setSpriteTile(3, this.i)
-            }
           }
           else {
             this.footstepAudio.stop()

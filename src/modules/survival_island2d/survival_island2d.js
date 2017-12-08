@@ -134,7 +134,7 @@ class SurvivalIsland2D extends BaseGame {
             this.scene.add(mesh);
         }
 
-        this.chicken = new chickenClass.Chicken(this, 50, 1, 50)
+       // this.chicken = new chickenClass.Chicken(this, 50, 1, 50)
         this.man = new manClass.Man(this, 50, 1, 50,
             (key) => this.keyDown(key))
 
@@ -165,7 +165,7 @@ class SurvivalIsland2D extends BaseGame {
     update(delta) {
         this.time_elapsed += delta
         this.man.update(delta)
-        this.chicken.update(delta)
+     //   this.chicken.update(delta)
         this.bear.update(delta)
         this.cameraControl.update(delta)
 
