@@ -8,6 +8,7 @@ let Camera2D = require('./../../core/camera/2d')
 let { ipcRenderer, remote } = require('electron');
 
 let TerrainGenerator = require('./survival2d/terrain_generator')
+let SoundManager = require('./survival2d/sound_manager')
 
 let chickenClass = require('./core/chicken')
 let manClass = require('./core/man')
@@ -61,6 +62,14 @@ class SurvivalIsland2D extends BaseGame {
         this.camera.lookAt(50, 0, 50)
 
         this.cameraControl = new Camera2D(this.camera, (key) => this.keyDown(key), this.mouse)
+
+         // instantiate a listener
+        this.audioListener = new THREE.AudioListener();
+
+        // add the listener to the camera
+        this.camera.add(this.audioListener);
+
+        SoundManager.load_audio('modules/survival_island2d/mhwgo.mp3', 0.1, this.audioListener, (audio) => { audio.play(); })
 
         let MaterialManager = require('./survival2d/material_manager_new')
         let { TileType } = require('./survival2d/tile')
@@ -129,44 +138,8 @@ class SurvivalIsland2D extends BaseGame {
             (key) => this.keyDown(key))
 
 
+        this.cameraControl.focus(this.man)
 
-        // instantiate a listener
-        var audioListener = new THREE.AudioListener();
-
-        // add the listener to the camera
-        this.camera.add(audioListener);
-
-        // instantiate audio object
-        this.oceanAmbientSound = new THREE.Audio(audioListener);
-
-        // add the audio object to the scene
-        this.scene.add(this.oceanAmbientSound);
-
-
-        // instantiate a loader
-        var loader = new THREE.AudioLoader();
-
-        // load a resource
-        loader.load(
-            // resource URL
-            'modules/survival_island2d/mhwgo.mp3',
-            // Function when resource is loaded
-            (audioBuffer) => {
-                // set the audio object buffer to the loaded object
-                this.oceanAmbientSound.setBuffer(audioBuffer);
-
-                // play the audio
-                this.oceanAmbientSound.play();
-            },
-            // Function called when download progresses
-            (xhr) => {
-                console.log((xhr.loaded / xhr.total * 100) + '% loaded');
-            },
-            // Function called when download errors
-            (xhr) => {
-                console.log('An error happened');
-            }
-        );
     }
 
     onWindowResize() {
@@ -182,7 +155,7 @@ class SurvivalIsland2D extends BaseGame {
     }
 
     deInit() {
-        this.oceanAmbientSound.stop()
+       // this.oceanAmbientSound.stop()
 
     }
 

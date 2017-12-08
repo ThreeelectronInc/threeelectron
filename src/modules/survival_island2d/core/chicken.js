@@ -8,8 +8,8 @@ let geomChicken =  new THREE.Sprite( matChicken );
 
 class Chicken extends Entity {
 
-    constructor(scene, x, y, z) {
-        super(scene, x, y, z, geomChicken.clone(), 0.3)
+    constructor(game, x, y, z) {
+        super(game, x, y, z, geomChicken.clone(), 0.3)
         module.exports.chickenCount++
 
         this.pickTarget()

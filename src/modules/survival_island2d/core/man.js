@@ -1,4 +1,5 @@
 let THREE = require('./../../../libs/three/three')
+let SoundManager = require('./../survival2d/sound_manager')
 
 let { Entity } = require('./entity')
 let { TileType } = require('./../survival2d/tile')
@@ -12,8 +13,8 @@ let sprite =  new THREE.Sprite( material );
 
 class Man extends Entity {
 
-    constructor(scene, x, y, z, kd) {
-        super(scene, x, y, z, sprite.clone(), 0.5)
+    constructor(game, x, y, z, kd) {
+        super(game, x, y, z, sprite.clone(), 0.5)
         this.t = 0
         this.keyDown = kd
 
@@ -31,6 +32,8 @@ class Man extends Entity {
         this.i = 0
         this.speed = 3.0
         this.targetSpeed = 3.0
+        this.footstepAudio = 0
+        SoundManager.load_audio('modules/survival_island2d/earthyFootstep.mp3', 1, game.audioListener, (audio) => this.footstepAudio = audio)
     }
 
     update(delta) {
@@ -95,7 +98,21 @@ class Man extends Entity {
               break;
           }
           moveDir.multiplyScalar(delta * this.speed)
-          this.move(moveDir)
+
+          if (this.move(moveDir)) {
+            if (!this.footstepAudio.isPlaying) {
+              this.footstepAudio.play()
+            }
+          }
+          else {
+            this.footstepAudio.stop()
+          }
+
+        }
+        else {
+          if (this.footstepAudio && this.footstepAudio.isPlaying) {
+            this.footstepAudio.stop()  
+          }
         }
     }
 }
