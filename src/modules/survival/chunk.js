@@ -10,7 +10,7 @@ let chunkBlockWidth = 16, chunkBlockDepth = 16, chunkBlockHeight = 128
 let octaves = 4
 let blockScale = 7.5
 
-let THREE = require('./../libs/three/three')
+let THREE = require('./../../libs/three/three')
 let BLOCK = require('./block')
 
 
@@ -43,7 +43,7 @@ class Chunk {
 
         this.generated = true
 
-        let noise = require('./../libs/improved_noise')
+        let noise = require('./../../libs/improved_noise')
         let perlin = new noise.ImprovedNoise()
 
         for (var z = 0; z < chunkBlockDepth; z++) {

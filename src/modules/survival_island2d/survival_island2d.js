@@ -7,13 +7,13 @@ let Camera2D = require('./../../core/camera/2d')
 
 let { ipcRenderer, remote } = require('electron');
 
-let TerrainGenerator = require('./../../survival2d/terrain_generator')
+let TerrainGenerator = require('./survival2d/terrain_generator')
 
 let chickenClass = require('./core/chicken')
 let manClass = require('./core/man')
 
 // init the tile materials
-require('./../../survival2d/tile_materials')
+require('./survival2d/tile_materials')
 
 class SurvivalIsland2D extends BaseGame {
 
@@ -52,8 +52,8 @@ class SurvivalIsland2D extends BaseGame {
 
         this.cameraControl = new Camera2D(this.camera, (key) => this.keyDown(key), this.mouse)
 
-        let MaterialManager = require('./../../core/material_manager_new')
-        let { TileType } = require('./../../survival2d/tile')
+        let MaterialManager = require('./survival2d/material_manager_new')
+        let { TileType } = require('./survival2d/tile')
 
 
         let planeGeom = new THREE.PlaneBufferGeometry(1, 1);

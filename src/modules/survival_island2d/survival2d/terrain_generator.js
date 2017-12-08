@@ -1,9 +1,9 @@
-let noise = require('./../libs/improved_noise')
+let noise = require('./../../../libs/improved_noise')
 let perlin = new noise.ImprovedNoise()
 
 let randSeed = Math.random(), randX = Math.random(), randZ = Math.random()
-let { TileType } = require('./../survival2d/tile')
-let Mathf = require('./../core/utils/math')
+let { TileType } = require('./tile')
+let Mathf = require('./../../../core/utils/math')
 let OCEAN_DEPTH = 30
 let WORLD_WIDTH = 200
 let WORLD_HEIGHT = 200

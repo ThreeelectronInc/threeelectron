@@ -8,10 +8,6 @@
 let THREE = require('./../../libs/three/three')
 
 let BaseGame = require('./../../core/base_game')
-let TerrainGenerator = require('./../../core/terrain_generator')
-
-let chunkClass = require('./../../core/chunk')
-let chickenClass = require('./../../core/entities/chicken')
 
 
 let DeityCamera = require('./../../core/camera/deity')
@@ -63,7 +59,7 @@ class SurvivalGame extends BaseGame {
 
         // Create a different scene to hold our buffer objects
         this.bufferScene = new THREE.Scene()
-        let { RenderBuffer } = require('./../../core/render_buffer')
+        let { RenderBuffer } = require('./render_buffer')
         this.renderBuffer = new RenderBuffer(this.renderer, this.bufferScene, 512)
         this.bufferMaterial = new THREE.MeshBasicMaterial({ map: this.renderBuffer.bufferTexture.texture, transparent: true, side: THREE.DoubleSide })
 

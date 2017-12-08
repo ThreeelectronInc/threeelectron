@@ -1,4 +1,4 @@
-let THREE = require('./../libs/three/three')
+let THREE = require('./../../../libs/three/three')
 
 let managed_materials = {}
 let managed_textures = {}

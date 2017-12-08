@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-let THREE = require('./../libs/three/three')
+let THREE = require('./../../libs/three/three')
 
 
 class RenderBuffer {

@@ -8,10 +8,10 @@
 let THREE = require('./../../libs/three/three')
 
 let BaseGame = require('./../../core/base_game')
-let TerrainGenerator = require('./../../core/terrain_generator')
+let TerrainGenerator = require('./terrain_generator')
 
-let chunkClass = require('./../../core/chunk')
-let chickenClass = require('./../../core/entities/chicken')
+let chunkClass = require('./chunk')
+let chickenClass = require('./entities/chicken')
 
 
 let DeityCamera = require('./../../core/camera/deity')

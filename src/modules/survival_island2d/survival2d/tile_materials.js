@@ -1,7 +1,7 @@
 // License: This belongs to MIT
 
-let MaterialManager = require('./../core/material_manager_new')
-let THREE = require('./../libs/three/three')
+let MaterialManager = require('./material_manager_new')
+let THREE = require('./../../../libs/three/three')
 let { TileType } = require('./tile')
 
 MaterialManager.init_material(TileType.WATER, "assets/images/Water.png", (x) => new THREE.MeshBasicMaterial(x))
