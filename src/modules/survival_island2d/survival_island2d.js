@@ -69,7 +69,7 @@ class SurvivalIsland2D extends BaseGame {
         // add the listener to the camera
         this.camera.add(this.audioListener);
 
-        SoundManager.load_audio('modules/survival_island2d/mhwgo.mp3', 0.1, this.audioListener, (audio) => { audio.play(); })
+        SoundManager.load_audio('modules/survival_island2d/RightOfPassage.mp3', 0.5, this.audioListener, (audio) => { this.soundTrack = audio; audio.play(); })
 
         let MaterialManager = require('./survival2d/material_manager_new')
         let { TileType } = require('./survival2d/tile')
@@ -155,8 +155,7 @@ class SurvivalIsland2D extends BaseGame {
     }
 
     deInit() {
-       // this.oceanAmbientSound.stop()
-
+        this.soundTrack.stop()
     }
 
     update(delta) {
