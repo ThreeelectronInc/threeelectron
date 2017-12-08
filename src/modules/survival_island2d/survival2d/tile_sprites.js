@@ -1,4 +1,4 @@
-let SpriteManager = require('./../core/sprite_manager')
+let SpriteManager = require('./sprite_manager')
 let { TileType } = require('./tile')
 
 SpriteManager.init_sprite(TileType.WATER, "assets/images/Water.png")
