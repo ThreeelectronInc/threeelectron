@@ -27,33 +27,39 @@ class Bear extends Entity {
         })
 
         this.i = 0
-        this.speed = 3.0
-        this.targetSpeed = 3.0
+        this.speed = 1.0
+        this.acceleration = 0.8
+        this.targetSpeed = 1.0
         this.footstepAudio = 0
+        this.growlSound = 0
+        this.vol = 0
         SoundManager.load_audio('modules/survival_island2d/earthyFootstep.mp3', 1, game.audioListener, (audio) => this.footstepAudio = audio)
+        SoundManager.load_audio('modules/survival_island2d/bearsound.mp3', 1, game.audioListener, (audio) => this.growlSound = audio)
 
         this.pickTarget()
     }
 
     pickTarget() {
         this.randomOffset = new THREE.Vector3(Math.random() * 2 -1, 0, Math.random() * 2 -1)
-        this.randomOffset.multiplyScalar(3)
+        this.randomOffset.multiplyScalar(8)
         this.randomOffset.add(this.geometry.position)
+
+        if (this.growlSound) {
+          if (!this.growlSound.isPlaying) {
+              if (this.vol > 0) {
+                this.growlSound.setVolume(this.vol)
+                this.growlSound.play()
+              }
+          }
+        }
     }
 
-    update(delta) {
+    _update(delta) {
         this.t += delta
         if (this.t > 0.2) {
             this.t = 0
             this.i++
             this.i %= 3
-        }
-
-        if (this.speed < this.targetSpeed) {
-          this.speed += 0.25
-        }
-        else if (this.speed > this.targetSpeed) {
-          this.speed -= 0.25
         }
 
         let moveDir = new THREE.Vector3(0,0,0)
@@ -64,7 +70,9 @@ class Bear extends Entity {
             move = true
         }
         else {
-          this.pickTarget()
+          if (Math.random() > 0.999) {
+            this.pickTarget()
+          }
         }
 
         if (move) {
@@ -91,9 +99,9 @@ class Bear extends Entity {
           if (this.move(moveDir)) {
             if (!this.footstepAudio.isPlaying) {
               let d = this.game.man.geometry.position.distanceTo(this.geometry.position)
-              let vol = Mathf.lerp(1, 0, d / 8)
-              if (vol > 0) {
-                this.footstepAudio.setVolume(vol)
+              this.vol = Mathf.lerp(1, 0, d / 8)
+              if (this.vol > 0) {
+                this.footstepAudio.setVolume(this.vol)
                 this.footstepAudio.play()
               }
             }
@@ -109,7 +117,7 @@ class Bear extends Entity {
         }
         else {
           if (this.footstepAudio && this.footstepAudio.isPlaying) {
-            this.pickTarget()
+            this.randomOffset.set(this.geometry.position)
             this.footstepAudio.stop()  
           }
         }

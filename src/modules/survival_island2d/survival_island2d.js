@@ -19,7 +19,7 @@ require('./core/tile_materials')
 
 class SurvivalIsland2D extends BaseGame {
 
-    constructor(tagName, fps = 0) {
+    constructor(tagName, fps = 60) {
 
         // Create a basic ortho camera
 

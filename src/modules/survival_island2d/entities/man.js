@@ -34,7 +34,7 @@ class Man extends Entity {
         SoundManager.load_audio('modules/survival_island2d/earthyFootstep.mp3', 1, game.audioListener, (audio) => this.footstepAudio = audio)
     }
 
-    update(delta) {
+    _update(delta) {
         this.t += delta
         if (this.t > 0.2) {
             this.t = 0

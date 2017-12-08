@@ -35,6 +35,21 @@ class Entity {
         this.setSpriteTile = (i, j) => {
             this.sheet.offset.set(i * colFrac, j * rowFrac)
         }
+
+        this.speed = 0.0
+        this.acceleration = 0.8
+        this.targetSpeed = 3.0
+    }
+
+    update(delta) {
+       /* if (this.speed < this.targetSpeed) {
+          this.speed += this.acceleration  * delta
+        }
+        else if (this.speed > this.targetSpeed) {
+          this.speed -= this.acceleration  * delta
+        }*/
+
+        this._update(delta)
     }
 
     getTile() {
