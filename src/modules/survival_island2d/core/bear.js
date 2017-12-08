@@ -3,6 +3,7 @@ let SoundManager = require('./../survival2d/sound_manager')
 
 let { Entity } = require('./entity')
 let { TileType } = require('./../survival2d/tile')
+let Mathf = require('./../../../core/utils/math')
 
 let bear_image = new THREE.TextureLoader().load( "assets/survival2d/bears.png")
 let material = new THREE.SpriteMaterial( { map: bear_image, color: 0xffffff } );
@@ -91,7 +92,10 @@ class Bear extends Entity {
 
           if (this.move(moveDir)) {
             if (!this.footstepAudio.isPlaying) {
-           //   this.footstepAudio.play()
+              let d = this.game.man.geometry.position.distanceTo(this.geometry.position)
+              let vol = Mathf.lerp(1, 0, d / 8)
+              this.footstepAudio.setVolume(vol)
+              this.footstepAudio.play()
             }
 
             moveDir.normalize()
@@ -123,6 +127,7 @@ class Bear extends Entity {
             this.footstepAudio.stop()  
           }
         }
+
     }
 }
 

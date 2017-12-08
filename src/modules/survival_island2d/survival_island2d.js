@@ -164,8 +164,8 @@ class SurvivalIsland2D extends BaseGame {
 
     update(delta) {
         this.time_elapsed += delta
-        this.chicken.update(delta)
         this.man.update(delta)
+        this.chicken.update(delta)
         this.bear.update(delta)
         this.cameraControl.update(delta)
 
