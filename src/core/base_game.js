@@ -211,6 +211,14 @@ class BaseGame {
 
     }
 
+    keyReleased(key){
+
+        let keyCode = key.charCodeAt(0) - 32
+        // console.log(keyCode)
+        return !this.isKeyDown[keyCode] && this.wasKeyDown[keyCode]
+
+    }
+
     pauseToggle(){
         this.paused = !this.paused
     }
