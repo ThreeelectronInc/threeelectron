@@ -41,7 +41,7 @@ class Entity {
         this.targetSpeed = 3.0
     }
 
-    update(delta) {
+    update(delta, ambientBrightness) {
        /* if (this.speed < this.targetSpeed) {
           this.speed += this.acceleration  * delta
         }
@@ -49,6 +49,7 @@ class Entity {
           this.speed -= this.acceleration  * delta
         }*/
 
+        this.material.color = new THREE.Color(ambientBrightness, ambientBrightness, ambientBrightness)
         this._update(delta)
     }
 

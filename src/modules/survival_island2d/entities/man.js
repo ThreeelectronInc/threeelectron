@@ -28,8 +28,8 @@ class Man extends Entity {
         })
 
         this.i = 0
-        this.speed = 3.0
-        this.targetSpeed = 3.0
+        this.speed = 1.0
+        this.targetSpeed = 1.0
         this.footstepAudio = 0
         SoundManager.load_audio('modules/survival_island2d/earthyFootstep.mp3', 1, game.audioListener, (audio) => this.footstepAudio = audio)
     }
@@ -40,17 +40,6 @@ class Man extends Entity {
             this.t = 0
             this.i++
             this.i %= 4
-        }
-
-        if (this.speed < this.targetSpeed) {
-          this.speed += 0.25
-        }
-        else if (this.speed > this.targetSpeed) {
-          this.speed -= 0.25
-        }
-
-        if (this.keyDown('f')) {
-          console.log('action')
         }
 
         let moveDir = new THREE.Vector3(0,0,0)

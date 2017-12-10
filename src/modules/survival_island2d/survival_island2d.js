@@ -174,13 +174,12 @@ class SurvivalIsland2D extends BaseGame {
 
     update(delta) {
         this.time_elapsed += delta
+        let bright = 0.6 + Math.sin(this.time_elapsed * 0.1) * 0.4
 
         for (var i = 0; i <  this.entities.length; i++) {
-            this.entities[i].update(delta)
+            this.entities[i].update(delta, bright)
         }
         this.cameraControl.update(delta)
-
-        let bright = 0.6 + Math.sin(this.time_elapsed * 0.1) * 0.4
 
         for (let key in this.materials) {
             let baseBright = this.materialBrightness[key]
