@@ -34,7 +34,8 @@ class SurvivalGame extends BaseGame {
 
     makeParticles() {
 
-        let particles, geometry, materials = [], parameters, i, h, color, sprite, size;
+        let geometry, materials = [], parameters, i, h, color, sprite, size;
+        this.particles = []
 
         geometry = new THREE.Geometry();
 
@@ -71,25 +72,25 @@ class SurvivalGame extends BaseGame {
             sprite = parameters[i][1];
             size = parameters[i][2];
 
-            materials[i] = new THREE.PointsMaterial({ 
-                size: size, 
-                map: sprite, 
+            materials[i] = new THREE.PointsMaterial({
+                size: size,
+                map: sprite,
                 blending: THREE.NoBlending,//THREE.AdditiveBlending, 
-                depthTest: true, 
+                depthTest: true,
                 transparent: true,
                 alphaTest: 0.01// 1.0
             });
             // materials[i].color.setHSL(color[0], color[1], color[2]);
             materials[i].color.setRGB(color[0], color[1], color[2]);
-            
-            
-            particles = new THREE.Points(geometry, materials[i]);
 
-            particles.rotation.x = Math.random() * 6;
-            particles.rotation.y = Math.random() * 6;
-            particles.rotation.z = Math.random() * 6;
 
-            this.scene.add(particles);
+            this.particles[i] = new THREE.Points(geometry, materials[i]);
+
+            this.particles[i].rotation.x = Math.random() * 6;
+            this.particles[i].rotation.y = Math.random() * 6;
+            this.particles[i].rotation.z = Math.random() * 6;
+
+            this.scene.add(this.particles[i]);
 
         }
     }
@@ -128,11 +129,11 @@ class SurvivalGame extends BaseGame {
 
     }
 
-    onWindowResize(){
-        let {camera, renderer} = this
+    onWindowResize() {
+        let { camera, renderer } = this
 
     }
-    
+
     deInit() {
         TerrainGenerator.world.clear()
     }
@@ -194,10 +195,17 @@ class SurvivalGame extends BaseGame {
             this.chickens[i].update(delta)
         }
 
-        if (TerrainGenerator.world.done && !this.particlesDone){
+        if (TerrainGenerator.world.done && !this.particlesDone) {
 
             this.makeParticles()
             this.particlesDone = true
+        }
+
+        if (this.particlesDone) {
+
+            for (i = 0; i < this.particles.length; i++) {
+                this.particles[i].rotateY(0.1 * delta) 
+            }
         }
     }
 }

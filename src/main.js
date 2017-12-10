@@ -7,8 +7,8 @@
 
 
 
-let SurvivalGame = require('./modules/survival_island2d/survival_island2d')
-// let SurvivalGame = require('./modules/survival')
+// let SurvivalGame = require('./modules/survival_island2d/survival_island2d')
+let SurvivalGame = require('./modules/survival/survival')
 let game = new SurvivalGame('myContainer')//, 120)
 game.start()
 

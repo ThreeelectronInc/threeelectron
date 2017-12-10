@@ -227,7 +227,7 @@ class BaseGame {
             delta = 0
         }
 
-        console.log(this.paused)
+        // console.log(this.paused)
         
 
         let currentSecond = Math.round(this.clock.getElapsedTime())
