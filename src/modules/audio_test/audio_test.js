@@ -187,8 +187,8 @@ class SurvivalGame extends BaseGame {
 
     update(delta) {
 
-        let press = (key) => this.keyPressed(key)
-        let release = (key) => this.keyReleased(key)
+        let press = key => this.keyPressed(key)
+        let release = key => this.keyReleased(key)
         
 
         let k =12

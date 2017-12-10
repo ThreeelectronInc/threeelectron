@@ -86,6 +86,8 @@ class SurvivalGame extends BaseGame {
 
         this.cameraControl = new DeityCamera(this.camera, (key) => this.keyDown(key), this.mouse)
 
+
+        this.perlinSpeed = 0.05
     }
     
     onWindowResize(){
@@ -112,13 +114,22 @@ class SurvivalGame extends BaseGame {
             console.log(this.matShader2.uniforms['toColor'].value)
         }
 
+        if(this.keyDown('t')){
+            this.perlinSpeed += 0.0001
+            console.log(this.perlinSpeed)
+        }
+        if(this.keyDown('g')){
+            this.perlinSpeed += -0.001
+            console.log(this.perlinSpeed)
+        }
+
         // # set a uniform to tell the shader the size of a single pixel
         this.matShader2.uniforms['pixel'] = { value: new THREE.Vector2(1.0 / this.renderBuffer.bufferScale, 1.0 / this.renderBuffer.bufferScale) }
         this.matShader2.uniforms['window'] = { value: new THREE.Vector2(this.renderBuffer.bufferScale, this.renderBuffer.bufferScale) }
 
 
         this.time_elapsed += delta
-        this.matShader2.uniforms['time'] = { value: this.time_elapsed * 0.05 }
+        this.matShader2.uniforms['time'] = { value: this.time_elapsed * this.perlinSpeed }
         // self.shader.uniformf('positionOffset', 0, 0)
         this.matShader2.uniforms['scale'] = { value: 1.5 }
         

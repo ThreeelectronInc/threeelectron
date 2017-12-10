@@ -8,8 +8,8 @@
 
 
 // let SurvivalGame = require('./modules/survival_island2d/survival_island2d')
-// let SurvivalGame = require('./modules/survival/survival')
-let SurvivalGame = require('./modules/audio_test/audio_test')
+let SurvivalGame = require('./modules/survival/survival')
+// let SurvivalGame = require('./modules/audio_test/audio_test')
 let game = new SurvivalGame('myContainer')//, 120)
 game.start()
 

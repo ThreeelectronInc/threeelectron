@@ -127,6 +127,8 @@ class SurvivalGame extends BaseGame {
             this.mouse)
 
 
+            this.makeParticles()
+            this.particlesDone = true
     }
 
     onWindowResize() {
@@ -197,8 +199,8 @@ class SurvivalGame extends BaseGame {
 
         if (TerrainGenerator.world.done && !this.particlesDone) {
 
-            this.makeParticles()
-            this.particlesDone = true
+            // this.makeParticles()
+            // this.particlesDone = true
         }
 
         if (this.particlesDone) {
