@@ -41,6 +41,11 @@ let onLoad = () => {
   const fs = require("fs");
 
   fs.readdir(modulesPath, (err, dir) => {
+    if(err){
+      console.log(err)
+    }
+    else{
+     
     //console.log(dir);
     for (let filePath of dir) {
 
@@ -65,7 +70,8 @@ let onLoad = () => {
 
     }
 
-    // $('.module_buttons').hide()
+    // $('.module_buttons').hide() 
+    }
 
   });
 
