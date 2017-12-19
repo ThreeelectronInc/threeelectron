@@ -57,7 +57,9 @@ class BaseGame {
         // Configure renderer clear color
         this.renderer.setClearColor(this.clearColor);
 
-        this.renderer.setPixelRatio(window.devicePixelRatio);
+        this.resolutionScale = 0.33
+
+        this.renderer.setPixelRatio(window.devicePixelRatio * this.resolutionScale)
         
         // Configure renderer size
         this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -195,6 +197,7 @@ class BaseGame {
         let {camera, renderer} = this
 
         camera.updateProjectionMatrix();
+
         renderer.setSize(window.innerWidth, window.innerHeight);
     }
 

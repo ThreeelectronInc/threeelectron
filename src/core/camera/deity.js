@@ -60,8 +60,8 @@ class DeityCamera {
 
 
 
-        if (keyD("r")) { this.camera.position.y += camVel; this.lookPos.y += camVel }
-        if (keyD("f")) { this.camera.position.y -= camVel; this.lookPos.y -= camVel }
+        if (keyD("e")) { this.camera.position.y += camVel; this.lookPos.y += camVel }
+        if (keyD("q")) { this.camera.position.y -= camVel; this.lookPos.y -= camVel }
 
 
 
