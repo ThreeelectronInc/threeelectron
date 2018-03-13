@@ -9,6 +9,7 @@
 
 // let SurvivalGame = require('./modules/survival_island2d/survival_island2d')
 let SurvivalGame = require('./modules/survival/survival')
+// let SurvivalGame = require('./modules/scratchpad/scratchpad')
 // let SurvivalGame = require('./modules/audio_test/audio_test')
 let game = new SurvivalGame('myContainer')//, 120)
 game.start()
@@ -18,15 +19,14 @@ let $ = require('./libs/jquery-3.2.1.js')
 
 // Create a button for each module
 
-let modulesPath = './src/modules/'
-let modulesPathRelative = './modules/'
+let modulesPath = __dirname + '/modules/'
 
 let onClick = (filePath) => {
 
   if (game) { game.stop() }
 
   // console.log('asdfasdf'))
-  let ModuleClass = require(`${modulesPathRelative}${filePath}/${filePath}`)
+  let ModuleClass = require(`${modulesPath}${filePath}/${filePath}`)
   game = new ModuleClass('myContainer')//, 120)
 
   game.start()
@@ -41,36 +41,40 @@ let onLoad = () => {
   const fs = require("fs");
 
   fs.readdir(modulesPath, (err, dir) => {
-    if(err){
+    if (err) {
       console.log(err)
     }
-    else{
-     
-    //console.log(dir);
-    for (let filePath of dir) {
+    else {
 
-      // console.log(filePath);
+      //console.log(dir);
+      for (let filePath of dir) {
 
-      // if (filePath.endsWith('.js')) {
+        if (filePath !== '.DS_Store') {
 
-      // let moduleName = filePath.replace('.js', '')
-      $('#moduleSelector').append(`
+          // console.log(filePath);
+
+          // if (filePath.endsWith('.js')) {
+
+          // let moduleName = filePath.replace('.js', '')
+          $('#moduleSelector').append(`
                     <div style='' id='${filePath}' class='module_buttons'> <button  >${filePath}</button> </div>
                   `)
-      fs.readdir(modulesPath+'/'+filePath, (err, dir) => {
+          fs.readdir(modulesPath + '/' + filePath, (err, dir) => {
 
-      })
-
-      // $(`#${moduleName}`).on('click', 'button', () => onClick(filePath, moduleName))
-      $(`#${filePath}`).mousedown(() => onClick(filePath))
-      // }
+          })
 
 
+          // $(`#${moduleName}`).on('click', 'button', () => onClick(filePath, moduleName))
+          $(`#${filePath}`).mousedown(() => onClick(filePath))
+          // }
+ 
+        }
 
 
-    }
 
-    // $('.module_buttons').hide() 
+      }
+
+      // $('.module_buttons').hide() 
     }
 
   });

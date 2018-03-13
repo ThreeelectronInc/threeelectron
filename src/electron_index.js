@@ -171,3 +171,6 @@ ipcMain.on('toggle-dev', (event, arg) => {
   console.log('show dev tools: ', arg)
 
 });
+
+// console.log('App path: ', app.getPath('userData'))
+// console.log('App path: ', __dirname)
