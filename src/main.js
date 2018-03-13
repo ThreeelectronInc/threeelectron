@@ -57,7 +57,7 @@ let onLoad = () => {
 
           // let moduleName = filePath.replace('.js', '')
           $('#moduleSelector').append(`
-                    <div style='' id='${filePath}' class='module_buttons'> <button  >${filePath}</button> </div>
+                    <div style='' class='module_buttons'> <button id='${filePath}' >${filePath}</button> </div>
                   `)
           fs.readdir(modulesPath + '/' + filePath, (err, dir) => {
 

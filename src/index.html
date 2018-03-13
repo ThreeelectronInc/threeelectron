@@ -6,36 +6,61 @@
 -->
 
 <html>
-  <head>
-    <style> body{padding:0; margin:0;} </style>
+
+<head>
+  <style>
+    body {
+      padding: 0;
+      margin: 0;
+    }
+  </style>
+
+  <!-- <script src="p5/p5.js"></script>  -->
+  <!-- <script src="scratch.js"></script> -->
+</head>
+
+<body>
+
+
+
+  <script src="libs/stats.min.js"> </script>
+
+
+
+
+
+
+  <div id='moduleSelector' style='z-index: 1; position: absolute; right: 0; text-align: right; color: white;'>
+
+    <script src='libs/react/16.2.0/react.development.js'></script>
+    <script src='libs/react/16.2.0/react-dom.development.js'></script>
+
+    <div id="reactApp"></div>
+    <script src='react_main.js'></script>
     
-    <!-- <script src="p5/p5.js"></script>  -->
-    <!-- <script src="scratch.js"></script> -->
-  </head>
-  <body>
+    <br/>
+    Press Esc to return to menu
+    <br/> W,A,S,D or hold right mouse button - Pan in XZ plane
+    <br/> Q,E or mouse scroll - Adjust Y
+    <br/> Hold left mouse button - First person look mode
+    <br/>
+
+  </div>
+
+  <div id='myContainer'></div>
+
+  <!-- <script type=module src="main.js"> </script> -->
+
+  <script src="main.js"> </script>
+  <!-- <script src="modules/orbit.js"> </script> -->
 
 
-      <div id='moduleSelector' style='z-index: 1; position: absolute; right: 0; text-align: right; color: white;'>
-      Press Esc to return to menu  
-      <br/>
-      W,A,S,D or hold right mouse button - Pan in XZ plane
-      <br/>
-      Q,E or mouse scroll - Adjust Y
-      <br/>
-      Hold left mouse button - First person look mode
-      <br/>
 
 
 
-      </div>      
 
-      <div id='myContainer'></div>
-      <script src="libs/stats.min.js"> </script>
-      
-      <!-- <script type=module src="main.js"> </script> -->
 
-      <script src="main.js"> </script>
-      <!-- <script src="modules/orbit.js"> </script> -->
 
-  </body>
+</body>
+
 </html>
