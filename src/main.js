@@ -1,17 +1,20 @@
 /**
  * Copyright (c) 2017 Alex Forbes and Denzil Buchner
- * 
+ *
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
 
 
 
-// let SurvivalGame = require('./modules/survival_island2d/survival_island2d')
-let SurvivalGame = require('./modules/survival/survival')
-// let SurvivalGame = require('./modules/scratchpad/scratchpad')
-// let SurvivalGame = require('./modules/audio_test/audio_test')
-let game = new SurvivalGame('myContainer')//, 120)
+// let TargetGameType = require('./modules/survival_island2d/survival_island2d')
+// let TargetGameType = require('./modules/survival/survival')
+// let TargetGameType = require('./modules/scratchpad/scratchpad')
+// let TargetGameType = require('./modules/audio_test/audio_test')
+
+let TargetGameType = require('./modules/simpad/simpad')
+
+let game = new TargetGameType('myContainer')//, 120)
 game.start()
 
 
@@ -67,14 +70,14 @@ let onLoad = () => {
           // $(`#${moduleName}`).on('click', 'button', () => onClick(filePath, moduleName))
           $(`#${filePath}`).mousedown(() => onClick(filePath))
           // }
- 
+
         }
 
 
 
       }
 
-      // $('.module_buttons').hide() 
+      // $('.module_buttons').hide()
     }
 
   });
