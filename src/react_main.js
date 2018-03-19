@@ -9,7 +9,7 @@ window.onload = function () {
                 `Greetings, ${this.props.name}!`, // Body (optional),
                 React.createElement('br'),
                 React.createElement(CustomButton, {name: 'Jeff'})
-            );
+            )
         }
     }
     ReactDOM.render(

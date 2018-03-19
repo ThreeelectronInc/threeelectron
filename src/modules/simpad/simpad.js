@@ -13,7 +13,6 @@ let DeityCamera = require('./../../core/camera/deity')
 
 let { ipcRenderer, remote } = require('electron');
 
-
 class SurvivalGame extends BaseGame {
 
     constructor(tagName, fps = 0) {
@@ -21,6 +20,7 @@ class SurvivalGame extends BaseGame {
 
         this.assetDirectory = 'assets'
         this.assets = {}
+        
 
     }
 
@@ -31,14 +31,20 @@ class SurvivalGame extends BaseGame {
       this.cameraControl = new DeityCamera(
         this.camera,
         (key) => this.keyDown(key),
-        this.mouse
+        this.mouse,
+        5 // camera velocity in units/second
       )
 
-      this.camera.position.z = 1000
+      this.camera.position.y = 2.5
+      this.camera.position.z = 5
 
-
-      this.initEntity('bee', {posX: 1000})
+      this.initEntity('bee', {posX: 1})
       this.initEntity('bee')
+      this.initEntity('skull', {posY: 1})
+      this.initEntity('chicken', {posX: -1})
+      this.initEntity('chicken', {posY: -1})
+
+      // TODO: add gui to create and move objects
 
     }
 
@@ -46,7 +52,6 @@ class SurvivalGame extends BaseGame {
     }
 
     update(delta) {
-
       this.cameraControl.update(delta)
     }
 
@@ -73,9 +78,17 @@ class SurvivalGame extends BaseGame {
             map: asset.texture,
             color: 0xffffff,
             transparent: true,
+            side: THREE.DoubleSide,
         })
 
         asset.geometry = new THREE.PlaneGeometry(1, 1, 1)
+        // asset.geometry.rotateX(Math.PI / 2)
+
+        // let tmpBufGeom = new THREE.PlaneBufferGeometry(1, 1)
+        // tmpBufGeom.rotateX(Math.PI / 2)
+        // // tmpBufGeom.translate(blockScale / 2, 0, 0)
+        // asset.geometry = new THREE.Geometry().fromBufferGeometry(tmpBufGeom)
+
 
         this.assets[name] = asset
       }
@@ -85,11 +98,13 @@ class SurvivalGame extends BaseGame {
         this.assets[name].material
       )
 
-      mesh.scale.x = props.scaleX === undefined ? 500 : props.scaleX
-      mesh.scale.y =  props.scaleY === undefined ? 500 : props.scaleY
+      mesh.scale.x = props.scaleX === undefined ? 1 : props.scaleX
+      mesh.scale.y =  props.scaleY === undefined ? 1 : props.scaleY
 
       mesh.position.x =  props.posX === undefined ? 0 : props.posX
-      mesh.position.y =  props.posY === undefined ? 0 : props.posY
+      mesh.position.z =  props.posY === undefined ? 0 : props.posY
+
+      mesh.rotateX(-Math.PI / 2)
 
       this.scene.add(mesh)
     }
@@ -97,3 +112,29 @@ class SurvivalGame extends BaseGame {
 }
 
 module.exports = SurvivalGame
+
+
+// This will replace the default react app overlaying the game
+
+// import CustomButton from './components/custom_button.js'
+let CustomButton = require('./../../components/custom_button')
+window.onload = function () {
+    class Greetings extends React.Component {
+        render() {
+            return React.createElement(
+                'div', // Type
+                null, // Props
+                `Hi there, ${this.props.name}!`, // Body (optional),
+                React.createElement('br'),
+                React.createElement(CustomButton, {name: 'Someone'})
+            )
+        }
+    }
+    ReactDOM.render(
+        React.createElement(
+            Greetings,
+            { name: 'Alex' }
+        ),
+        document.getElementById('reactApp')
+    );
+};

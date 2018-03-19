@@ -9,9 +9,9 @@
 let THREE = require('./../../libs/three/three')
 
 class DeityCamera {
-    constructor(camera, keyDown, mouse) {
+    constructor(camera, keyDown, mouse, camSpeed = 500) {
 
-        this.camSpeed = 500
+        this.camSpeed = camSpeed
 
         this.r = 2;
         this.theta = Math.PI / 2;
@@ -45,7 +45,7 @@ class DeityCamera {
         forwardVec.y = 0
 
 
-        forwardVec = forwardVec.normalize().multiplyScalar(delta * 1000)
+        forwardVec = forwardVec.normalize().multiplyScalar(camVel)
 
         mouseVec = forwardVec.clone()
 
