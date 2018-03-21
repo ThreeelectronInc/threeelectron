@@ -87,9 +87,22 @@ let onLoad = () => {
 $(window).on('load', onLoad);
 
 window.addEventListener('keydown', () => {
-  if (event.keyCode == 27) { //Esc
+  if (event.keyCode == 27) { // Esc
     // event.preventDefault()
     game.stop()
     $('.module_buttons').show()
+  }
+})
+
+let hideOverlay = false
+window.addEventListener('keydown', () => {
+  if (event.keyCode == 79) { // O
+    if (!hideOverlay){
+      $('#moduleSelector').hide()
+    }
+    else{
+      $('#moduleSelector').show()
+    }
+    hideOverlay = !hideOverlay
   }
 })

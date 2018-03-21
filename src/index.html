@@ -30,20 +30,24 @@
 
 
 
-  <div id='moduleSelector' style='z-index: 1; position: absolute; right: 0; text-align: right; color: white;'>
+  <div id='hudOverlay' style='z-index: 1; position: absolute; right: 0; text-align: right; color: white;'>
+
+    <div id='moduleSelector'>
+
+      Esc - return to menu
+      <br/> O - Show/hide this overlay
+      <br/> W,A,S,D or hold right mouse button - Pan in XZ plane
+      <br/> Q,E or mouse scroll - Adjust Y
+      <br/> Hold left mouse button - First person look mode
+      <br/>
+    </div>
+
 
     <script src='libs/react/16.2.0/react.development.js'></script>
     <script src='libs/react/16.2.0/react-dom.development.js'></script>
 
     <div id="reactApp"></div>
     <script src='react_main.js'></script>
-    
-    <br/>
-    Press Esc to return to menu
-    <br/> W,A,S,D or hold right mouse button - Pan in XZ plane
-    <br/> Q,E or mouse scroll - Adjust Y
-    <br/> Hold left mouse button - First person look mode
-    <br/>
 
   </div>
 
