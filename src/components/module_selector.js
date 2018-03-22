@@ -36,20 +36,9 @@ class ModuleSelector extends React.Component {
 
         return React.createElement(
             'div', // Type
-            {
-                // style: {
-                //     backgroundColor: 'black',
-                //     color: 'white',
-                //     borderRadius: '10px',
-                // },
-
-            },
-            // `TODO: module list`, // Body (optional),
+            {},
             modules,
-            
         )
-
-        // return null
     }
 }
 

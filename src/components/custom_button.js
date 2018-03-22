@@ -5,13 +5,14 @@ class CustomButton extends React.Component{
             'button', // Type
             // null, // Props
             {
-                onClick: event => console.log(event.target.value),
+                // onClick: event => console.log(event.target.value),
+                // value: 'woot',
+                onClick: event => this.props.onClick(event),
                 style: {
                     backgroundColor: 'black',
                     color: 'white',
                     borderRadius: '10px',
                 },
-                value: 'woot',
             },
             `${this.props.name}` // Body (optional)
         )

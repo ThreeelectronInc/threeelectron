@@ -10,6 +10,7 @@ let THREE = require('./../../libs/three/three')
 let BaseGame = require('./../../core/base_game')
 
 let DeityCamera = require('./../../core/camera/deity')
+let CustomButton = require('./../../components/custom_button')
 
 let { ipcRenderer, remote } = require('electron');
 
@@ -38,7 +39,6 @@ class SurvivalGame extends BaseGame {
       this.camera.position.y = 2.5
       this.camera.position.z = 5
 
-      this.initEntity('bee', {posX: 1})
       this.initEntity('bee')
       this.initEntity('skull', {posY: 1})
       this.initEntity('chicken', {posX: -1})
@@ -55,26 +55,28 @@ class SurvivalGame extends BaseGame {
       this.cameraControl.update(delta)
     }
 
+    onWindowResize() {
+      let { camera, renderer } = this
+    }
+
+
     gui(){
         return React.createElement(
             'div',
             {},
             `Greetings`, // Body (optional),
             React.createElement('br'),
-            React.createElement(CustomButton, { name: 'Jeff' }),
+            React.createElement(
+                CustomButton, 
+                { 
+                    name: 'Spawn bee',
+                    onClick: () => this.initEntity('bee', {posX: 1})
+                }
+            ),
             
         )
     }
 
-
-    onWindowResize() {
-      let { camera, renderer } = this
-    }
-
-
-    isDefined(prop){
-      return prop !== undefined
-    }
 
     // Custom methods
     initEntity(name, props = {}){
@@ -124,29 +126,3 @@ class SurvivalGame extends BaseGame {
 
 module.exports = SurvivalGame
 
-/*
-// This will replace the default react app overlaying the game
-
-// import CustomButton from './components/custom_button.js'
-let CustomButton = require('./../../components/custom_button')
-window.onload = function () {
-    class Greetings extends React.Component {
-        render() {
-            return React.createElement(
-                'div', // Type
-                null, // Props
-                `Hi there, ${this.props.name}!`, // Body (optional),
-                React.createElement('br'),
-                React.createElement(CustomButton, {name: 'Someone'})
-            )
-        }
-    }
-    ReactDOM.render(
-        React.createElement(
-            Greetings,
-            { name: 'Alex' }
-        ),
-        document.getElementById('reactApp')
-    );
-};
-*/
