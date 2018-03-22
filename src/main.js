@@ -18,7 +18,7 @@ let game = new TargetGameType('myContainer')//, 120)
 game.start()
 
 
-let $ = require('./libs/jquery-3.2.1.js')
+// let $ = require('./libs/jquery-3.2.1.js')
 
 // Create a button for each module
 
@@ -38,7 +38,7 @@ let onClick = (filePath) => {
   // $('.module_buttons').hide()
 
 }
-
+/*
 let onLoad = () => {
 
   const fs = require("fs");
@@ -85,12 +85,12 @@ let onLoad = () => {
 }
 
 $(window).on('load', onLoad);
-
+*/
 window.addEventListener('keydown', () => {
   if (event.keyCode == 27) { // Esc
     // event.preventDefault()
     game.stop()
-    $('.module_buttons').show()
+    // $('.module_buttons').show()
   }
 })
 
@@ -98,10 +98,10 @@ let hideOverlay = false
 window.addEventListener('keydown', () => {
   if (event.keyCode == 79) { // O
     if (!hideOverlay){
-      $('#moduleSelector').hide()
+      // $('#moduleSelector').hide()
     }
     else{
-      $('#moduleSelector').show()
+      // $('#moduleSelector').show()
     }
     hideOverlay = !hideOverlay
   }

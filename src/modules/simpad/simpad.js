@@ -113,7 +113,7 @@ class SurvivalGame extends BaseGame {
 
 module.exports = SurvivalGame
 
-
+/*
 // This will replace the default react app overlaying the game
 
 // import CustomButton from './components/custom_button.js'
@@ -138,3 +138,4 @@ window.onload = function () {
         document.getElementById('reactApp')
     );
 };
+*/

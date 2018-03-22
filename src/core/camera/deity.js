@@ -65,13 +65,17 @@ class DeityCamera {
 
 
 
+        let pointerLockEnabled = false
 
 
         const mousePanSpeed = 0.25
         if (this.mouse.buttonDown[2]) {
 
-            let gameElem = document.getElementById('myContainer');
-            gameElem.requestPointerLock();
+            let gameElem = document.getElementById('myContainer')
+
+            if (pointerLockEnabled){
+                gameElem.requestPointerLock();
+            }
 
             let mousePan = forwardVec.clone().multiplyScalar(this.mouse.yVel * mousePanSpeed)
                 .add(leftVec.clone().multiplyScalar(this.mouse.xVel * mousePanSpeed))
@@ -85,7 +89,11 @@ class DeityCamera {
 
 
             let gameElem = document.getElementById('myContainer');
-            gameElem.requestPointerLock();
+            
+            if (pointerLockEnabled){
+                gameElem.requestPointerLock();
+            }
+
             // Update the spherical coordinates based on the mouse movement
             // and calculate the lookPos (offset from the camera position).
             // r >= 0
@@ -112,16 +120,17 @@ class DeityCamera {
         }
         else {
 
-            document.exitPointerLock();
-            
+            if (pointerLockEnabled){
+                document.exitPointerLock();    
+            }
 
         }
 
         // mouseVec.multiplyScalar(this.mouse.wheel * 0.05)
         // this.camera.position.add(mouseVec)
 
-        this.camera.position.y += this.mouse.wheel * 0.25
-        this.lookPos.y += this.mouse.wheel * 0.25
+        this.camera.position.y += this.mouse.wheel * camVel * 0.25
+        this.lookPos.y += this.mouse.wheel * camVel * 0.25
 
         this.camera.lookAt(this.lookPos);
     }
