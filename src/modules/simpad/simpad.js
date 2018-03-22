@@ -55,6 +55,17 @@ class SurvivalGame extends BaseGame {
       this.cameraControl.update(delta)
     }
 
+    gui(){
+        return React.createElement(
+            'div',
+            {},
+            `Greetings`, // Body (optional),
+            React.createElement('br'),
+            React.createElement(CustomButton, { name: 'Jeff' }),
+            
+        )
+    }
+
 
     onWindowResize() {
       let { camera, renderer } = this

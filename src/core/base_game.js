@@ -306,6 +306,10 @@ class BaseGame {
             while (elem.lastChild) elem.removeChild(elem.lastChild);
         }
     }
+
+    gui(){
+        return ''
+    }
 }
 
 module.exports = BaseGame

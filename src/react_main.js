@@ -16,15 +16,27 @@ window.onload = function () {
                 current: 'simpad'
             }
 
-            this.startModule()
+            this.startModule(this.state.current)
         }
-        componentDidUpdate(prevProps, prevState) {
 
-            if (this.state.current !== prevState.current) {
-                this.startModule()
+        // componentDidUpdate(prevProps, prevState) {
+        //     if (this.state.current !== prevState.current) {
+        //         this.startModule()
+        //     }
+        // }
+        componentWillUpdate(nextProps, nextState) {
+            if (this.state.current !== nextState.current) {
+                this.startModule(nextState.current)
             }
         }
+
         render() {
+            let overlay = ''
+            if (this.game !== undefined){
+                overlay = this.game.gui()
+
+            }
+
             return React.createElement(
                 'div', // Type
                 null, // Props
@@ -35,18 +47,14 @@ window.onload = function () {
                         onModuleSelected: name => this.setState(() => ({current: name}))
                     }
                 ),
-                `Greetings, ${this.props.name}!`, // Body (optional),
-                React.createElement('br'),
-                React.createElement(CustomButton, { name: 'Jeff' }),
+                overlay,
             )
         }
 
-        startModule(){
+        startModule(name){
 
             if (this.game) { this.game.stop() }
-
-            // console.log('asdfasdf'))
-            let ModuleClass = require(`${this.state.moduleDirectory}${this.state.current}/${this.state.current}`)
+            let ModuleClass = require(`${this.state.moduleDirectory}${name}/${name}`)
             this.game = new ModuleClass('myContainer')//, 120)
             this.game.start()
             
