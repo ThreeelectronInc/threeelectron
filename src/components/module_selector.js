@@ -16,27 +16,29 @@ class ModuleSelector extends React.Component {
             .filter(name => name !== '.DS_Store')
             .map( (moduleName, index) => {
                 return React.createElement(
-                    'button',
+                    'option',
                     {
                         key: index,
-                        style: {
-                            backgroundColor: 'black',
-                            color: 'white',
-                            borderRadius: '10px',
-                        },
-                        onClick: event => {
-                            if (this.props.onModuleSelected !== undefined) {
-                                this.props.onModuleSelected(moduleName)
-                            }
-                        }
+                        value: moduleName,
                     },
                     moduleName
                 )
             })
-
         return React.createElement(
-            'div', // Type
-            {},
+            'select', // Type
+            {
+                onChange: event => {
+                    if (this.props.onModuleSelected !== undefined) {
+                        this.props.onModuleSelected(event.target.value)
+                    }
+                },
+                style: {
+                    backgroundColor: 'black',
+                    color: 'white',
+                    borderRadius: '10px',
+                },
+                defaultValue: this.props.defaultSelected
+            },
             modules,
         )
     }

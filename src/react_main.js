@@ -33,18 +33,20 @@ window.onload = function () {
         render() {
             let overlay = ''
             if (this.game !== undefined){
-                overlay = this.game.gui()
+                overlay = this.game.gui(this)
 
             }
 
             return React.createElement(
                 'div', // Type
-                null, // Props
+                null, // Props,
+                'Current Game Module: ',
                 React.createElement(
                     ModuleSelector,
                     {
                         modulesPath: this.state.moduleDirectory,
-                        onModuleSelected: name => this.setState(() => ({current: name}))
+                        onModuleSelected: name => this.setState(() => ({current: name})),
+                        defaultSelected: this.state.current,
                     }
                 ),
                 overlay,

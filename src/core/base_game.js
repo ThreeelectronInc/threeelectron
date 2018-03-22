@@ -38,6 +38,10 @@ class BaseGame {
         }
         this.paused = false
 
+
+        this.raycaster = new THREE.Raycaster();
+        this.mouseNormalised = {x: 0, y: 0 }
+
     }
 
     // private init
@@ -157,6 +161,9 @@ class BaseGame {
 
     handleMouseUp(event) {
         this.mouse.buttonDown[event.button] = false
+        if (this.onMouseUp) {
+            this.onMouseUp(event)
+        }
     }
 
     handleMouseDown(event) {
@@ -164,6 +171,9 @@ class BaseGame {
         //     console.log('HERE')
         // }
         this.mouse.buttonDown[event.button] = true
+        if (this.onMouseDown) {
+            this.onMouseDown(event)
+        }
     }
     handleMouseMove(event) {
 
@@ -174,6 +184,12 @@ class BaseGame {
 
         this.mouse.xVel += event.movementX
         this.mouse.yVel += event.movementY
+
+        // calculate mouse position in normalized device coordinates
+        // (-1 to +1) for both components
+        this.mouseNormalised.x = (event.clientX / window.innerWidth) * 2 - 1;
+        this.mouseNormalised.y = - (event.clientY / window.innerHeight) * 2 + 1;
+        // console.log(this.mouseNormalised)
 
         if (this.onMouseMove) {
             this.onMouseMove(event)
@@ -224,6 +240,18 @@ class BaseGame {
 
     pauseToggle(){
         this.paused = !this.paused
+    }
+
+    raySelect(){
+        
+        // update the picking ray with the camera and mouse position
+        this.raycaster.setFromCamera( this.mouseNormalised, this.camera );
+
+        // calculate objects intersecting the picking ray
+        let intersects = this.raycaster.intersectObjects( this.scene.children );
+
+        return intersects
+
     }
 
     _update() {
