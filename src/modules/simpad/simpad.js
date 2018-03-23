@@ -41,11 +41,14 @@ class SurvivalGame extends BaseGame {
 
         this.camera.position.y = 2.5
         this.camera.position.z = 5
+        // this.cameraControl.update(1)
 
         this.initEntity('bee')
         this.initEntity('skull', { posY: 1 })
         this.initEntity('chicken', { posX: -1 })
         this.initEntity('chicken', { posY: -1 })
+
+        
 
     }
 
@@ -65,9 +68,12 @@ class SurvivalGame extends BaseGame {
                 },
                 '',
             )
+        }
+
+        if (this.currentIntersects !== intersectsString) {
             this.currentIntersects = intersectsString
-            this.reactHandle.forceUpdate()
             this.counter++
+            this.reactHandle.forceUpdate()
         }
 
 
@@ -82,8 +88,12 @@ class SurvivalGame extends BaseGame {
     }
 
 
-    onMouseMove(event) {
-        this.checkForIntersects()
+    onMouseDown(event) {
+        // console.log(event.button === 0)
+        if (event.button === 0) {
+            this.checkForIntersects()
+        }
+
     }
 
     gui(guiHandle) {
@@ -106,7 +116,7 @@ class SurvivalGame extends BaseGame {
                 CustomButton,
                 {
                     name: 'Force redraw gui',
-                    onClick: () => { guiHandle.forceUpdate(); this.counter++ }
+                    onClick: () => { this.counter++; guiHandle.forceUpdate() }
                 }
             ),
             React.createElement(
@@ -117,7 +127,7 @@ class SurvivalGame extends BaseGame {
             React.createElement(
                 'div',
                 null,
-                `Mouse ray intersects: ${this.currentIntersects}`,
+                `Mouse ray intersected on click: ${this.currentIntersects}`,
             ),
 
         )

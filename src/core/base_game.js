@@ -111,7 +111,7 @@ class BaseGame {
         this.isKeyDown = {}
         this.wasKeyDown = {}
         
-        this.mouse = {x: 0, y: 0, xVel: 0, yVel: 0, xPrev: 0, yPrev: 0, wheel: 0, buttonDown: {}}
+        this.mouse = {x: 0, y: 0, xVel: 0, yVel: 0, xPrev: 0, yPrev: 0, wheel: 0, buttonDown: []}
 
         if (this.clock) {
             this.clock.stop()

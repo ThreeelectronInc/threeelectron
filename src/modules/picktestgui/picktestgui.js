@@ -65,13 +65,17 @@ class SurvivalGame extends BaseGame {
                 },
                 '',
             )
+        }
+
+        if (this.currentIntersects !== intersectsString){
             this.currentIntersects = intersectsString
-            this.reactHandle.forceUpdate()
             this.counter++
+            this.reactHandle.forceUpdate()
         }
 
 
     }
+
 
     update(delta) {
         this.cameraControl.update(delta)
@@ -106,7 +110,7 @@ class SurvivalGame extends BaseGame {
                 CustomButton,
                 {
                     name: 'Force redraw gui',
-                    onClick: () => { guiHandle.forceUpdate(); this.counter++ }
+                    onClick: () => { this.counter++ ; guiHandle.forceUpdate()}
                 }
             ),
             React.createElement(

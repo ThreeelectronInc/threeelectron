@@ -23,6 +23,8 @@ class DeityCamera {
 
         this.lookPos =new THREE.Vector3(0,0,0)
         // this.lookPos = this.camera.position.addVectors(this.camera.position, this.lookPos)
+
+        this.pointerLockEnabled = false
         
     }
 
@@ -65,7 +67,6 @@ class DeityCamera {
 
 
 
-        let pointerLockEnabled = false
 
 
         const mousePanSpeed = 0.25
@@ -73,7 +74,7 @@ class DeityCamera {
 
             let gameElem = document.getElementById('myContainer')
 
-            if (pointerLockEnabled){
+            if (this.pointerLockEnabled){
                 gameElem.requestPointerLock();
             }
 
@@ -85,12 +86,14 @@ class DeityCamera {
 
             this.lookPos.add(mousePan)
         }
-        else if (this.mouse.buttonDown[0]) {
+        else if (this.mouse.buttonDown[0] 
+            // || this.mouse.buttonDown.length === 0 // Add this check to use look until a button is pressed 
+        ) {
 
 
             let gameElem = document.getElementById('myContainer');
             
-            if (pointerLockEnabled){
+            if (this.pointerLockEnabled){
                 gameElem.requestPointerLock();
             }
 
@@ -117,10 +120,11 @@ class DeityCamera {
                 this.r * Math.sin(this.theta) * Math.sin(this.phi))
             this.lookPos = this.camera.position.clone()
             this.lookPos.add(lookAt);
+            // console.log(lookAt)
         }
         else {
 
-            if (pointerLockEnabled){
+            if (this.pointerLockEnabled){
                 document.exitPointerLock();    
             }
 
