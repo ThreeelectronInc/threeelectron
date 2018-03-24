@@ -25,6 +25,7 @@ class SurvivalGame extends BaseGame {
         this.currentIntersects = ''
 
         this.counter = 0
+        this.planeGeometry = new THREE.PlaneGeometry(1, 1, 1)
 
     }
 
@@ -44,11 +45,12 @@ class SurvivalGame extends BaseGame {
         // this.cameraControl.update(1)
 
         this.initEntity('bee')
-        this.initEntity('skull', { posY: 1 })
+        this.initEntity('skull', { posZ: 1 })
         this.initEntity('chicken', { posX: -1 })
-        this.initEntity('chicken', { posY: -1 })
+        this.initEntity('chicken', { posZ: -1 })
 
-        
+        this.makeFloor('grass', {posY: -0.5})
+
 
     }
 
@@ -134,8 +136,8 @@ class SurvivalGame extends BaseGame {
     }
 
 
-    // Custom methods
-    initEntity(name, props = {}) {
+
+    getMaterial(name) {
 
         if (this.assets[name] === undefined) {
             console.log(`Generating new asset for ${name}...`)
@@ -150,28 +152,43 @@ class SurvivalGame extends BaseGame {
                 side: THREE.DoubleSide,
             })
 
-            asset.geometry = new THREE.PlaneGeometry(1, 1, 1)
-
             this.assets[name] = asset
         }
+    }
+
+
+    // Custom methods
+    initEntity(name, props = {}) {
+
+        this.getMaterial(name)
 
         let mesh = new THREE.Mesh(
-            this.assets[name].geometry,
+            this.planeGeometry,
             this.assets[name].material
         )
 
-        mesh.scale.x = props.scaleX === undefined ? 1 : props.scaleX
-        mesh.scale.y = props.scaleY === undefined ? 1 : props.scaleY
+        let prop = (name, defaultValue) => props[name] === undefined ? defaultValue : props[name]
+        
+        mesh.scale.x = prop('scaleX', 1)
+        mesh.scale.y = prop('scaleY', 1)
+        mesh.scale.z = prop('scaleZ', 1)
 
-        mesh.position.x = props.posX === undefined ? 0 : props.posX
-        mesh.position.z = props.posY === undefined ? 0 : props.posY
-
-        //   mesh.rotateX(-Math.PI / 2)
+        mesh.position.x = prop('posX', 0)
+        mesh.position.y = prop('posY', 0)
+        mesh.position.z = prop('posZ', 0)
 
         mesh.name = name // required for picking
         this.scene.add(mesh)
+        return mesh
     }
 
+
+    makeFloor(name, props = {}) {
+        let floor = this.initEntity(name, props)
+
+        floor.rotateX(-Math.PI / 2)
+        return floor
+    }
 
 
 }
