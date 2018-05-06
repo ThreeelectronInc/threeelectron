@@ -1,5 +1,5 @@
 <!--
- Copyright (c) 2017 Alex Forbes and Denzil Buchner
+ Copyright (c) 2018 Alex Forbes and Denzil Buchner
  
  This software is released under the MIT License.
  https://opensource.org/licenses/MIT
@@ -71,16 +71,17 @@
   
 <!-- required for group selection
   <div id="selection"></div>
-  <canvas id="selection-layer"/> -->
-
-  <!-- <script type=module src="main.js"> </script> -->
-  <!-- <script src="main.js"> </script> -->
-
+  <canvas id="selection-layer"/> 
+-->
 
   <script src='libs/react/16.2.0/react.development.js'></script>
   <script src='libs/react/16.2.0/react-dom.development.js'></script>
 
   <script src='react_main.js'></script>
+
+  <!-- NOTE: As of this version of Electron (2.0.0) and Chromium (61), ES6 modules are not supported -->
+  <!--       The intention is to switch to using ES6 modules as soon as they become available in Electron -->
+  <!-- <script src='react_main.js' type='module'></script> -->
 
 
 

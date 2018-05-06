@@ -167,6 +167,8 @@ class SurvivalGame extends BaseGame {
             this.assets[name].material
         )
 
+        this.scene.add(mesh)
+
         let prop = (name, defaultValue) => props[name] === undefined ? defaultValue : props[name]
         
         mesh.scale.x = prop('scaleX', 1)
@@ -178,7 +180,6 @@ class SurvivalGame extends BaseGame {
         mesh.position.z = prop('posZ', 0)
 
         mesh.name = name // required for picking
-        this.scene.add(mesh)
         return mesh
     }
 
