@@ -1,6 +1,6 @@
 # Threeelectron
 
-A minimal template for 3D desktop applications using Electron. 
+A template for 3D desktop applications using Electron. 
 
 The core dependencies included are Three.js, React and Electron.  
 
