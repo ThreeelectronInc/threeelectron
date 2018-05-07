@@ -2,7 +2,7 @@
 
 A template for 3D desktop applications using Electron. 
 
-![Chicken image](./chicken.png =100x100)
+![Chicken image](https://github.com/ThreeelectronInc/threeelectron/blob/master/src/assets/chicken.png)
 
 The core dependencies included are Three.js, React and Electron.  
 
@@ -40,10 +40,10 @@ CD into this directory
     This extension: https://marketplace.visualstudio.com/items?itemName=slevesque.vscode-3dviewer
 
 
-![alt text](https://github.com/ThreeelectronInc/threeelectron/blob/master/chicken.png "Chicken")
+![Chicken Shader](https://github.com/ThreeelectronInc/threeelectron/blob/master/chicken.png)
 
-![alt text](https://github.com/ThreeelectronInc/threeelectron/blob/master/saloon.png "Saloon")
+![Saloon Assets](https://github.com/ThreeelectronInc/threeelectron/blob/master/saloon.png)
 
-![alt text](https://github.com/ThreeelectronInc/threeelectron/blob/master/island.png "Island")
+![Voxel Island](https://github.com/ThreeelectronInc/threeelectron/blob/master/island.png)
 
-![alt text](https://github.com/ThreeelectronInc/threeelectron/blob/master/swarm.png "Swarm")
+![Particle Swarm](https://github.com/ThreeelectronInc/threeelectron/blob/master/swarm.png)
