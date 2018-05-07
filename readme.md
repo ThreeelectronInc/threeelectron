@@ -2,7 +2,9 @@
 
 A template for 3D desktop applications using Electron. 
 
-![Chicken image](https://github.com/ThreeelectronInc/threeelectron/blob/master/src/assets/chicken.png)
+<!-- ![Chicken image](https://github.com/ThreeelectronInc/threeelectron/blob/master/src/assets/chicken.png) -->
+
+<img src="./src/assets/chicken.png" width="50">
 
 The core dependencies included are Three.js, React and Electron.  
 
