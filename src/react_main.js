@@ -13,7 +13,7 @@ window.onload = function () {
 
             this.state = {
                 moduleDirectory: __dirname + '/modules/',
-                current: 'simpad'
+                current: 'saloon'
             }
 
             this.startModule(this.state.current)

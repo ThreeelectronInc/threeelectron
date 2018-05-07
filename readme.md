@@ -29,3 +29,16 @@ Add Electron to your PATH
 CD into this directory
 
     electron .
+
+
+## Recommended
+
+    Visual Studio Code: https://code.visualstudio.com/
+
+    This extension: https://marketplace.visualstudio.com/items?itemName=slevesque.vscode-3dviewer
+
+
+![alt text](https://github.com/ThreeelectronInc/threeelectron/blob/master/src/assets/chicken.png "Chicken")
+
+Reference-style: 
+![alt text][logo]
