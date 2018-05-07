@@ -41,3 +41,7 @@ CD into this directory
 ![alt text](https://github.com/ThreeelectronInc/threeelectron/blob/master/chicken.png "Chicken")
 
 ![alt text](https://github.com/ThreeelectronInc/threeelectron/blob/master/saloon.png "Saloon")
+
+![alt text](https://github.com/ThreeelectronInc/threeelectron/blob/master/island.png "Island")
+
+![alt text](https://github.com/ThreeelectronInc/threeelectron/blob/master/swarm.png "Swarm")
