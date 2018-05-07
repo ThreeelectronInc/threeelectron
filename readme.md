@@ -38,7 +38,6 @@ CD into this directory
     This extension: https://marketplace.visualstudio.com/items?itemName=slevesque.vscode-3dviewer
 
 
-![alt text](https://github.com/ThreeelectronInc/threeelectron/blob/master/src/assets/chicken.png "Chicken")
+![alt text](https://github.com/ThreeelectronInc/threeelectron/blob/master/chicken.png "Chicken")
 
-Reference-style: 
-![alt text][logo]
+![alt text](https://github.com/ThreeelectronInc/threeelectron/blob/master/saloon.png "Saloon")
