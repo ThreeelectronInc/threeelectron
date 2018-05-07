@@ -41,11 +41,18 @@ CD into this directory
 
     This extension: https://marketplace.visualstudio.com/items?itemName=slevesque.vscode-3dviewer
 
-
+<!-- 
 ![Chicken Shader](https://github.com/ThreeelectronInc/threeelectron/blob/master/chicken.png)
 
 ![Saloon Assets](https://github.com/ThreeelectronInc/threeelectron/blob/master/saloon.png)
 
 ![Voxel Island](https://github.com/ThreeelectronInc/threeelectron/blob/master/island.png)
 
-![Particle Swarm](https://github.com/ThreeelectronInc/threeelectron/blob/master/swarm.png)
+![Particle Swarm](https://github.com/ThreeelectronInc/threeelectron/blob/master/swarm.png) -->
+
+## Screenshots
+
+<img src="./screenshots/chicken.png" />
+<img src="./screenshots/saloon.png" />
+<img src="./screenshots/island.png" />
+<img src="./screenshots/swarm.png" />
