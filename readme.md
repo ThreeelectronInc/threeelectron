@@ -6,7 +6,7 @@ A template for 3D desktop applications using Electron.
 
 <img src="./src/assets/chicken.png" width="50">
 
-The core dependencies included are Three.js, React and Electron.  
+The core dependencies included are Three.js and React.
 
 A few additional libraries such as Tone.JS are included for demo purposes only.  
 
