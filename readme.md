@@ -8,9 +8,7 @@ A template for 3D desktop applications using Electron.
 
 The core dependencies included are Three.js and React.
 
-A few additional libraries such as Tone.JS are included for demo purposes only.  
-
-Note: The absence of NPM is deliberate.  For now, the goal of this project is that it should only ever require the developer or user to install Electron.
+A few additional libraries such as Tone.JS are included for demo purposes.  
 
 ## Requirements (tested with)
 
