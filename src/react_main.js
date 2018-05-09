@@ -6,6 +6,17 @@ let ModuleSelector = require('./components/module_selector')
 window.onload = function () {
 
 
+    let defaultModule = 'saloon'
+    
+    // Set target game module from command line if argument is specified
+    let remote = require('electron').remote
+    let arguments = remote.getGlobal('sharedObject').args;
+    
+    if ( arguments !== undefined && arguments.length > 2){
+        defaultModule = arguments[2]
+      }
+    
+
     class Greetings extends React.Component {
 
         constructor() {
@@ -13,7 +24,7 @@ window.onload = function () {
 
             this.state = {
                 moduleDirectory: __dirname + '/modules/',
-                current: 'saloon'
+                current: defaultModule
             }
 
             this.startModule(this.state.current)

@@ -32,6 +32,9 @@ CD into this directory
 
     electron .
 
+Optional argument to specify default module to load on startup
+
+    electron . shader_scratchpad
 
 ## Recommended
 

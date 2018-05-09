@@ -63,7 +63,9 @@ class SurvivalGame extends BaseGame {
         this.loadOBJwithMTL('10GallonHat', -4)
         this.loadOBJwithMTL('beerBottle', 2)
         this.loadOBJwithMTL('toyHorse', 4)
-        this.loadOBJwithMTL('train', 30)
+        // this.loadOBJwithMTL('train', 30)
+        this.loadOBJwithMTL('trainEngine', 30)
+        this.loadOBJwithMTL('trainCarriage', 30)
         this.loadOBJwithMTL('rifle', 6)
         this.loadOBJwithMTL('revolver', 8)
 

@@ -1,8 +1,8 @@
-# Blender MTL File: 'train.blend'
+# Blender MTL File: 'None'
 # Material Count: 2
 
-newmtl Material
-Ns 96.078431
+newmtl Material.001
+Ns 94.117647
 Ka 1.000000 1.000000 1.000000
 Kd 0.640000 0.640000 0.640000
 Ks 0.010000 0.010000 0.010000
@@ -13,10 +13,12 @@ illum 2
 map_Kd paletteWestern.png
 
 newmtl None
-Ns 0
+Ns 0.000000
 Ka 0.000000 0.000000 0.000000
-Kd 0.8 0.8 0.8
-Ks 0.1 0.1 0.1
-d 1
+Kd 0.800000 0.800000 0.800000
+Ks 0.100000 0.100000 0.100000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
 illum 2
 map_Kd paletteWestern.png

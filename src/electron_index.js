@@ -85,7 +85,8 @@ app.on('activate', () => {
 
 
 
-
+global.sharedObject = {args: process.argv}
+// console.log("ARG: ", )
 
 
 // let fetch = require('fetch')
