@@ -6,7 +6,8 @@ let ModuleSelector = require('./components/module_selector')
 window.onload = function () {
 
 
-    let defaultModule = 'saloon'
+    // let defaultModule = 'saloon'
+    let defaultModule = 'simpad'
     
     // Set target game module from command line if argument is specified
     let remote = require('electron').remote

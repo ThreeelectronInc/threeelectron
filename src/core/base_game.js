@@ -61,7 +61,8 @@ class BaseGame {
         // Configure renderer clear color
         this.renderer.setClearColor(this.clearColor);
 
-        this.resolutionScale = 0.33
+        // this.resolutionScale = 0.33
+        this.resolutionScale = 1.0
 
         this.renderer.setPixelRatio(window.devicePixelRatio * this.resolutionScale)
         
