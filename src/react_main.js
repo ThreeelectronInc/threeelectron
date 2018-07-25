@@ -6,6 +6,7 @@ let ModuleSelector = require('./components/module_selector')
 window.onload = function () {
 
 
+    // let defaultModule = 'shader_scratchpad'
     // let defaultModule = 'saloon'
     let defaultModule = 'simpad'
     

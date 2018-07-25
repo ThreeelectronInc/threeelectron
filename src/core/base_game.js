@@ -255,6 +255,10 @@ class BaseGame {
 
     }
 
+    postRender(delta){
+
+    }
+    
     _update() {
 
         if (!this.forceFPS) {
@@ -281,12 +285,17 @@ class BaseGame {
 
         // this.handleInput(delta)        
 
+        
 
         this.renderer.clear();
+
+        this.update(delta)      
+
         this.renderer.render(this.scene, this.camera)
-        
-        this.update(delta)
-        
+        // this.renderer.clearDepth();
+
+        this.postRender(delta)
+
         this.stats.update()
 
         this.mouse.xVel = 0

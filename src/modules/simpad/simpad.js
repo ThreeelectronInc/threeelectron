@@ -9,12 +9,12 @@ let THREE = require('./../../libs/three/three')
 
 let BaseGame = require('./../../core/base_game')
 
-let DeityCamera = require('./../../core/camera/deity')
+let SimCamera = require('./../../core/camera/sim')
 let CustomButton = require('./../../components/custom_button')
 
 let { ipcRenderer, remote } = require('electron');
 
-
+let {makeTextSprite} = require('./utils.js')
 /*
 
 NOTES
@@ -30,45 +30,11 @@ UIOP : 1-4
 JKL; : 5-8
 
 
+Replace the sprite lables with html overlay elements in 
+    react now that we know how to project from 3D to 2D.
+
+
 */
-
-let roundRect = (ctx, x, y, w, h, r) => { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.lineTo(x + w - r, y); ctx.quadraticCurveTo(x + w, y, x + w, y + r); ctx.lineTo(x + w, y + h - r); ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h); ctx.lineTo(x + r, y + h); ctx.quadraticCurveTo(x, y + h, x, y + h - r); ctx.lineTo(x, y + r); ctx.quadraticCurveTo(x, y, x + r, y); ctx.closePath(); ctx.fill(); ctx.stroke(); }
-let makeTextSprite = (message, parameters) => {
-    if (parameters === undefined) parameters = {};
-    var fontface = parameters.hasOwnProperty("fontface") ? parameters["fontface"] : "Courier New";
-    var fontsize = parameters.hasOwnProperty("fontsize") ? parameters["fontsize"] : 14;
-    var borderThickness = parameters.hasOwnProperty("borderThickness") ? parameters["borderThickness"] : 2;
-    var borderColor = parameters.hasOwnProperty("borderColor") ? parameters["borderColor"] : { r: 0, g: 0, b: 0, a: 1.0 };
-    var backgroundColor = parameters.hasOwnProperty("backgroundColor") ? parameters["backgroundColor"] : { r: 255, g: 255, b: 255, a: 0.5 };
-    var textColor = parameters.hasOwnProperty("textColor") ? parameters["textColor"] : { r: 0, g: 0, b: 0, a: 1.0 };
-
-    var canvas = document.createElement('canvas');
-    var context = canvas.getContext('2d');
-    context.font = "Bold " + fontsize + "px " + fontface;
-    var metrics = context.measureText(message);
-    var textWidth = metrics.width;
-
-    context.fillStyle = "rgba(" + backgroundColor.r + "," + backgroundColor.g + "," + backgroundColor.b + "," + backgroundColor.a + ")";
-    context.strokeStyle = "rgba(" + borderColor.r + "," + borderColor.g + "," + borderColor.b + "," + borderColor.a + ")";
-
-    context.lineWidth = borderThickness;
-    roundRect(context, borderThickness / 2, borderThickness / 2, (textWidth + borderThickness) * 1.1, fontsize * 1.4 + borderThickness, 8);
-
-    context.fillStyle = "rgba(" + textColor.r + ", " + textColor.g + ", " + textColor.b + ", 1.0)";
-    context.fillText(message, borderThickness, fontsize + borderThickness);
-
-    var texture = new THREE.Texture(canvas)
-    texture.needsUpdate = true;
-
-    var spriteMaterial = new THREE.SpriteMaterial({ map: texture, useScreenCoordinates: false });
-    var sprite = new THREE.Sprite(spriteMaterial);
-    let scale = { x: 0.25 * fontsize, y: 0.125 * fontsize }
-    // let scale = {x: 1, y: 1, z: 1}
-    // sprite.center.set( 0.5, 0.5, 0 );
-    sprite.scale.set(scale.x, scale.y, 1)//, scale.z);
-
-    return sprite;
-}
 
 class SurvivalGame extends BaseGame {
 
@@ -91,24 +57,23 @@ class SurvivalGame extends BaseGame {
 
         this.sceneOrtho = new THREE.Scene();
 
-        this.cameraControl = new DeityCamera(
+        this.cameraControl = new SimCamera(
             this.camera,
             (key) => this.keyDown(key),
             this.mouse,
-            5 // camera velocity in units/second
+            15 // camera velocity in units/second
         )
 
-        this.camera.position.y = 2.5
+        this.camera.position.y = 10
         this.camera.position.z = 5
         // this.cameraControl.update(1)
 
         this.initEntity('bee')
-        this.overlayTest = this.initEntity('skull', { posZ: 1, showName: true })
-        this.initEntity('chicken', { posX: -1, name: 'chicken 1', showName: true })
-        this.initEntity('chicken', { posZ: -1 })
+        this.overlayTest = this.initEntity('skull', { posZ: 3})
+        this.initEntity('chicken', { posX: -3, name: 'chicken 1'})
+        this.initEntity('chicken', { posZ: -3 })
 
-        this.makeFloor('grass', { posY: -0.5 })
-
+        this.makeFloor()
 
         var width = window.innerWidth;
         var height = window.innerHeight;
@@ -126,23 +91,33 @@ class SurvivalGame extends BaseGame {
 
         // Update label positions
         this.sceneOrtho.traverse((label) => {
-            // if (object instanceof THREE.Particle) {
-            //     if (object.name === 'q10')
-            // // do what you want with it.
 
             if (label.hasOwnProperty('attachedToEntity')) {
-                // console.log(label.attachedToEntity.name)
 
                 var pos3Dto2D = new THREE.Vector3(label.attachedToEntity.position.x, label.attachedToEntity.position.y, label.attachedToEntity.position.z)
 
                 pos3Dto2D.project(this.camera)
                 label.position.set(window.innerWidth * pos3Dto2D.x * 0.5, window.innerHeight * pos3Dto2D.y * 0.5, 5)
+                
+                // document.getElementById("testlabel").style.left = window.innerWidth * pos3Dto2D.x * 0.5+"px";
+                // document.getElementById("testlabel").style.top = window.innerWidth * pos3Dto2D.y * 0.5+"px";
+
+                if (this.testLabel !== undefined){
+                    // console.log(this.testLabel)
+                    
+                    // this.testLabel.props.style.left = window.innerWidth * pos3Dto2D.x * 0.5+"px"
+
+                }
             }
 
         })
 
         // renderer.clear();
         // renderer.render( scene, camera );
+    }
+
+    postRender(delta){
+
         this.renderer.clearDepth();
         this.renderer.render(this.sceneOrtho, this.cameraOrtho);
     }
@@ -164,7 +139,9 @@ class SurvivalGame extends BaseGame {
 
         this.reactHandle = guiHandle // Get handle to gui to force redraws elsewhere
 
-        return React.createElement(
+        this.testLabel = React.createElement('div', {id: 'testlabel', style: {position: 'absolute'}})
+
+        this.hudHandle = React.createElement(
             'div',
             {},
             React.createElement(
@@ -174,8 +151,11 @@ class SurvivalGame extends BaseGame {
                     onClick: () => { this.counter++; guiHandle.forceUpdate() }
                 }
             ),
+            this.testLabel
 
         )
+
+        return this.hudHandle
     }
 
 
@@ -201,7 +181,7 @@ class SurvivalGame extends BaseGame {
     getSpriteMaterial(name) {
 
         if (this.assets[name] === undefined) {
-            console.log(`Generating new asset for ${name}...`)
+            console.log(`Generating new assqA   et for ${name}...`)
             let asset = {}
 
             asset.texture = new THREE.TextureLoader().load(`${this.assetDirectory}/${name}.png`)
@@ -257,17 +237,12 @@ class SurvivalGame extends BaseGame {
         group.position.y = prop('posY', 0)
         group.position.z = prop('posZ', 0)
 
-        let showName = prop('showName', false)
+        let showName = prop('showName', true)
 
         let displayName = prop('name', name)
 
 
         this.getSpriteMaterial(name)
-
-        // let mesh = new THREE.Mesh(
-        //     this.planeGeometry,
-        //     this.assets[name].material
-        // )
 
         let mesh = new THREE.Sprite(this.assets[name].material)
 
@@ -285,7 +260,7 @@ class SurvivalGame extends BaseGame {
 
         this.sceneOrtho.add(label)
 
-        label.center.set(0.5, 0.75)//0.5 );
+        label.center.set(0.5, 0.75)//0.75)//0.5 );
         label.scale.set(200, 200, 1);
 
 
@@ -296,10 +271,17 @@ class SurvivalGame extends BaseGame {
 
 
     makeFloor(name, props = {}) {
-        let floor = this.initFloor(name, props)
 
-        floor.rotateX(-Math.PI / 2)
-        return floor
+        let radius = 5
+
+        for (let x = -radius; x < radius+1; x++) {
+            for (let z = -radius; z < radius+1; z++) {
+
+                let floor = this.initFloor('grass', { posY: -0.5, posX: x, posZ: z })
+
+                floor.rotateX(-Math.PI / 2)
+            }
+        }
     }
 
 
