@@ -162,8 +162,11 @@ class SurvivalGame extends BaseGame {
 
             // renderer.clear();
             // renderer.render( scene, camera );
-            this.renderer.clearDepth();
-            this.renderer.render( this.sceneOrtho, this.cameraOrtho );
+    }
+
+    postRender(delta){
+        this.renderer.clearDepth();
+        this.renderer.render( this.sceneOrtho, this.cameraOrtho );
     }
 
     onWindowResize() {

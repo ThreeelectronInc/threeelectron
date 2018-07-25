@@ -255,10 +255,11 @@ class BaseGame {
 
     }
 
+    // While update is called before rendering, this is called afterwards.
     postRender(delta){
 
     }
-    
+
     _update() {
 
         if (!this.forceFPS) {
