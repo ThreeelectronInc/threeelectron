@@ -134,7 +134,7 @@ class SurvivalGame extends BaseGame {
                 // console.log(label.attachedToEntity.name)
 
                 var pos3Dto2D = new THREE.Vector3(label.attachedToEntity.position.x, label.attachedToEntity.position.y, label.attachedToEntity.position.z)
-                
+
                 pos3Dto2D.project(this.camera)
                 label.position.set(window.innerWidth * pos3Dto2D.x * 0.5, window.innerHeight * pos3Dto2D.y * 0.5, 5)
             }
@@ -179,8 +179,7 @@ class SurvivalGame extends BaseGame {
     }
 
 
-
-    getMaterial(name) {
+    getMeshMaterial(name) {
 
         if (this.assets[name] === undefined) {
             console.log(`Generating new asset for ${name}...`)
@@ -197,6 +196,49 @@ class SurvivalGame extends BaseGame {
 
             this.assets[name] = asset
         }
+    }
+
+    getSpriteMaterial(name) {
+
+        if (this.assets[name] === undefined) {
+            console.log(`Generating new asset for ${name}...`)
+            let asset = {}
+
+            asset.texture = new THREE.TextureLoader().load(`${this.assetDirectory}/${name}.png`)
+
+            asset.material = new THREE.SpriteMaterial({
+                map: asset.texture,
+                color: 0xffffff,
+                transparent: true,
+                // side: THREE.DoubleSide,
+            })
+
+            this.assets[name] = asset
+        }
+    }
+
+    initFloor(name, props = {}) {
+        this.getMeshMaterial(name)
+
+        let mesh = new THREE.Mesh(
+            this.planeGeometry,
+            this.assets[name].material
+        )
+
+
+        let prop = (name, defaultValue) => props[name] === undefined ? defaultValue : props[name]
+
+        mesh.scale.x = prop('scaleX', 1)
+        mesh.scale.y = prop('scaleY', 1)
+        mesh.scale.z = prop('scaleZ', 1)
+
+        mesh.position.x = prop('posX', 0)
+        mesh.position.y = prop('posY', 0)
+        mesh.position.z = prop('posZ', 0)
+
+
+        this.scene.add(mesh)
+        return mesh
     }
 
 
@@ -220,13 +262,14 @@ class SurvivalGame extends BaseGame {
         let displayName = prop('name', name)
 
 
-        this.getMaterial(name)
+        this.getSpriteMaterial(name)
 
-        let mesh = new THREE.Mesh(
-            this.planeGeometry,
-            this.assets[name].material
-        )
+        // let mesh = new THREE.Mesh(
+        //     this.planeGeometry,
+        //     this.assets[name].material
+        // )
 
+        let mesh = new THREE.Sprite(this.assets[name].material)
 
         let text = displayName
         while (text.length < 30) text += ' ' // right pad
@@ -253,7 +296,7 @@ class SurvivalGame extends BaseGame {
 
 
     makeFloor(name, props = {}) {
-        let floor = this.initEntity(name, props)
+        let floor = this.initFloor(name, props)
 
         floor.rotateX(-Math.PI / 2)
         return floor
