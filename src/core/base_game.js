@@ -283,8 +283,9 @@ class BaseGame {
 
 
         this.renderer.clear();
-        this.update(delta)
         this.renderer.render(this.scene, this.camera)
+        
+        this.update(delta)
         
         this.stats.update()
 
