@@ -6,7 +6,6 @@
  */
 
 
-let THREE = require('./../../libs/three/three')
 
 class DeityCamera {
     constructor(camera, keyDown, mouse) {

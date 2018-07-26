@@ -10,7 +10,6 @@ let chunkBlockWidth = 16, chunkBlockDepth = 16, chunkBlockHeight = 128
 let octaves = 4
 let blockScale = 7.5
 
-let THREE = require('./../../libs/three/three')
 let BLOCK = require('./block')
 
 

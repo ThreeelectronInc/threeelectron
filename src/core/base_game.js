@@ -5,8 +5,6 @@
  * https://opensource.org/licenses/MIT
  */
 
-let THREE = require('./../libs/three/three')
-
 class BaseGame {
     constructor(tagName, fps = 0, clearColor = "#33aadd", camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100000)) {
 

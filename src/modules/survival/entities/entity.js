@@ -1,4 +1,3 @@
-let THREE = require('./../../../libs/three/three')
 
 let ChunkClass = require('./../chunk')
 

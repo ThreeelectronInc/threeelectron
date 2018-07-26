@@ -1,4 +1,3 @@
-let THREE = require('./../../../libs/three/three')
 
 let { Entity } = require('./entity')
 

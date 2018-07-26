@@ -5,8 +5,6 @@
  * https://opensource.org/licenses/MIT
  */
 
-let THREE = require('./../../libs/three/three')
-
 let noise = require('./../../libs/improved_noise')
 let WORLD = require('./world').Instance
 

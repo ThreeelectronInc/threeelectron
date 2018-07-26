@@ -5,7 +5,6 @@
  * https://opensource.org/licenses/MIT
  */
 
-
 let BaseGame = require('./../../core/base_game')
 
 let SimCamera = require('./../../core/camera/sim')

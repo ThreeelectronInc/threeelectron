@@ -5,10 +5,6 @@
  * https://opensource.org/licenses/MIT
  */
 
-let THREE = require('./../../libs/three/three')
-// global.THREE = require('./../../libs/three/three')
-// let text2d = require('./../../libs/three/three-text2d/three-text2d.js')
-// import { MeshText2D, textAlign } from './../../libs/three/three-text2d/three-text2d.js'
 
 let BaseGame = require('./../../core/base_game')
 

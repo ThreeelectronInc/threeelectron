@@ -5,8 +5,6 @@
  * https://opensource.org/licenses/MIT
  */
 
-let THREE = require('./../../libs/three/three')
-
 let BaseGame = require('./../../core/base_game')
 
 let Tone
