@@ -80,19 +80,19 @@ class SurvivalGame extends BaseGame {
 
 
 
-        // let sprite = new THREE.TextSprite({
-        //     textSize: 10,
-        //     redrawInterval: 250,
-        //     texture: {
-        //       text: 'Carpe Diem',
-        //       fontFamily: 'Arial, Helvetica, sans-serif',
-        //     },
-        //     material: {
-        //       color: 0xffbbff,
-        //       fog: true,
-        //     },
-        //   });
-        //   this.scene.add(sprite);
+        let sprite = new THREE.TextSprite({
+            textSize: 10,
+            redrawInterval: 250,
+            texture: {
+              text: 'Carpe Diem',
+              fontFamily: 'Arial, Helvetica, sans-serif',
+            },
+            material: {
+              color: 0xffbbff,
+              fog: true,
+            },
+          });
+          this.scene.add(sprite);
 
     }
 

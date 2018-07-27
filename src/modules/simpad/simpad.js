@@ -33,6 +33,8 @@ Replace the sprite lables with html overlay elements in
     react now that we know how to project from 3D to 2D.
 
 Dynamically measure and change font size based on character count.
+
+Not post-apocalyptic, more tech dark ages survival.  
 */
 
 class SurvivalGame extends BaseGame {
@@ -67,10 +69,12 @@ class SurvivalGame extends BaseGame {
         this.camera.position.z = 3
         // this.cameraControl.update(1)
 
-        this.initEntity('bee')
+        this.initEntity('bee', {scaleX: 0.5, scaleY: 0.5, scaleZ: 0.5})
         this.overlayTest = this.initEntity('skull', { posZ: 3 })
         this.initEntity('chicken', { posX: -3, name: 'chicken 1' })
         this.initEntity('chicken', { posZ: -3 })
+
+        this.initEntity('bud', {posX: 5})
 
         this.makeFloor()
 
